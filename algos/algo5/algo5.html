@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>2 cp project</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/style.css">
+  <style media="screen">
+          #mydiv {
+        position: absolute;
+        z-index: 9;
+        background-color: #f1f1f1;
+        border: 1px solid #d3d3d3;
+        text-align: center;
+        }
+
+        #mydivheader {
+        padding: 10px;
+        cursor: move;
+        z-index: 10;
+        background-color: #2196F3;
+        color: #fff;
+        }
+  </style>
+
+</head>
+<body>
+
+    <nav class="top_navbar">
+        <button class="btn_blue home_button" onclick="window.location.href='index.html'">Home</button>
+        <div class="algo_btns">
+            <button class=" btn_slct btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'" >FCFS</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >R-Robin</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >ALGO 4</button>
+            <button class=" btn_blue btn_top_navbar selected" >ALGO 5</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >ALGO 6</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >ALGO 7</button>
+
+        </div>
+    </nav>
+
+    <nav class="side_navbar">
+
+        <br><br><button class="btn btn_green " onclick="FCFS()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
+
+        <br><br><br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_1" >Ajouter Processus</button><br>
+                <!-- Add new process !-->
+                <!-- this is the div that pops out when you click !-->
+               <div class="small_menu add_process_menu shadow" id="small_menu_1">
+                    <!-- Start of Exe time, int nb, color !-->
+                    <table>
+                        <tr>
+                            <th >Temps d'execution</th>
+                            <th><input type="text" name="exe_time" class="small_text_input" maxlength="2" id="Exe_time" ></th>
+                        </tr>
+                        <tr>
+                            <th >Nombre d'interuption</th>
+                            <th><input type="text" name="int_nb" class="small_text_input" maxlength="1" onchange="create_int_menu(value)" id="Int_nb"></th>
+                        </tr>
+                        <tr>
+                            <th >Couleur</th>
+                            <th><input type="color" name="color" id="Process_color" style="width: -moz-available"></th>
+                        </tr>
+                    </table>
+                    <!-- END of Exe time, int nb, color !-->
+                    <!--Start of interuptions menu !-->
+
+                    <div class="interuptions_menu shadow" id="interuptions_menu"> </div>
+                    <!-- End of interuptions menu !-->
+                    <button class="btn btn_green " onclick="scrap(document)" >Ajouter Processus</button>
+
+               </div>
+
+        <br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_2">Ajouter Processus Aleatoire</button><br>
+               <div class="small_menu add_process_menu" id="small_menu_2">
+                   <table>
+                       <tr>
+                           <th >Nombre de processus</th>
+                           <th><input type="text" class="small_text_input" maxlength="2" id="nb_processes"></th>
+                       </tr>
+                   </table>
+                   <button class="btn btn_green " onclick="create_process()"  >Ajouter les Processus</button>
+               </div>
+
+        <br><button class="btn btn_blue " onclick="reset_proc()" >Reset</button>
+
+        <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_4">Afficher Les Processus</button>
+
+        <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_3">Parametre</button><br>
+          <div class="small_menu add_process_menu" id="small_menu_3">
+              <table>
+                  <tr>
+                      <th>Unite de temps</th>
+                      <th><input type="text" class="small_text_input" maxlength="5" id="TIME_UNIT"></th>
+                  </tr>
+                  <tr>
+                      <th>Vitesse</th>
+                      <th><input type="text" class="small_text_input" maxlength="5" id="SPEED"></th>
+                  </tr>
+              </table>
+
+              <button class="btn btn_green " onclick="reset_parameters()" >Valider</button>
+          </div>
+
+  </nav>
+
+    <div class="main">
+    <div class="main_svg shadow"> <main_svg ></main_svg> </div>
+
+      <!--<div id="menu_div" >
+        <div id="menu" style="background-color: #ABBAEA;"></div>
+    </div> !-->
+    <div class="info_div" id="info_div">
+
+        <div  class="proc_info_menu shadow">
+            <h2> Les processus: </h2>
+            <div id="proc_info_menu" >
+
+            </div>
+            <!-- Les informations des processus, et leurs interuptions !-->
+        </div>
+    </div>
+
+  </div>
+
+<div class="slidecontainer">
+  <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
+  <p>SPEED </span></p>
+  <input type="range" min="100" max="5000" value="1000" class="slider" id="myTU">
+  <p>Time Unit <span id="demo"></span></p>
+</div>
+
+
+</body>
+<script src="../../bib/d3.js"></script>
+<script src="js/main.js"></script>
+<script type="text/javascript">
+  var open_menus_nb = 3;
+  var nb_interuption;
+
+  for (let i = 1; i <= open_menus_nb; i++){document.getElementById("small_menu_"+i).style.display = "none";}
+
+  function open_close_small_menu(id){
+    var ii = id.slice(7)
+    for (let i = 1; i <= open_menus_nb; i++){if (i != ii){document.getElementById("small_menu_"+i).style.display = "none";}}
+    var menu_id = "small_menu_"+ii;
+    var x = document.getElementById(menu_id)
+    if (x.style.display === "none") {
+       x.style.display = "block";
+    }
+    else {
+       x.style.display = "none";
+    }
+  }
+
+  function open_close_small_int_menu(id){
+      var ii = id.slice(12)
+      console.log(ii);
+      for (let i = 1; i <= nb_interuption; i++){if (i != ii){document.getElementById("small_int_menu_"+i).style.display = "none";}}
+      var menu_id = "small_int_menu_"+ii;
+      var x = document.getElementById(menu_id)
+      if (x.style.display === "none") {
+         x.style.display = "block";
+      }
+      else {
+         x.style.display = "none";
+      }
+  }
+
+  function create_int_menu(nb_int){
+      //create a new interuption menu
+      nb_interuption = nb_int
+      var menu = ""
+      for (var i = 1; i <= nb_int; i++){
+          console.log(i);
+          menu += `
+          <button class="btn_int" onclick="open_close_small_int_menu(id)" id="interuption_${i}" >Interuption ${i}</button>
+                 <div class="small_menu add_int_menu shadow" id="small_int_menu_${i}">
+                      <table>
+                          <tr>
+                              <th >Debut</th>
+                              <th><input type="text" name="Start_time_${i}" class="small_text_input" maxlength="2" id="Start_time_${i}"></th>
+                          </tr>
+                          <tr>
+                              <th >Duree</th>
+                              <th><input type="text" name="Duration_${i}" class="small_text_input" maxlength="2" onchange="" id="Duration_${i}"></th>
+                          </tr>
+                          <tr>
+                              <th >Type</th>
+                              <th>
+                                  <select id="Interuption_type_${i}" name="types">
+                                      <option value="memory">Memory</option>
+                                      <option value="input">Input</option>
+                                      <option value="function">Function</option>
+                                  </select>
+                              </th>
+                          </tr>
+                      </table>
+                 </div>
+          `
+      }
+      document.getElementById("interuptions_menu").innerHTML = menu
+      for (let i = 1; i <= nb_interuption; i++){document.getElementById("small_int_menu_"+i).style.display = "none";}
+  }
+
+  function reset_proc(){
+
+      document.getElementById("proc_info_menu").innerHTML = "";
+      id_proc = 0
+      //for (var i = 0; i < pret.processors.length; i++){
+      while (pret.processors.length != 0){
+          var proc = pret.processors.shift()
+          proc.elem.transition()
+              .duration(200)
+              .attr("cx", 1400)
+              .style("opacity", "0");
+          proc.text.transition()
+              .duration(200)
+              .attr("x", 1400)
+              .style("opacity", "0");
+          sleep(200).then(() => {
+              proc.elem.remove();
+          });
+      }
+  }
+
+  function reset_parameters(){
+      var a = document.getElementById("TIME_UNIT").value;
+      var b = document.getElementById("SPEED").value;
+      if (a != ""){TIME_UNIT = parseInt(a)}
+      if (b != ""){SPEED = parseInt(b)}
+      document.getElementById("TIME_UNIT").value = TIME_UNIT;
+      document.getElementById("SPEED").value = SPEED;
+  }
+
+  function open_close_info_div(){
+      var x = document.getElementById("info_div")
+      var y = document.getElementById("button_4")
+      if (x.style.display == "block") {
+         x.style.display = "none";
+         y.style.background = "none"
+      }
+      else {
+         x.style.display = "block";
+         y.style.background = "rgba(0, 207, 255, 0.54)";
+      }
+  }
+
+</script>
+<script type="text/javascript">
+    // Make the DIV element draggable:
+    dragElement(document.getElementById("info_div"));
+
+
+    function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+    }
+    }
+
+</script>
+</html>
