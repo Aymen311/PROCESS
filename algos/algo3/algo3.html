@@ -68,6 +68,8 @@
 
         <br><button class="btn btn_blue " onclick="reset_proc()" >Reset</button>
 
+        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_5">Afficher Les Commentaires</button>
+
         <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_4">Afficher Les Processus</button>
 
         <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_3">Parametre</button><br>
@@ -102,7 +104,7 @@
       <!--<div id="menu_div" >
         <div id="menu" style="background-color: #ABBAEA;"></div>
     </div> !-->
-    <div class="info_div" id="info_div">
+    <div class="info_div" id="info_div" style="top: 415px; left: 10px">
 
         <div  class="proc_info_menu shadow">
             <h2> Les processus: </h2>
@@ -112,7 +114,17 @@
             <!-- Les informations des processus, et leurs interuptions !-->
         </div>
     </div>
+    <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
 
+        <div  class="proc_info_menu shadow">
+            <div class="rect"> </div>
+            <h2> Les commentaires: </h2>
+            <ol id="logs" class="logs_class" reversed>
+
+            </ol>
+            <!-- Les informations des processus, et leurs interuptions !-->
+        </div>
+    </div>
   </div>
 
 <div class="slidecontainer">
@@ -247,10 +259,24 @@
       }
   }
 
+  function open_close_logs_div(){
+      var x = document.getElementById("logs_div")
+      var y = document.getElementById("button_5")
+      if (x.style.display == "block") {
+         x.style.display = "none";
+         y.style.background = "none"
+      }
+      else {
+         x.style.display = "block";
+         y.style.background = "rgba(0, 207, 255, 0.54)";
+      }
+  }
+
 </script>
 <script type="text/javascript">
     // Make the DIV element draggable:
     dragElement(document.getElementById("info_div"));
+    dragElement(document.getElementById("logs_div"));
 
 
     function dragElement(elmnt) {
