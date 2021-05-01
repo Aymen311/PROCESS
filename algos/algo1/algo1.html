@@ -107,6 +107,9 @@
             <div class="close_button" onclick="open_close_info_div()">
                 X
             </div>
+            <div class="hide_button" onclick="hide_info_div()">
+                _
+            </div>
             <div  class="proc_info_menu shadow">
                 <h2> Les processus: </h2>
                 <div id="proc_info_menu" >
@@ -118,6 +121,9 @@
         <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
             <div class="close_button" onclick="open_close_logs_div()">
                 X
+            </div>
+            <div class="hide_button" onclick="hide_logs_div()">
+                _
             </div>
             <div  class="proc_info_menu shadow">
                 <div class="rect"> </div>
@@ -271,6 +277,17 @@
       }
   }
 
+  function hide_info_div(){
+      x = document.getElementById("info_div")
+      x.style.top = "415px"
+      x.style.left = "10px"
+  }
+
+  function hide_logs_div(){
+      x = document.getElementById("logs_div")
+      x.style.top = "415px"
+      x.style.left = "460px"
+  }
 
 
 </script>

@@ -320,9 +320,24 @@ body{
     cursor: pointer;
     z-index: 2;
     width: 27px;
-    height: 20px;
+    height: 22px;
+}
+
+.hide_button {
+    position: absolute;
+    right: 47px;
+    top: 0px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+    width: 27px;
+    height: 28px;
 }
 
 .close_button:hover {
+    color: gray;
+}
+
+.hide_button:hover {
     color: gray;
 }
