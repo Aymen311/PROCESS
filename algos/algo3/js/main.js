@@ -421,7 +421,7 @@ function update_left_time(elem, t,end,sub){
           elem.left_time_anime -= sub;
           // To update the text
           elem.text.text(elem.left_time_anime)
-          document.getElementById("menu_proc_exe_time_"+elem.id).innerHTML = "Temps restant: "+elem.left_time_anime
+          document.getElementById("menu_proc_exe_time_"+elem.id).innerHTML = ", Temps restant: "+elem.left_time_anime
           update_left_time(elem, t-1,end,sub)})
     }
 }
@@ -474,10 +474,6 @@ function func_intr(){
 /***************************************************/
 
 /****************** ALGORITHM ***********************/
-
-// ALGORITHM 1 : //
-//////////////////
-
 function log_comment(comment, color, elem_color){
     var x = document.getElementById("logs");
     /*var c = `
@@ -491,104 +487,6 @@ function log_comment(comment, color, elem_color){
     x.innerHTML = c + x.innerHTML;
 }
 
-
-function FCFS(mode , proc){
-  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
-      let elem = treat_process(0);
-      log_comment("Traintement du processus "+elem.id,"green", elem.color);
-      if (! elem.hasint()){
-          sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
-        if (elem.pere == -1 ){
-            sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                finish_process();FCFS()})
-        }else {
-              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                  log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {FCFS()})})
-        }
-        }else{
-          sleep(SPEED).then(() => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
-          if (elem.type_int() != "function"){
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                mem_intr();sleep(SPEED).then( () => {
-                    log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                    block_process();
-                    FCFS("block",elem)})
-            })
-          }else{
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                func_intr();block_process();
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                add_process(elem,elem.deg+1);
-                sleep(SPEED).then(() => {
-                    FCFS()
-                })
-            })
-          }
-       }
-    }
-    if (mode == "block"){
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {FCFS()})})
-    }
-
-  }
-  else {
-    sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
-  }
-}
-
-// ALGORITHM 2 : //
-//////////////////
-
-function SJF(mode , proc){
-  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
-      let elem = treat_process(find_the_shortest());
-      log_comment("Traintement du processus "+elem.id,"green", elem.color);
-      if (! elem.hasint()){
-          sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
-        if (elem.pere == -1 ){
-            sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();SJF()})
-        }else {
-              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                  log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {SJF()})})
-        }
-        }else{
-          sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
-          if (elem.type_int() != "function"){
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process();SJF("block",elem)})
-          }else{
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                func_intr();block_process();
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                add_process(elem,elem.deg+1);sleep(SPEED).then(() => {SJF()})})
-          }
-       }
-    }
-    if (mode == "block"){
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {SJF()})})
-    }
-
-  }
-  else {
-    sleep(SPEED).then(() => { alert("Simualation SJF have finished")})
-  }
-}
 
 
 // ALGORITHM 3 : //
@@ -654,18 +552,6 @@ function RR(mode,proc) {
   }
 }
 
-
-// ALGORITHM 4 : //
-//////////////////
-
-// ALGORITHM 5 : //
-//////////////////
-
-// ALGORITHM 6 : //
-//////////////////
-
-// ALGORITHM 7 : //
-//////////////////
 
 
 /*************************************************************/

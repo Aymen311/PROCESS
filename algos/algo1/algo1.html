@@ -104,7 +104,9 @@
             <div id="menu" style="background-color: #ABBAEA;"></div>
         </div> !-->
         <div class="info_div" id="info_div" style="top: 415px; left: 10px">
-
+            <div class="close_button" onclick="open_close_info_div()">
+                X
+            </div>
             <div  class="proc_info_menu shadow">
                 <h2> Les processus: </h2>
                 <div id="proc_info_menu" >
@@ -114,7 +116,9 @@
             </div>
         </div>
         <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
-
+            <div class="close_button" onclick="open_close_logs_div()">
+                X
+            </div>
             <div  class="proc_info_menu shadow">
                 <div class="rect"> </div>
                 <h2> Les commentaires: </h2>
@@ -208,25 +212,27 @@
       for (let i = 1; i <= nb_interuption; i++){document.getElementById("small_int_menu_"+i).style.display = "none";}
   }
 
-  function reset_proc(){
+  function reset_proc(mode=-1){
 
       document.getElementById("proc_info_menu").innerHTML = "";
       document.getElementById("logs").innerHTML = "";
       id_proc = 0
       //for (var i = 0; i < pret.processors.length; i++){
-      while (pret.processors.length != 0){
-          var proc = pret.processors.shift()
-          proc.elem.transition()
-              .duration(200)
-              .attr("cx", 1400)
-              .style("opacity", "0");
-          proc.text.transition()
-              .duration(200)
-              .attr("x", 1400)
-              .style("opacity", "0");
-          sleep(200).then(() => {
-              proc.elem.remove();
-          });
+      if (mode==-1){
+          while (pret.processors.length != 0){
+              var proc = pret.processors.shift()
+              proc.elem.transition()
+                  .duration(200)
+                  .attr("cx", 1400)
+                  .style("opacity", "0");
+              proc.text.transition()
+                  .duration(200)
+                  .attr("x", 1400)
+                  .style("opacity", "0");
+              sleep(200).then(() => {
+                  proc.elem.remove();
+              });
+          }
       }
   }
 

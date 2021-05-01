@@ -16,7 +16,7 @@
         <button class="btn_blue home_button" onclick="window.location.href='index.html'">Home</button>
         <div class="algo_btns">
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'">FCFS</button>
-            <button class=" btn_slct btn_top_navbar selected" onclick="window.location.href='../algo/algo2.html'" >SJF</button>
+            <button class=" btn_slct btn_top_navbar selected" >SJF</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >R-Robin</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >ALGO 4</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >ALGO 5</button>
@@ -104,7 +104,9 @@
             <div id="menu" style="background-color: #ABBAEA;"></div>
         </div> !-->
         <div class="info_div" id="info_div" style="top: 415px; left: 10px">
-
+            <div class="close_button" onclick="open_close_info_div()">
+                X
+            </div>
             <div  class="proc_info_menu shadow">
                 <h2> Les processus: </h2>
                 <div id="proc_info_menu" >
@@ -114,7 +116,9 @@
             </div>
         </div>
         <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
-
+            <div class="close_button" onclick="open_close_logs_div()">
+                X
+            </div>
             <div  class="proc_info_menu shadow">
                 <div class="rect"> </div>
                 <h2> Les commentaires: </h2>
