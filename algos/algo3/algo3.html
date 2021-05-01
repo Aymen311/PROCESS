@@ -99,37 +99,44 @@
   </nav>
 
     <div class="main">
-    <div class="main_svg shadow"> <main_svg ></main_svg> </div>
+        <div class="main_svg shadow"> <main_svg ></main_svg> </div>
 
-      <!--<div id="menu_div" >
-        <div id="menu" style="background-color: #ABBAEA;"></div>
-    </div> !-->
-    <div class="info_div" id="info_div" style="top: 415px; left: 10px">
-        <div class="close_button" onclick="open_close_info_div()">
-            X
-        </div>
-        <div  class="proc_info_menu shadow">
-            <h2> Les processus: </h2>
-            <div id="proc_info_menu" >
-
+          <!--<div id="menu_div" >
+            <div id="menu" style="background-color: #ABBAEA;"></div>
+        </div> !-->
+        <div class="info_div" id="info_div" style="top: 415px; left: 10px">
+            <div class="close_button" onclick="open_close_info_div()">
+                X
             </div>
-            <!-- Les informations des processus, et leurs interuptions !-->
-        </div>
-    </div>
-    <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
-        <div class="close_button" onclick="open_close_logs_div()">
-            X
-        </div>
-        <div  class="proc_info_menu shadow">
-            <div class="rect"> </div>
-            <h2> Les commentaires: </h2>
-            <ol id="logs" class="logs_class" reversed>
+            <div class="hide_button" onclick="hide_info_div()">
+                _
+            </div>
+            <div  class="proc_info_menu shadow">
+                <h2> Les processus: </h2>
+                <div id="proc_info_menu" >
 
-            </ol>
-            <!-- Les informations des processus, et leurs interuptions !-->
+                </div>
+                <!-- Les informations des processus, et leurs interuptions !-->
+            </div>
         </div>
-    </div>
-    
+        <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
+            <div class="close_button" onclick="open_close_logs_div()">
+                X
+            </div>
+            <div class="hide_button" onclick="hide_logs_div()">
+                _
+            </div>
+            <div  class="proc_info_menu shadow">
+                <div class="rect"> </div>
+                <h2> Les commentaires: </h2>
+                <ol id="logs" class="logs_class" reversed>
+
+                </ol>
+                <!-- Les informations des processus, et leurs interuptions !-->
+            </div>
+        </div>
+
+
   </div>
 
 <div class="slidecontainer">
@@ -275,6 +282,19 @@
          x.style.display = "block";
          y.style.background = "rgba(0, 207, 255, 0.54)";
       }
+  }
+
+  function hide_info_div(){
+      x = document.getElementById("info_div")
+      x.style.top = "415px"
+      x.style.left = "10px"
+
+  }
+
+  function hide_logs_div(){
+      x = document.getElementById("logs_div")
+      x.style.top = "415px"
+      x.style.left = "460px"
   }
 
 </script>
