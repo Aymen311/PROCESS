@@ -135,13 +135,6 @@ class Processor {
         this.inProcess = []
     }
     createProcessor() {
-        /*var elem = svg.append("rect")
-            .attr("x", this.x - 15)
-            .attr("y", this.y - 15)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", PROCESSOR_W).attr("height", PROCESSOR_H)
-            .attr("position", "fixed");*/
-
         var elem = svg.append("svg:image")
             .attr('x', this.x - 35.5) // 465
             .attr('y', 15) //15
@@ -195,13 +188,6 @@ class Fifo {
 
     }
     createFifo() {
-        /*var elem = svg.append("rect")
-            .attr("x", this.x)
-            .attr("y", this.y)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", FIFO_WIDTH).attr("height", FIFO_HEIGHT)
-            .attr("position", "fixed")
-            .attr("fill", "#bdb4d0")*/
 
         for ( let i = 0; i < FIFO_CAPACITY; i++){
             svg.append("rect")

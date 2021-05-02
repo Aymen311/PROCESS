@@ -135,12 +135,20 @@ class Processor {
         this.inProcess = []
     }
     createProcessor() {
+        var elem = svg.append("svg:image")
+            .attr('x', this.x - 35.5) // 465
+            .attr('y', 15) //15
+            .attr('width', 70)
+            .attr('height', 70)
+            .attr("xlink:href", "../../image/processor_2.svg")
+
         var elem = svg.append("rect")
-            .attr("x", this.x - 15)
-            .attr("y", this.y - 15)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", PROCESSOR_W).attr("height", PROCESSOR_H)
-            .attr("position", "fixed");
+            .attr("x", this.x - 10.5)
+            .attr("y", 65)
+            .attr("width", 20).attr("height", 20)
+            .attr("opacity","0.95")
+            .attr("position", "fixed")
+            .attr("fill", "white")
     }
     block_process(fifo) {
         if (this.inProcess.length != 0) {
@@ -193,7 +201,6 @@ class Fifo {
                 .attr("x", this.x + i*PROCS_SPACE + PROC_R - 3)
                 .attr("y", this.y)
                 .attr("stroke", "black")
-                .attr("width", 2)
                 .attr("width", PROCS_SPACE).attr("height", FIFO_HEIGHT)
                 .attr("position", "fixed")
                 .attr("fill", "#bdb4d0")
@@ -205,7 +212,7 @@ class Fifo {
                 .text(this.name)
                 .attr('dy','10')
                 .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
-                .attr("y", this.y + 50)
+                .attr("y", this.y + 60)
         }
 
 
@@ -257,6 +264,7 @@ class Fifo {
         } //SHIFT
     }
 }
+
 class Process {
     constructor(id, exe_time,ints,pere,deg, color="-1") {
         this.id = id
@@ -273,6 +281,8 @@ class Process {
             .attr("cx", STARTING_PROC_X)
             .attr("cy", STARTING_PROC_Y)
             .attr("r" , PROC_R)
+            .attr("stroke", "black")
+            .attr("stroke_width", 2)
             .attr("position", "fixed");
 
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
@@ -288,8 +298,9 @@ class Process {
             .attr("id", "text_"+id)
             .text(exe_time)
             .attr('dy','10')
-            .attr("x", STARTING_PROC_X)
+            .attr("x", STARTING_PROC_X - 4)
             .attr("y", STARTING_PROC_Y + PROC_TEXT_SPACE)
+            //.attr("font-size","30px")
 
         this.x = 0;
         this.y = 0;
@@ -304,7 +315,7 @@ class Process {
             .attr("cy", this.y).attr("cx", this.x);
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x -4);
 
 
     }
@@ -319,7 +330,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     treat() {
         var elem_ = this.elem;
@@ -331,7 +342,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     shift() {
         var elem_ = this.elem;
@@ -342,7 +353,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     resume(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -355,7 +366,7 @@ class Process {
            . attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
 
     hasint(){return this.ints.length != this.int_counter}
