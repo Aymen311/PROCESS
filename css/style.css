@@ -1,0 +1,400 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap'); 
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif ; 
+    scroll-behavior:smooth;
+}
+
+body
+{
+    min-height: 100vh;
+    background: linear-gradient(#2b1055,#7597de );
+    overflow-x: hidden;
+}
+
+header
+{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    padding: 30px 100px ;
+    display:flex ;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000000;
+}
+
+header .logo 
+{
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing:2px;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+}
+
+header ul
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header ul li
+{
+    list-style: none;
+    margin-left: 20px;
+}
+
+header ul li a
+{
+    text-decoration: none;
+    padding: 6px 15px;
+    color: #fff;
+    border-radius: 20px;
+}
+
+header ul li a:hover,  
+header ul li a.active 
+{
+    background: #fff;
+    color: #2b1055;
+}
+
+section
+{
+    position: relative ; 
+    width: 100%;
+    height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    overflow: hidden;
+}
+
+section::before
+{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    background: linear-gradient(to top, #0c0123 , transparent);
+    z-index: 100;
+}
+section img
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% ;
+    object-fit: cover;
+    pointer-events: none;
+    
+    z-index: 8;
+}
+
+.content
+{
+    position: relative  ; 
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 300;
+}
+
+.content .textBox
+{
+    position: relative;
+    max-width: 600px;
+}
+
+.content .textBox h2 
+{
+    color:#fff;
+    font-size: 4em;
+    line-height: 1.4em;
+    white-space: nowrap;
+    z-index: 200;
+    text-transform: uppercase;
+}
+
+#btn
+{
+    padding: 8px 30px ;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+    border-radius: 40px;
+    background: #fff;
+    color: #2b1055;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 1.5em;
+}
+.content .textBox p
+{
+    color: #fff;
+    margin-top: 10px;
+}
+
+.sec 
+{
+    position: relative;
+    padding: 100px;
+    background: #0c0123;
+}
+
+.sec h2
+{
+    font-size: 3.5em ; 
+    margin-bottom: 10px;
+    color: #fff;
+}
+.sec p
+{
+    font-size: 1em ;
+    color: #fff;
+}
+
+.container
+{
+    background: #0c0123;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.container .card
+{
+    position: relative ;
+    width: 300px;
+    height: 400px;
+    background: #0c002b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    box-shadow: 0  20px  50px  rgba(0,0,0,0.2) ; 
+    overflow: hidden;
+}
+
+.card
+{
+    opacity: 0.5;
+}
+
+.container .card:hover
+{
+    opacity: 1;
+}
+
+
+.container .card::before
+{
+  content: '';  
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  width: 50%;
+  background: rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+.container .card .content_card
+{
+    padding: 30px; 
+    text-align: center;
+}
+
+.container .card .content_card h2
+{
+    position: absolute;
+    right: 30px;
+    font-size: 4em;
+    font-weight: 800;
+    color: #1779ff;
+    z-index: 1;
+    opacity: 0.1;
+    transition: 0.5s;
+}
+
+.container .card:hover .content_card h2
+{
+    opacity: 1;
+    transform: translateY(-70px);
+}
+
+.container .card .content_card h3
+{
+    position: relative;
+    font-size: 1.5em;
+    color: #fff;
+    z-index: 2;
+    opacity: 0.5;
+    letter-spacing: 1px;
+    transition: 0.5s;
+}
+
+.container .card .content_card p
+{
+    position: relative;
+    top: 15px;
+    font-size: 1em;
+    color: #fff;
+    z-index: 2;
+    opacity: 0.5;
+    font-weight: 300;
+    letter-spacing: 1px;
+    transition: 0.5s;
+}
+
+.container .card:hover .content_card h3,
+.container .card:hover .content_card p
+{
+    opacity: 1;
+}
+
+.container .card .content_card a
+{
+    position: relative;
+    top: 20px;
+    display: inline-flex;
+    margin-top: 19px;
+    padding: 8px 15px;
+    background: #fff;
+    color: #0c002b;
+    text-decoration: none;  
+    font-weight: 600;
+    border-radius: 40px;
+}
+
+.container .card span
+{
+    transition: 0.5;
+    opacity: 0;
+}
+
+.container .card:hover span
+{
+    opacity: 1;
+}
+
+.container .card span:nth-child(1)
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right , transparent, #1779ff);
+    animation: animate1 2s linear infinite;
+}
+
+@keyframes animate1 
+{
+     0%
+     {
+         transform: translateX(-100%);
+     }   
+
+     100%
+     {
+         transform: translateX(100%);
+     }
+
+}
+
+.container .card span:nth-child(2)
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width:3px;
+    height: 100%;
+    background: linear-gradient(to bottom , transparent, #1779ff);
+    animation: animate2 2s linear infinite;
+    animation-delay: 1s;
+}
+
+@keyframes animate2 
+{
+     0%
+     {
+         transform: translateY(-100%);
+     }   
+
+     100%
+     {
+         transform: translateY(100%);
+     }
+
+}
+
+.container .card span:nth-child(3)
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left , transparent, #1779ff);
+    animation: animate3 2s linear infinite;
+    animation-delay: 2s;
+}
+
+@keyframes animate3
+{
+     0%
+     {
+         transform: translateX(100%);
+     }   
+
+     100%
+     {
+         transform: translateX(-100%);
+     }
+
+}
+
+.container .card span:nth-child(4)
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:3px;
+    height: 100%;
+    background: linear-gradient(to top , transparent, #1779ff);
+    animation: animate4 2s linear infinite;
+    animation-delay: 3s;
+}
+
+@keyframes animate4 
+{
+     0%
+     {
+         transform: translateY(100%);
+     }   
+
+     100%
+     {
+         transform: translateY(-100%);
+     }
+
+}
