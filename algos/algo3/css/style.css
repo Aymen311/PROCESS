@@ -1,7 +1,22 @@
 body{
-    font-family: verdana;
+    scroll-behavior:smooth;
+    font-family: verdana, sans-serif ;;
 }
 
+.logo
+{
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing:2px;
+}
+
+#logo_suffix
+{
+   font-weight: 5;
+}
 
 .side_navbar{
   padding: 5px;
@@ -12,7 +27,7 @@ body{
   left: 0;
   top: 60px;
   color: white;
-  background-image: linear-gradient(black 0%, #282828 80%);
+  background-image: linear-gradient(#0c0123 0%, #10012f 50%);
 }
 
 
@@ -222,7 +237,7 @@ body{
 
 .top_navbar {
   height: 60px;
-  background-image: linear-gradient(#131313, #000);
+  background-image: linear-gradient(#19014a, #0c0123);
   position: absolute;
   top: 0px;
   left: 0px;

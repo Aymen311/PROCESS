@@ -186,7 +186,7 @@ class Fifo {
             .attr("rx", 5).attr("ry", 5)
             .attr("width", FIFO_WIDTH).attr("height", FIFO_HEIGHT)
             .attr("position", "fixed")
-            .attr("fill", "pink")*/
+            .attr("fill", "#bdb4d0")*/
 
         for ( let i = 0; i < FIFO_CAPACITY; i++){
             svg.append("rect")
@@ -196,7 +196,7 @@ class Fifo {
                 .attr("width", 2)
                 .attr("width", PROCS_SPACE).attr("height", FIFO_HEIGHT)
                 .attr("position", "fixed")
-                .attr("fill", "pink")
+                .attr("fill", "#bdb4d0")
                 //.attr("rx", 5).attr("ry", 5)
         }
 
