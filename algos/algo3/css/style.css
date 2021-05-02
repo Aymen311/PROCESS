@@ -33,7 +33,7 @@ body{
   left: 0;
   top: 60px;
   color: white;
-  background-image: linear-gradient(#04000d 0%, #0a011e 80%);
+  background-image: linear-gradient(#0c0123, #19014a) ;
   border: 1px solid black;
   z-index: 2;
 }
@@ -249,7 +249,7 @@ body{
   position: absolute;
   top: 0px;
   left: 0px;
-  width: -moz-available;
+  width: 100%;
   text-align: center;
   z-index: 2;
 }
