@@ -1,4 +1,4 @@
-/************************* The Final way **************************/
+/************************** The Final way **************************/
                   /******************** CONSTS *****************/
 
 
@@ -171,21 +171,44 @@ class Processor {
 }
 
 class Fifo {
-    constructor(x, y, capacite) {
+    constructor(x, y, capacite, name=-1) {
         this.x = x;
         this.y = y;
         this.capacite = capacite;
         this.processors = [];
+        this.name = name
 
     }
     createFifo() {
-        var elem = svg.append("rect")
+        /*var elem = svg.append("rect")
             .attr("x", this.x)
             .attr("y", this.y)
             .attr("rx", 5).attr("ry", 5)
             .attr("width", FIFO_WIDTH).attr("height", FIFO_HEIGHT)
             .attr("position", "fixed")
-            .attr("fill", "pink")
+            .attr("fill", "pink")*/
+
+        for ( let i = 0; i < FIFO_CAPACITY; i++){
+            svg.append("rect")
+                .attr("x", this.x + i*PROCS_SPACE + PROC_R - 3)
+                .attr("y", this.y)
+                .attr("stroke", "black")
+                .attr("width", 2)
+                .attr("width", PROCS_SPACE).attr("height", FIFO_HEIGHT)
+                .attr("position", "fixed")
+                .attr("fill", "pink")
+                //.attr("rx", 5).attr("ry", 5)
+        }
+
+        if (this.name != -1){
+            svg.append('text')
+                .text(this.name)
+                .attr('dy','10')
+                .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
+                .attr("y", this.y + 50)
+        }
+
+
     }
     fifoAddProcess(p) {
         this.processors.push(p)
@@ -358,10 +381,10 @@ class Process {
 /********************************************************/
 
 /********************** INITS *****************************/
-var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY)
+var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY, "FIFO PRET")
 pret.createFifo();
 
-var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY)
+var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY, "FIFO BLOQUE")
 blocked.createFifo();
 
 var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
