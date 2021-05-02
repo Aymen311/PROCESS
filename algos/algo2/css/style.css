@@ -33,7 +33,7 @@ body{
   left: 0;
   top: 60px;
   color: white;
-  background-image: linear-gradient(#0c0123, #19014a) ;
+  background-image: linear-gradient(#04000d 0%, #0a011e 80%);
   border: 1px solid black;
   z-index: 2;
 }
@@ -76,7 +76,7 @@ body{
 .small_menu{
    display: none;
    transition: 1s;
-   background: rgba(255, 255, 255, 0.12);
+   background: rgba(255, 255, 255, 0.07);
 }
 
 .add_process_menu {
@@ -249,7 +249,7 @@ body{
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 100%;
+  width: -moz-available;
   text-align: center;
   z-index: 2;
 }
