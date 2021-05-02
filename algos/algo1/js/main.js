@@ -135,12 +135,27 @@ class Processor {
         this.inProcess = []
     }
     createProcessor() {
-        var elem = svg.append("rect")
+        /*var elem = svg.append("rect")
             .attr("x", this.x - 15)
             .attr("y", this.y - 15)
             .attr("rx", 5).attr("ry", 5)
             .attr("width", PROCESSOR_W).attr("height", PROCESSOR_H)
-            .attr("position", "fixed");
+            .attr("position", "fixed");*/
+
+        var elem = svg.append("svg:image")
+            .attr('x', this.x - 35.5) // 465
+            .attr('y', 15) //15
+            .attr('width', 70)
+            .attr('height', 70)
+            .attr("xlink:href", "../../image/processor_2.svg")
+
+        var elem = svg.append("rect")
+            .attr("x", this.x - 10.5)
+            .attr("y", 65)
+            .attr("width", 20).attr("height", 20)
+            .attr("opacity","0.95")
+            .attr("position", "fixed")
+            .attr("fill", "white")
     }
     block_process(fifo) {
         if (this.inProcess.length != 0) {
