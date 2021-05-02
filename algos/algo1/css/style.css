@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
 
+
+
 body{
     scroll-behavior:smooth;
-    font-family: verdana, sans-serif ;;
+    font-family: 'Poppins', sans-serif ; 
 }
 
 .logo
@@ -32,8 +34,8 @@ body{
   text-align: center;
   left: 0;
   top: 60px;
-  color: white;
-  background-image: linear-gradient(#04000d 0%, #0a011e 80%);
+  color: #0c0123 ;
+  background : linear-gradient(#0c0123, #19014a) ;
   border: 1px solid black;
   z-index: 2;
 }
@@ -52,31 +54,36 @@ body{
     /*! margin: 3px; */
     text-align: center;
     color: white;
+    border-radius: 40px ;
 }
 .btn_blue:hover {
     background: rgba(0, 207, 255, 0.54);
     border-width: 1px;
     transition: 0.5s;
+    border-radius: 40px;
 }
 .btn_blue:active{
     background-color: rgba(0, 207, 255, 0.80);
     transition: 0.5s;
+    border-radius: 40px;
 }
 .btn_green:hover {
     background: rgba(68, 255, 0, 0.54);
     transition: 0.5s;
+    border-radius: 40px;
 }
 .btn_green:active{
     background-color: rgba(68, 255, 0, 0.8);
+    border-radius: 40px ;
 }
 
 
 
 /* MENU FOR " AJOUTER UN Processus" */
 .small_menu{
-   display: none;
+   display:flex ;
    transition: 1s;
-   background: rgba(255, 255, 255, 0.12);
+   color: #fff;
 }
 
 .add_process_menu {
@@ -134,13 +141,16 @@ body{
     margin: 3px;
     text-align: center;
     color: white;
+    border-radius: 40px ;
 }
 .btn_int:hover {
     background: rgba(0, 207, 255, 0.54);
     transition: 0.5s;
+    border-radius: 40px ;
 }
 .btn_int:active{
     background-color: rgba(0, 207, 255, 0.80);
+    border-radius: 40px ;
 }
 
 
@@ -249,7 +259,7 @@ body{
   position: absolute;
   top: 0px;
   left: 0px;
-  width: -moz-available;
+  width: 100%;
   text-align: center;
   z-index: 2;
 }
