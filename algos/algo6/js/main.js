@@ -31,8 +31,8 @@ let PROCESSOR_H = 30;
 let PROCESSOR_W = 30;
 
 //RPOCS GENERAL INFO
-let MIN_PROC_TIME = 2
-let MAX_PROC_TIME = 10
+let MIN_PROC_TIME = 5
+let MAX_PROC_TIME = 20
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
@@ -176,6 +176,7 @@ class Fifo {
         this.y = y;
         this.capacite = capacite;
         this.processors = [];
+        this.UniqueProcessAvailable = false;
         this.name = name
         this.quantum = quantum;
 
@@ -197,7 +198,7 @@ class Fifo {
                 .text(this.name)
                 .attr('dy','10')
                 .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
-                .attr("y", this.y + 60)
+                .attr("y", this.y + 45)
         }
 
 
@@ -205,6 +206,10 @@ class Fifo {
     fifoAddProcess(p) {
         this.processors.push(p)
         return this.processors.length;
+    }
+    fifoAddPhysicProcess(p) {
+        this.processorsPhysic.push(p)
+        return this.processorsPhysic.length;
     }
     treat(n) {
         if (this.processors.length != 0 ) {
@@ -342,7 +347,16 @@ class Process {
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     resume(fifo) {
-        var l = fifo.fifoAddProcess(this);
+        //var l = fifo.fifoAddProcess(this);
+        if (fifo.processors.length == 0){
+            sleep(SPEED).then(() => {fifo.UniqueProcessAvailable = true})
+        }
+        else {
+            fifo.UniqueProcessAvailable = false
+        }
+
+
+        fifo.fifoAddProcess(this)
         var elem_ = this.elem;
         this.x = fifo.x + (fifo.processors.length - 1) * PROCS_SPACE + 2*PROC_R;
         this.y = fifo.y + FIFO_HEIGHT/2;
@@ -535,7 +549,10 @@ function log_comment(comment, color, elem_color){
 function list_fifos_not_empty(){
     for (var i = 0; i < NB_FIFO; i++){
         if (list_fifos[i].processors.length != 0){
-            return true
+            if (list_fifos[i].processors.length == 1 && list_fifos[i].UniqueProcessAvailable){
+                return true;
+            }
+            else {return true}
         }
     }
     return false
@@ -554,11 +571,11 @@ function MULTI_NV(mode,proc) {
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
           if (elem.pere == -1 ){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                  log_comment("Terminaison du processus "+elem.id,"blue", elem.color);
                   finish_process();MULTI_NV()})
           }else {
                 sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                    log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                    log_comment("Terminaison du processus "+elem.id,"blue", elem.color);
                     log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
                     finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {MULTI_NV()})})
           }
@@ -566,7 +583,7 @@ function MULTI_NV(mode,proc) {
         else{
             sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-qntm,1);})
             sleep(SPEED + qntm * TIME_UNIT).then(() => {
-                log_comment("Qantum écoulé du processus "+elem.id,"black", elem.color);
+                log_comment("Processus "+elem.id+" -> Fifo "+(lvl+2),"black", elem.color);
                 change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => {MULTI_NV()})})
         }
         }
@@ -589,14 +606,14 @@ function MULTI_NV(mode,proc) {
           console.log("here")
            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-qntm,1);})
            sleep(SPEED + qntm * TIME_UNIT).then(() => {
-               log_comment("Retour du processus "+elem.id, "black", elem.color);
+               log_comment("Processus "+elem.id+" -> Fifo "+(lvl+2), "black", elem.color);
                change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => { MULTI_NV()})})
         }
        }
     }
     if (mode == "block"){
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          log_comment("Resume du processus "+proc.id+" vers Fifo "+proc.level, "orange", proc.color);
           resume_process(proc);proc.treat_int("MULTI_NV");sleep(SPEED).then(() => {MULTI_NV()})})
     }
 
