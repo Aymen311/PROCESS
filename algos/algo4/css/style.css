@@ -1,5 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
 body{
-    font-family: verdana;
+    scroll-behavior:smooth;
+    font-family: verdana, sans-serif ;;
+}
+
+.logo
+{
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing:2px;
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    font-family: 'Poppins', sans-serif ;
+}
+#logo_suffix
+{
+   font-weight: 5;
 }
 
 
@@ -12,7 +33,7 @@ body{
   left: 0;
   top: 60px;
   color: white;
-  background-image: linear-gradient(black 0%, #282828 80%);
+  background-image: linear-gradient(#04000d 0%, #0a011e 80%);
 }
 
 
@@ -222,7 +243,7 @@ body{
 
 .top_navbar {
   height: 60px;
-  background-image: linear-gradient(#131313, #000);
+  background-image: linear-gradient(#19014a, #0c0123);
   position: absolute;
   top: 0px;
   left: 0px;
@@ -324,5 +345,20 @@ body{
 }
 
 .close_button:hover {
+    color: gray;
+}
+
+
+.hide_button {
+    position: absolute;
+    right: 47px;
+    top: 0px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+    width: 27px;
+    height: 28px;
+}
+.hide_button:hover {
     color: gray;
 }
