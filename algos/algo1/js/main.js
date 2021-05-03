@@ -118,6 +118,15 @@ function find_the_shortest(){
   return i ;
 }
 
+function log_comment(comment, color, elem_color){
+    var x = document.getElementById("logs");
+    var c = `<li style="color:${color}">   ${comment}
+        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
+    </li>`;
+    x.innerHTML = c + x.innerHTML;
+}
+
+
 
 /*****************************************************************/
 
@@ -436,19 +445,13 @@ function resume_process(elem) {
 /***************************************************/
 
 
-/****** SPEED - TU **********/
+/****** SPEED  **********/
 
 
 var speed_slider = document.getElementById("myspeed");
-//var TU_slider = document.getElementById("myTU")
 
 speed_slider.oninput = function() {
   SPEED = parseInt(this.value)
-}
-
-/*
-TU_slider.oninput = function() {
-  TIME_UNIT = parseInt(this.value)
 }
 
 
@@ -518,19 +521,6 @@ function func_intr(){
 // ALGORITHM 1 : //
 //////////////////
 
-function log_comment(comment, color, elem_color){
-    var x = document.getElementById("logs");
-    /*var c = `
-    <div class='int_class_header'>
-        <span style="color:${color}"> ${comment} </span><br>
-    </div>`*/
-    var c = `<li style="color:${color}">   ${comment}
-        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
-    </li>`;
-    x.innerHTML = c + x.innerHTML;
-}
-
-
 function FCFS(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
@@ -544,7 +534,7 @@ function FCFS(mode , proc){
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);
                 finish_process();FCFS()})
         }else {
-          elem.pere.block_time =current_time-elem.entrance
+          elem.pere.block_time +=current_time-elem.entrance
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
