@@ -108,16 +108,6 @@ function create_process() {
     }
 }
 
-function find_the_shortest(){
-  var i = 0 ;
-  for (let index = 1; index < pret.processors.length; index++) {
-    if (pret.processors[index].left_time < pret.processors[i].left_time) {
-      i = index ;
-    }
-  }
-  return i ;
-}
-
 function log_comment(comment, color, elem_color){
     var x = document.getElementById("logs");
     var c = `<li style="color:${color}">   ${comment}
