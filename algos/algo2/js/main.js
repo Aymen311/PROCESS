@@ -109,11 +109,19 @@ function create_process() {
 function find_the_shortest(){
   var i = 0 ;
   for (let index = 1; index < pret.processors.length; index++) {
-    if (pret.processors[index].left_time < pret.processors[i].left_time) {
+    if (pret.processors[index].exec_time < pret.processors[i].exec_time) {
       i = index ;
     }
   }
   return i ;
+}
+
+function log_comment(comment, color, elem_color){
+    var x = document.getElementById("logs");
+    var c = `<li style="color:${color}">   ${comment}
+        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
+    </li>`;
+    x.innerHTML = c + x.innerHTML;
 }
 
 
@@ -136,12 +144,20 @@ class Processor {
         this.inProcess = []
     }
     createProcessor() {
+        var elem = svg.append("svg:image")
+            .attr('x', this.x - 35.5) // 465
+            .attr('y', 15) //15
+            .attr('width', 70)
+            .attr('height', 70)
+            .attr("xlink:href", "../../image/processor_2.svg")
+
         var elem = svg.append("rect")
-            .attr("x", this.x - 15)
-            .attr("y", this.y - 15)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", PROCESSOR_W).attr("height", PROCESSOR_H)
-            .attr("position", "fixed");
+            .attr("x", this.x - 10.5)
+            .attr("y", 65)
+            .attr("width", 20).attr("height", 20)
+            .attr("opacity","0.95")
+            .attr("position", "fixed")
+            .attr("fill", "white")
     }
     block_process(fifo) {
         if (this.inProcess.length != 0) {
@@ -172,21 +188,43 @@ class Processor {
 }
 
 class Fifo {
-    constructor(x, y, capacite) {
+    constructor(x, y, capacite, name=-1) {
         this.x = x;
         this.y = y;
         this.capacite = capacite;
         this.processors = [];
+        this.name = name
 
     }
     createFifo() {
-        var elem = svg.append("rect")
+        /*var elem = svg.append("rect")
             .attr("x", this.x)
             .attr("y", this.y)
             .attr("rx", 5).attr("ry", 5)
             .attr("width", FIFO_WIDTH).attr("height", FIFO_HEIGHT)
             .attr("position", "fixed")
-            .attr("fill", "pink")
+            .attr("fill", "#bdb4d0")*/
+
+        for ( let i = 0; i < FIFO_CAPACITY; i++){
+            svg.append("rect")
+                .attr("x", this.x + i*PROCS_SPACE + PROC_R - 3)
+                .attr("y", this.y)
+                .attr("stroke", "black")
+                .attr("width", PROCS_SPACE).attr("height", FIFO_HEIGHT)
+                .attr("position", "fixed")
+                .attr("fill", "#bdb4d0")
+                //.attr("rx", 5).attr("ry", 5)
+        }
+
+        if (this.name != -1){
+            svg.append('text')
+                .text(this.name)
+                .attr('dy','10')
+                .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
+                .attr("y", this.y + 60)
+        }
+
+
     }
     fifoAddProcess(p) {
         this.processors.push(p)
@@ -255,23 +293,21 @@ class Process {
             .attr("cx", STARTING_PROC_X)
             .attr("cy", STARTING_PROC_Y)
             .attr("r" , PROC_R)
+            .attr("stroke", "black")
+            .attr("stroke_width", 2)
             .attr("position", "fixed");
 
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
                         this.elem.attr("fill", "rgb("+this.color+")")}
         else{this.color = color;
             this.elem.attr("fill",color)}
-
-
-            //.attr("fill", "rgb("+this.color+")")
-
-
         this.text = svg.append('text')
             .attr("id", "text_"+id)
             .text(exe_time)
             .attr('dy','10')
-            .attr("x", STARTING_PROC_X)
+            .attr("x", STARTING_PROC_X - 4)
             .attr("y", STARTING_PROC_Y + PROC_TEXT_SPACE)
+
 
         this.x = 0;
         this.y = 0;
@@ -286,7 +322,7 @@ class Process {
             .attr("cy", this.y).attr("cx", this.x);
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x -4);
 
 
     }
@@ -301,7 +337,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     treat() {
         var elem_ = this.elem;
@@ -313,7 +349,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     shift() {
         var elem_ = this.elem;
@@ -324,7 +360,7 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
     resume(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -337,7 +373,7 @@ class Process {
            . attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
     }
 
     hasint(){return this.ints.length != this.int_counter}
@@ -368,10 +404,10 @@ class standard {
 /********************************************************/
 
 /********************** INITS *****************************/
-var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY)
+var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY, "FIFO PRET")
 pret.createFifo();
 
-var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY)
+var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY, "FIFO BLOQUE")
 blocked.createFifo();
 
 var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
@@ -380,7 +416,6 @@ processor.createProcessor();
 var std = new standard(0)
 
 var id_proc = 0;
-
 /*************************************************************/
 
 /****************** ALIAS FUNCS ********************/
@@ -407,21 +442,12 @@ function resume_process(elem) {
 /***************************************************/
 
 
-/****** SPEED - TU **********/
-
+/****** SPEED  **********/
 
 var speed_slider = document.getElementById("myspeed");
-//var TU_slider = document.getElementById("myTU")
-
 speed_slider.oninput = function() {
   SPEED = parseInt(this.value)
 }
-
-/*
-TU_slider.oninput = function() {
-  TIME_UNIT = parseInt(this.value)
-}
-
 
 /****************************/
 
@@ -490,19 +516,6 @@ function func_intr(){
 // ALGORITHM 2 : //
 //////////////////
 
-function log_comment(comment, color, elem_color){
-    var x = document.getElementById("logs");
-    /*var c = `
-    <div class='int_class_header'>
-        <span style="color:${color}"> ${comment} </span><br>
-    </div>`*/
-    var c = `<li style="color:${color}">   ${comment}
-        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
-    </li>`;
-    x.innerHTML = c + x.innerHTML;
-}
-
-
 function SJF(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
@@ -516,7 +529,7 @@ function SJF(mode , proc){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();SJF()})
         }else {
-              elem.pere.block_time =current_time-elem.entrance
+              elem.pere.block_time +=current_time-elem.entrance
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
