@@ -33,6 +33,8 @@ let PROCESSOR_W = 30;
 //RPOCS GENERAL INFO
 let MIN_PROC_TIME = 2
 let MAX_PROC_TIME = 10
+let MAX_PROC_PRIORITY = 0
+let MIN_PROC_PRIORITY = 10
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
@@ -90,7 +92,8 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
 
 function add_process(pere,deg){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg)
+  var priority = randint(MAX_PROC_PRIORITY , MIN_PROC_PRIORITY)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,priority)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -105,15 +108,6 @@ function create_process() {
     }
 }
 
-function find_the_shortest(){
-  var i = 0 ;
-  for (let index = 1; index < pret.processors.length; index++) {
-    if (pret.processors[index].left_time < pret.processors[i].left_time) {
-      i = index ;
-    }
-  }
-  return i ;
-}
 
 
 /*****************************************************************/
@@ -135,12 +129,20 @@ class Processor {
         this.inProcess = []
     }
     createProcessor() {
+        var elem = svg.append("svg:image")
+            .attr('x', this.x - 35.5) // 465
+            .attr('y', 15) //15
+            .attr('width', 70)
+            .attr('height', 70)
+            .attr("xlink:href", "../../image/processor_2.svg")
+
         var elem = svg.append("rect")
-            .attr("x", this.x - 15)
-            .attr("y", this.y - 15)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", PROCESSOR_W).attr("height", PROCESSOR_H)
-            .attr("position", "fixed");
+            .attr("x", this.x - 10.5)
+            .attr("y", 65)
+            .attr("width", 20).attr("height", 20)
+            .attr("opacity","0.95")
+            .attr("position", "fixed")
+            .attr("fill", "white")
     }
     block_process(fifo) {
         if (this.inProcess.length != 0) {
@@ -159,6 +161,10 @@ class Processor {
                 .duration(SPEED)
                 .attr("x", 1400)
                 .style("opacity", "0");
+            proc.p_text.transition()
+                .duration(SPEED)
+                .attr("x",1400)
+                .style("opacity","0")
             sleep(SPEED).then(() => {
                 proc.elem.remove();
             });
@@ -171,21 +177,32 @@ class Processor {
 }
 
 class Fifo {
-    constructor(x, y, capacite) {
+    constructor(x, y, capacite,name) {
         this.x = x;
         this.y = y;
         this.capacite = capacite;
         this.processors = [];
-
+        this.name = name
     }
     createFifo() {
-        var elem = svg.append("rect")
-            .attr("x", this.x)
-            .attr("y", this.y)
-            .attr("rx", 5).attr("ry", 5)
-            .attr("width", FIFO_WIDTH).attr("height", FIFO_HEIGHT)
-            .attr("position", "fixed")
-            .attr("fill", "pink")
+      for ( let i = 0; i < FIFO_CAPACITY; i++){
+          svg.append("rect")
+                .attr("x", this.x + i*PROCS_SPACE + PROC_R - 3)
+                .attr("y", this.y)
+                .attr("stroke", "black")
+                .attr("width", PROCS_SPACE).attr("height", FIFO_HEIGHT)
+                .attr("position", "fixed")
+                .attr("fill", "#bdb4d0")
+                //.attr("rx", 5).attr("ry", 5)
+        }
+
+        if (this.name != -1){
+            svg.append('text')
+                .text(this.name)
+                .attr('dy','10')
+                .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
+                .attr("y", this.y + 60)
+        }
     }
     fifoAddProcess(p) {
         this.processors.push(p)
@@ -236,7 +253,7 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg, color="-1") {
+    constructor(id, exe_time,ints,pere,deg,priority,color="-1" ) {
         this.id = id
         this.exe_time = exe_time
         this.previous_int_time = 0
@@ -246,6 +263,7 @@ class Process {
         this.pere = pere
         this.deg = deg
         this.int_counter = 0
+        this.priority = priority
         this.elem = svg.append("circle")
             .attr("id", id)
             .attr("cx", STARTING_PROC_X)
@@ -258,10 +276,7 @@ class Process {
         else{this.color = color;
             this.elem.attr("fill",color)}
 
-
             //.attr("fill", "rgb("+this.color+")")
-
-
         this.text = svg.append('text')
             .attr("id", "text_"+id)
             .text(exe_time)
@@ -271,6 +286,14 @@ class Process {
 
         this.x = 0;
         this.y = 0;
+
+        this.p_text = svg.append('text')
+            .attr("id", "ptext_"+id)
+            .text(priority)
+            .attr('dy','7')
+            .attr('dx','-5')
+            .attr("x", STARTING_PROC_X )
+            .attr("y", STARTING_PROC_Y)
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -283,6 +306,9 @@ class Process {
         this.text.transition()
             .duration(SPEED)
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
 
 
     }
@@ -298,6 +324,9 @@ class Process {
         this.text.transition()
             .duration(SPEED)
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
     }
     treat() {
         var elem_ = this.elem;
@@ -310,6 +339,9 @@ class Process {
         this.text.transition()
             .duration(SPEED)
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x) ;
     }
     shift() {
         var elem_ = this.elem;
@@ -321,6 +353,9 @@ class Process {
         this.text.transition()
             .duration(SPEED)
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x) ;
     }
     resume(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -334,6 +369,9 @@ class Process {
         this.text.transition()
             .duration(SPEED)
             .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
     }
 
     hasint(){return this.ints.length != this.int_counter}
@@ -358,10 +396,10 @@ class Process {
 /********************************************************/
 
 /********************** INITS *****************************/
-var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY)
+var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY,"FIFO PRET")
 pret.createFifo();
 
-var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY)
+var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY,"FIFO BLOQUE")
 blocked.createFifo();
 
 var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
@@ -454,6 +492,7 @@ svg.append("text")
             .attr("position", "fixed")
             .text("Interuption function");
 
+
 function mem_intr(){
   mem.transition()
   .attr("fill","red")
@@ -475,8 +514,6 @@ function func_intr(){
 
 /****************** ALGORITHM ***********************/
 
-// ALGORITHM 1 : //
-//////////////////
 
 function log_comment(comment, color, elem_color){
     var x = document.getElementById("logs");
@@ -490,182 +527,97 @@ function log_comment(comment, color, elem_color){
     </li>`;
     x.innerHTML = c + x.innerHTML;
 }
+// ALGORITHM 5 : //
+//////////////////
 
 
-function FCFS(mode , proc){
-  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
-      let elem = treat_process(0);
-      log_comment("Traintement du processus "+elem.id,"green", elem.color);
-      if (! elem.hasint()){
-          sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
-        if (elem.pere == -1 ){
-            sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                finish_process();FCFS()})
-        }else {
-              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                  log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {FCFS()})})
-        }
-        }else{
-          sleep(SPEED).then(() => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
-          if (elem.type_int() != "function"){
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                mem_intr();sleep(SPEED).then( () => {
-                    log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                    block_process();
-                    FCFS("block",elem)})
-            })
-          }else{
-            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                func_intr();block_process();
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                add_process(elem,elem.deg+1);
-                sleep(SPEED).then(() => {
-                    FCFS()
-                })
-            })
-          }
-       }
+
+//fonction pour choisir le plus prioritaire
+// <=> find_the_shortest
+function find_the_highest_priority(){
+  var i = 0 ;
+  for (let index = 1; index < pret.processors.length; index++) {
+    if (pret.processors[index].priority < pret.processors[i].priority) {
+      i = index ;
     }
-    if (mode == "block"){
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {FCFS()})})
-    }
-
   }
-  else {
-    sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
+  return i ;
+}
+
+//initialization de update time
+//by default = 5000 (5s) if the user gives nothing
+//else we work with the user input
+var up = true
+var UPDATE_UNIT = document.getElementById("update_time").value * 1000 ;//valeur de mise a jour en s
+if (UPDATE_UNIT == "") {
+  UPDATE_UNIT = 5000
+}else{
+  UPDATE_UNIT *= 1000
+}
+
+//fonction pour la mise a jour des priorités tous le UPDATE_UNIT s
+function update_priority(){
+  if (pret.processors.length != 0){
+    for (let index = 0; index < pret.processors.length; index++) {
+      let elem = pret.processors[index] 
+      if ((elem.priority!=0)&&(elem.left_time_anime == elem.exe_time)) {
+        elem.priority -= 1 ;
+        elem.p_text.text(pret.processors[index].priority)
+        document.getElementById("menu_priority_proc_"+elem.id).innerHTML = ",Priority : "+ elem.priority
+      }
+    }
+    log_comment("Mise à jour des priorité ","black");
+    setTimeout(function(){update_priority()}, UPDATE_UNIT);    
   }
 }
 
-// ALGORITHM 2 : //
-//////////////////
-
-function SJF(mode , proc){
+function Priority_dynamique(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
-      let elem = treat_process(find_the_shortest());
+      if (up == true) {
+        up = false ;
+        setTimeout(function(){update_priority()}, UPDATE_UNIT);
+      }
+      let elem = treat_process(find_the_highest_priority());
       log_comment("Traintement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
           sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();SJF()})
+                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();Priority_dynamique()})
         }else {
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {SJF()})})
+                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {Priority_dynamique()})})
         }
         }else{
           sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
           if (elem.type_int() != "function"){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process();SJF("block",elem)})
+                mem_intr();block_process();Priority_dynamique("block",elem)})
           }else{
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 func_intr();block_process();
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                add_process(elem,elem.deg+1);sleep(SPEED).then(() => {SJF()})})
+                add_process(elem,elem.deg+1);sleep(SPEED).then(() => {Priority_dynamique()})})
           }
        }
     }
     if (mode == "block"){
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {SJF()})})
+          resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {Priority_dynamique()})})
     }
 
   }
   else {
-    sleep(SPEED).then(() => { alert("Simualation SJF have finished")})
+    sleep(SPEED).then(() => { alert("Simualation Priority_dynamique have finished")})
   }
 }
 
-
-// ALGORITHM 3 : //
-//////////////////
-
-function RR(mode,proc) {
-  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
-      let elem = treat_process(0);
-      log_comment("Traintement du processus "+elem.id,"green", elem.color);
-      if (! elem.hasint()){
-        if (elem.left_time <= quantum){
-          sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
-          if (elem.pere == -1 ){
-              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                  finish_process();RR()})
-          }else {
-                sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                    log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                    log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                    finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {RR()})})
-          }
-        }else{
-            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-quantum,1);})
-            sleep(SPEED + quantum * TIME_UNIT).then(() => {
-                log_comment("Qantum écoulé du processus "+elem.id,"black", elem.color);
-                change_process();elem.left_time-=quantum;sleep(SPEED).then(() => {RR()})})
-        }
-        }else{
-          if (elem.real_int_time()-(elem.exe_time-elem.left_time) <= quantum){
-           var t = elem.real_int_time()-(elem.exe_time-elem.left_time)
-           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.exe_time - elem.real_int_time(),1);})
-           if (elem.type_int() != "function"){
-            sleep(SPEED + t * TIME_UNIT).then(() => {
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process();RR("block",elem)})
-          }else{
-            sleep(SPEED +  t * TIME_UNIT).then(() => {
-                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                func_intr();block_process();add_process(elem,elem.deg+1);sleep(SPEED).then(() => {RR()})})
-          }
-        }
-        else {
-          console.log("here")
-           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-quantum,1);})
-           sleep(SPEED + quantum * TIME_UNIT).then(() => {
-               log_comment("Retour du processus "+elem.id, "black", elem.color);
-               change_process();elem.left_time-=quantum;sleep(SPEED).then(() => { RR()})})
-        }
-       }
-    }
-    if (mode == "block"){
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int("RR");;sleep(SPEED).then(() => {RR()})})
-    }
-
-  }
-  else {
-    sleep(SPEED).then(() => { alert("Simualation Round Robin have finished")})
-  }
-}
-
-
-// ALGORITHM 4 : //
-//////////////////
-
-// ALGORITHM 5 : //
-//////////////////
-
-// ALGORITHM 6 : //
-//////////////////
-
-// ALGORITHM 7 : //
-//////////////////
 
 
 /*************************************************************/
@@ -741,7 +693,8 @@ function scrap(document){
                  document.getElementById(`Interuption_type_${i}`).value])
     }
     var color = document.getElementById("Process_color").value
-    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color)
+    var priority = document.getElementById("process priority").value
+    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, priority ,color)
     id_proc += 1
     add_to_proc_info_menu(process, "proc_info_menu")
     process.move2fifo(pret)
@@ -763,6 +716,7 @@ function add_to_proc_info_menu(p, id){
             <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='${color}'/> </svg>
             <span> Processus: ${p.id}  </span>
             <span  id='menu_proc_exe_time_${p.id}'> , Temps restant: ${p.left_time} </span>
+            <span id='menu_priority_proc_${p.id}'> ,Priority : ${p.priority} </span>
         </div>
 
         <div  id='menu_proc_ints_${p.id}' style='display: none'  class='int_class'>

@@ -5,35 +5,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="css/style.css">
-  <style media="screen">
-          #mydiv {
-        position: absolute;
-        z-index: 9;
-        background-color: #f1f1f1;
-        border: 1px solid #d3d3d3;
-        text-align: center;
-        }
-
-        #mydivheader {
-        padding: 10px;
-        cursor: move;
-        z-index: 10;
-        background-color: #2196F3;
-        color: #fff;
-        }
-  </style>
 
 </head>
 <body>
 
     <nav class="top_navbar">
-        <button class="btn_blue home_button" onclick="window.location.href='index.html'">Home</button>
+        <div class="img_home"></div>
+        <!--<button class="btn_blue home_button" onclick="window.location.href='../../index.html'">Home</button>!-->
+        <a href="../../index.html" class="logo" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
         <div class="algo_btns">
-            <button class=" btn_slct btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'" >FCFS</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'">FCFS</button>
+            <button class=" btn_blue btn_top_navbar" onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >R-Robin</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >ALGO 4</button>
-            <button class=" btn_blue btn_top_navbar selected" >ALGO 5</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >Priority_S</button>
+            <button class=" btn_slct btn_top_navbar selected" >Priority D</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >ALGO 6</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >ALGO 7</button>
 
@@ -42,7 +27,7 @@
 
     <nav class="side_navbar">
 
-        <br><br><button class="btn btn_green " onclick="FCFS()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
+        <br><br><button class="btn btn_green " onclick="Priority_dynamique()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
 
         <br><br><br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_1" >Ajouter Processus</button><br>
                 <!-- Add new process !-->
@@ -61,6 +46,10 @@
                         <tr>
                             <th >Couleur</th>
                             <th><input type="color" name="color" id="Process_color" style="width: -moz-available"></th>
+                        </tr>
+                        <tr>
+                          <th>Priority</th>
+                          <th><input type="text" name="priority" class="small_text_input" id="process priority" maxlength="3"></th>
                         </tr>
                     </table>
                     <!-- END of Exe time, int nb, color !-->
@@ -83,7 +72,9 @@
                    <button class="btn btn_green " onclick="create_process()"  >Ajouter les Processus</button>
                </div>
 
-        <br><button class="btn btn_blue " onclick="reset_proc()" >Reset</button>
+        <br><button class="btn btn_blue " onclick="location.reload()" >Reset</button>
+
+        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_5">Afficher Les Commentaires</button>
 
         <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_4">Afficher Les Processus</button>
 
@@ -98,44 +89,74 @@
                       <th>Vitesse</th>
                       <th><input type="text" class="small_text_input" maxlength="5" id="SPEED"></th>
                   </tr>
+                  <tr>
+                      <th>Interuption de type fonction</th>
+                      <th><input type="checkbox" class="small_text_input" maxlength="5" id="INT_TYPE_FUNCTION_CHECK_BOX"></th>
+                  </tr>
+                  <tr>
+                    <th>Temps de mise à jour en S</th>
+                    <th><input type="text" name="Unite de mise à jour" class="small_text_input" maxlength="3" id="update_time"></th>
+                  </tr>
               </table>
 
               <button class="btn btn_green " onclick="reset_parameters()" >Valider</button>
           </div>
 
-  </nav>
+      </nav>
 
     <div class="main">
-    <div class="main_svg shadow"> <main_svg ></main_svg> </div>
+        <div class="main_svg shadow"> <main_svg ></main_svg> </div>
 
-      <!--<div id="menu_div" >
-        <div id="menu" style="background-color: #ABBAEA;"></div>
-    </div> !-->
-    <div class="info_div" id="info_div">
-
-        <div  class="proc_info_menu shadow">
-            <h2> Les processus: </h2>
-            <div id="proc_info_menu" >
-
+          <!--<div id="menu_div" >
+            <div id="menu" style="background-color: #ABBAEA;"></div>
+        </div> !-->
+        <div class="info_div" id="info_div" style="top: 415px; left: 10px">
+            <div class="close_button" onclick="open_close_info_div()">
+                X
             </div>
-            <!-- Les informations des processus, et leurs interuptions !-->
+            <div class="hide_button" onclick="hide_info_div()">
+                _
+            </div>
+            <div  class="proc_info_menu shadow">
+                <h2> Les processus: </h2>
+                <div id="proc_info_menu" >
+
+                </div>
+                <!-- Les informations des processus, et leurs interuptions !-->
+            </div>
         </div>
+        <div class="info_div" id="logs_div" style="top: 415px; left: 460px">
+            <div class="close_button" onclick="open_close_logs_div()">
+                X
+            </div>
+            <div class="hide_button" onclick="hide_logs_div()">
+                _
+            </div>
+            <div  class="proc_info_menu shadow">
+                <div class="rect"> </div>
+                <h2> Les commentaires: </h2>
+                <ol id="logs" class="logs_class" reversed>
+
+                </ol>
+                <!-- Les informations des processus, et leurs interuptions !-->
+            </div>
+        </div>
+
+     </div>
+
+
+    <div class="slidecontainer">
+      <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
+      <p>SPEED </span></p>
     </div>
-
-  </div>
-
-<div class="slidecontainer">
-  <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
-  <p>SPEED </span></p>
-  <input type="range" min="100" max="5000" value="1000" class="slider" id="myTU">
-  <p>Time Unit <span id="demo"></span></p>
-</div>
-
 
 </body>
 <script src="../../bib/d3.js"></script>
 <script src="js/main.js"></script>
 <script type="text/javascript">
+
+    document.getElementById("TIME_UNIT").value = TIME_UNIT;
+    document.getElementById("SPEED").value = SPEED;
   var open_menus_nb = 3;
   var nb_interuption;
 
@@ -204,34 +225,40 @@
       for (let i = 1; i <= nb_interuption; i++){document.getElementById("small_int_menu_"+i).style.display = "none";}
   }
 
-  function reset_proc(){
+  function reset_proc(mode=-1){
 
       document.getElementById("proc_info_menu").innerHTML = "";
+      document.getElementById("logs").innerHTML = "";
       id_proc = 0
       //for (var i = 0; i < pret.processors.length; i++){
-      while (pret.processors.length != 0){
-          var proc = pret.processors.shift()
-          proc.elem.transition()
-              .duration(200)
-              .attr("cx", 1400)
-              .style("opacity", "0");
-          proc.text.transition()
-              .duration(200)
-              .attr("x", 1400)
-              .style("opacity", "0");
-          sleep(200).then(() => {
-              proc.elem.remove();
-          });
+      if (mode==-1){
+          while (pret.processors.length != 0){
+              var proc = pret.processors.shift()
+              proc.elem.transition()
+                  .duration(200)
+                  .attr("cx", 1400)
+                  .style("opacity", "0");
+              proc.text.transition()
+                  .duration(200)
+                  .attr("x", 1400)
+                  .style("opacity", "0");
+              sleep(200).then(() => {
+                  proc.elem.remove();
+              });
+          }
       }
   }
 
   function reset_parameters(){
       var a = document.getElementById("TIME_UNIT").value;
       var b = document.getElementById("SPEED").value;
+      var c = document.getElementById("update_time").value
       if (a != ""){TIME_UNIT = parseInt(a)}
       if (b != ""){SPEED = parseInt(b)}
+      if (c != ""){update_time = parseInt(c)}
       document.getElementById("TIME_UNIT").value = TIME_UNIT;
       document.getElementById("SPEED").value = SPEED;
+      document.getElementById("update_time").value = update_time;
   }
 
   function open_close_info_div(){
@@ -247,11 +274,38 @@
       }
   }
 
+  function open_close_logs_div(){
+      var x = document.getElementById("logs_div")
+      var y = document.getElementById("button_5")
+      if (x.style.display == "block") {
+         x.style.display = "none";
+         y.style.background = "none"
+      }
+      else {
+         x.style.display = "block";
+         y.style.background = "rgba(0, 207, 255, 0.54)";
+      }
+  }
+
+  function hide_info_div(){
+      x = document.getElementById("info_div")
+      x.style.top = "415px"
+      x.style.left = "10px"
+
+  }
+
+  function hide_logs_div(){
+      x = document.getElementById("logs_div")
+      x.style.top = "415px"
+      x.style.left = "460px"
+  }
+
+
 </script>
 <script type="text/javascript">
     // Make the DIV element draggable:
     dragElement(document.getElementById("info_div"));
-
+    dragElement(document.getElementById("logs_div"));
 
     function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
