@@ -10,14 +10,17 @@
 <body>
 
     <nav class="top_navbar">
+        <div class="img_home">
+
+        </div>
         <a href="../../index.html" class="logo" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
         <div class="algo_btns">
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'" >FCFS</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
-            <button class=" btn_slct btn_top_navbar selected" >R-Robin</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >Priority_S</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >Priority_D</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >MULTI_NV</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'">FCFS</button>
+            <button class=" btn_slct btn_top_navbar selected" >SJF</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >R-Robin</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >ALGO 4</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >ALGO 5</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >ALGO 6</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >ALGO 7</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo8/algo8.html'" >ALGO 8</button>
         </div>
@@ -25,7 +28,7 @@
 
     <nav class="side_navbar">
 
-        <br><br><button class="btn btn_green " onclick="RR()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
+        <br><br><button class="btn btn_green " onclick="SRJF()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
 
         <br><br><br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_1" >Ajouter Processus</button><br>
                 <!-- Add new process !-->
@@ -38,7 +41,7 @@
                             <th><input type="text" name="exe_time" class="small_text_input" maxlength="2" id="Exe_time" ></th>
                         </tr>
                         <tr>
-                            <th >Nombre d'interuption</th>
+                            <th >Nombre d'interruption</th>
                             <th><input type="text" name="int_nb" class="small_text_input" maxlength="1" onchange="create_int_menu(value)" id="Int_nb"></th>
                         </tr>
                         <tr>
@@ -84,19 +87,15 @@
                       <th><input type="text" class="small_text_input" maxlength="5" id="SPEED"></th>
                   </tr>
                   <tr>
-                     <th>Interuption de type fonction</th>
-                     <th><input type="checkbox" class="small_text_input" maxlength="5" id="INT_TYPE_FUNCTION_CHECK_BOX"></th>
-                  </tr>
-                  <tr>
-                      <th>Quantum</th>
-                      <th><input type="text" class="small_text_input" maxlength="2" id="QUANTUM"></th>
+                      <th>Interuption de type fonction</th>
+                      <th><input type="checkbox" class="small_text_input" maxlength="5" id="INT_TYPE_FUNCTION_CHECK_BOX"></th>
                   </tr>
               </table>
 
               <button class="btn btn_green " onclick="reset_parameters()" >Valider</button>
           </div>
 
-  </nav>
+      </nav>
 
     <div class="main">
         <div class="main_svg shadow"> <main_svg ></main_svg> </div>
@@ -137,14 +136,13 @@
         </div>
 
 
+    </div>
+
+
+    <div class="slidecontainer">
+      <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
+      <p>SPEED </span></p>
   </div>
-
-<div class="slidecontainer">
-  <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
-  <p>SPEED </span></p>
-
-</div>
-
 
 </body>
 <script src="../../bib/d3.js"></script>
@@ -153,8 +151,6 @@
 
     document.getElementById("TIME_UNIT").value = TIME_UNIT;
     document.getElementById("SPEED").value = SPEED;
-    document.getElementById("QUANTUM").value = quantum;
-
   var open_menus_nb = 3;
   var nb_interuption;
 
@@ -226,6 +222,7 @@
   function reset_proc(){
 
       document.getElementById("proc_info_menu").innerHTML = "";
+      document.getElementById("logs").innerHTML = "";
       id_proc = 0
       //for (var i = 0; i < pret.processors.length; i++){
       while (pret.processors.length != 0){
@@ -247,15 +244,10 @@
   function reset_parameters(){
       var a = document.getElementById("TIME_UNIT").value;
       var b = document.getElementById("SPEED").value;
-      var c = document.getElementById("QUANTUM").value;
-
       if (a != ""){TIME_UNIT = parseInt(a)}
       if (b != ""){SPEED = parseInt(b)}
-      if (c != ""){quantum = parseInt(c)}
-
       document.getElementById("TIME_UNIT").value = TIME_UNIT;
       document.getElementById("SPEED").value = SPEED;
-      document.getElementById("QUANTUM").value = quantum;
   }
 
   function open_close_info_div(){
@@ -297,12 +289,12 @@
       x.style.left = "460px"
   }
 
+
 </script>
 <script type="text/javascript">
     // Make the DIV element draggable:
     dragElement(document.getElementById("info_div"));
     dragElement(document.getElementById("logs_div"));
-
 
     function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
