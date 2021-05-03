@@ -38,10 +38,13 @@ let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
+
 //Genreal info
 var SPEED = 500;
-var TIME_UNIT = 500;
-var quantum = 1
+var TIME_UNIT = 1;
+var ALL_PROCS = []
+var current_time = 0 
+
                   /********************************************/
 
 
@@ -88,9 +91,9 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   return intrs
 }
 
-function add_process(pere,deg){
+function add_process(pere,deg,entrance){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,entrance=entrance)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -100,8 +103,8 @@ function create_process() {
   nb_procs = parseInt(document.getElementById("nb_processes").value)
   checked  = document.getElementById("INT_TYPE_FUNCTION_CHECK_BOX").checked
   for (let i = 0 ; i<nb_procs ; i++){
-      if (checked){add_process(-1,0)}
-      else{add_process(-1,MAX_PROC_DEGREE)}
+      if (checked){add_process(-1,0,0)}
+      else{add_process(-1,MAX_PROC_DEGREE,0)}
     }
 }
 
@@ -259,7 +262,7 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg, color="-1") {
+    constructor(id, exe_time,ints,pere,deg, color="-1",entrance=0) {
         this.id = id
         this.exe_time = exe_time
         this.previous_int_time = 0
@@ -268,7 +271,11 @@ class Process {
         this.left_time_anime = exe_time
         this.pere = pere
         this.deg = deg
+        this.entrance = entrance
+        this.last_treated = entrance
+        this.end = 0 
         this.int_counter = 0
+        this.block_time = 0 
         this.elem = svg.append("circle")
             .attr("id", id)
             .attr("cx", STARTING_PROC_X)
@@ -378,8 +385,14 @@ class Process {
     int_time(){return this.ints[this.int_counter][0] - this.previous_int_time}
     real_int_time(){return this.ints[this.int_counter][0]}
     int_duration(){return this.ints[this.int_counter][1]}
-
 }
+
+class standard {
+  constructor(avrg_time){
+    this.avrg_time = avrg_time
+  }
+}
+
 
 /********************************************************/
 
@@ -392,6 +405,8 @@ blocked.createFifo();
 
 var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
 processor.createProcessor();
+
+var std = new standard(0)
 
 var id_proc = 0;
 
@@ -441,7 +456,6 @@ TU_slider.oninput = function() {
 
 /***************** FUNCTION TO TEST AREA **************/
 function update_left_time(elem, t,end,sub){
-    console.log(sub)
     if (t > end){
         sleep(TIME_UNIT).then(() => {
           elem.left_time_anime -= sub;
@@ -510,7 +524,6 @@ function log_comment(comment, color, elem_color){
     <div class='int_class_header'>
         <span style="color:${color}"> ${comment} </span><br>
     </div>`*/
-    console.log(elem_color);
     var c = `<li style="color:${color}">   ${comment}
         <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
     </li>`;
@@ -522,14 +535,16 @@ function FCFS(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
       let elem = treat_process(0);
-      log_comment("Traintement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
+          current_time+=elem.left_time
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
+          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)          
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);
                 finish_process();FCFS()})
         }else {
+          elem.pere.block_time =current_time-elem.entrance
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
@@ -537,7 +552,9 @@ function FCFS(mode , proc){
         }
         }else{
           sleep(SPEED).then(() => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
+          current_time+=elem.int_time()
           if (elem.type_int() != "function"){
+            elem.block_time+=elem.int_time()
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
@@ -549,7 +566,7 @@ function FCFS(mode , proc){
                 func_intr();block_process();
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                add_process(elem,elem.deg+1);
+                add_process(elem,elem.deg+1,current_time);
                 sleep(SPEED).then(() => {
                     FCFS()
                 })
@@ -566,6 +583,8 @@ function FCFS(mode , proc){
 
   }
   else {
+    std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
+    console.log(std.avrg_time)
     sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
   }
 }
@@ -644,7 +663,7 @@ function scrap(document){
                  document.getElementById(`Interuption_type_${i}`).value])
     }
     var color = document.getElementById("Process_color").value
-    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color)
+    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color,0)
     id_proc += 1
     add_to_proc_info_menu(process, "proc_info_menu")
     process.move2fifo(pret)
