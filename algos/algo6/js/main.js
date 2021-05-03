@@ -198,7 +198,7 @@ class Fifo {
                 .text(this.name)
                 .attr('dy','10')
                 .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
-                .attr("y", this.y + 45)
+                .attr("y", this.y + 60)
         }
 
 
