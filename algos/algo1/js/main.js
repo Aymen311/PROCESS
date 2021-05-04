@@ -93,7 +93,7 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
 
 function add_process(pere,deg,entrance){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,entrance=entrance)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -283,10 +283,9 @@ class Process {
             .attr("stroke", "black")
             .attr("stroke_width", 2)
             .attr("position", "fixed");
-        console.log(color);
+
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-                        this.elem.attr("fill", "rgb("+this.color+")")
-                    }
+                        this.elem.attr("fill", "rgb("+this.color+")")}
         else{this.color = color;
             this.elem.attr("fill",color)}
 
