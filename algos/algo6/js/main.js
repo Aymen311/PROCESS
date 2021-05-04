@@ -31,8 +31,8 @@ let PROCESSOR_H = 30;
 let PROCESSOR_W = 30;
 
 //RPOCS GENERAL INFO
-let MIN_PROC_TIME = 5
-let MAX_PROC_TIME = 20
+let MIN_PROC_TIME = 2
+let MAX_PROC_TIME = 12
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
@@ -41,7 +41,8 @@ let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
 var SPEED = 500;
 var TIME_UNIT = 500;
-var quantum = 1
+
+var QUANTUMS = [1, 2, 3, 4];
                   /********************************************/
 
 
@@ -179,6 +180,7 @@ class Fifo {
         this.UniqueProcessAvailable = false;
         this.name = name
         this.quantum = quantum;
+        this.elem = -1;
 
     }
     createFifo() {
@@ -194,7 +196,7 @@ class Fifo {
         }
 
         if (this.name != -1){
-            svg.append('text')
+            this.elem = svg.append('text')
                 .text(this.name)
                 .attr('dy','10')
                 .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
@@ -397,7 +399,7 @@ var NB_FIFO = 4;
 
 var list_fifos = [];
 for (var i = 0; i<NB_FIFO; i++){
-    var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,i+1,  "Q = "+(i+1))
+    var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,QUANTUMS[i],  "Q = "+(QUANTUMS[i]))
     list_fifos.push(f)
     f.createFifo();
 }

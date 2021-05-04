@@ -43,7 +43,7 @@ let MIN_INT_TYPES = ["memory","input"]
 var SPEED = 500;
 var TIME_UNIT = 1;
 var ALL_PROCS = []
-var current_time = 0 
+var current_time = 0
 
                   /********************************************/
 
@@ -93,7 +93,7 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
 
 function add_process(pere,deg,entrance){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,entrance=entrance)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -272,9 +272,9 @@ class Process {
         this.deg = deg
         this.entrance = entrance
         this.last_treated = entrance
-        this.end = 0 
+        this.end = 0
         this.int_counter = 0
-        this.block_time = 0 
+        this.block_time = 0
         this.elem = svg.append("circle")
             .attr("id", id)
             .attr("cx", STARTING_PROC_X)
@@ -283,9 +283,10 @@ class Process {
             .attr("stroke", "black")
             .attr("stroke_width", 2)
             .attr("position", "fixed");
-
+        console.log(color);
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-                        this.elem.attr("fill", "rgb("+this.color+")")}
+                        this.elem.attr("fill", "rgb("+this.color+")")
+                    }
         else{this.color = color;
             this.elem.attr("fill",color)}
 
@@ -518,7 +519,7 @@ function FCFS(mode , proc){
       if (! elem.hasint()){
           current_time+=elem.left_time
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
-          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)          
+          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);

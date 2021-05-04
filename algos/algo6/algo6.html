@@ -22,7 +22,7 @@
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >Priority_S</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >Priority_D</button>
             <button class=" btn_blue btn_top_navbar selected"  onclick="window.location.href='../algo6/algo6.html'" >MULTI_NV</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >ALGO 7</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >MULTI_2</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo8/algo8.html'" >ALGO 8</button>
         </div>
     </nav>
@@ -72,9 +72,32 @@
 
         <br><button class="btn btn_blue " onclick="reset_proc()" >Reset</button>
 
-        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_5">Afficher Les Commentaires</button>
+        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_11">Afficher Les Commentaires</button>
 
-        <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_4">Afficher Les Processus</button>
+        <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_10">Afficher Les Processus</button>
+
+        <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_4">Les FIFOs</button><br>
+          <div class="small_menu add_process_menu" id="small_menu_4">
+              <table>
+                  <tr>
+                      <th>Quantum 1</th>
+                      <th><input type="text" class="small_text_input" maxlength="1" id="Quantum 1"></th>
+                  </tr>
+                  <tr>
+                      <th>Quantum 2</th>
+                      <th><input type="text" class="small_text_input" maxlength="1" id="Quantum 2"></th>
+                  </tr>
+                  <tr>
+                      <th>Quantum 3</th>
+                      <th><input type="text" class="small_text_input" maxlength="1" id="Quantum 3"></th>
+                  </tr>
+                  <tr>
+                      <th>Quantum 4</th>
+                      <th><input type="text" class="small_text_input" maxlength="1" id="Quantum 4"></th>
+                  </tr>
+              </table>
+              <button class="btn btn_green " onclick="reset_parameters_FIFO()" >Valider</button>
+          </div>
 
         <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_3">Parametre</button><br>
           <div class="small_menu add_process_menu" id="small_menu_3">
@@ -151,7 +174,10 @@
 
     document.getElementById("TIME_UNIT").value = TIME_UNIT;
     document.getElementById("SPEED").value = SPEED;
-  var open_menus_nb = 3;
+    for ( var i = 0; i < 4; i++){
+        document.getElementById("Quantum "+(i+1)).value = QUANTUMS[i];
+    }
+  var open_menus_nb = 4;
   var nb_interuption;
 
   for (let i = 1; i <= open_menus_nb; i++){document.getElementById("small_menu_"+i).style.display = "none";}
@@ -251,10 +277,32 @@
       document.getElementById("TIME_UNIT").value = TIME_UNIT;
       document.getElementById("SPEED").value = SPEED;
   }
+  function reset_parameters_FIFO(){
+      var list_qntm = []
+      var countinue = true
+      for (var i = 1; i <= 4; i++){
+          list_qntm.push(document.getElementById("Quantum "+i).value)
+      }
+      for (var i = 1; i <= 4; i++){
+          if ( list_qntm[i] <  list_qntm[i-1]){
+              countinue = false;
+              alert("We must have Q1 < Q2 < Q3 < Q4");
+          }
+      }
+      if (countinue){
+          for (var i = 1; i <= 4; i++){
+              a = list_qntm[i-1];
+              if (a != ""){QUANTUMS[i-1] = parseInt(a)}
+              document.getElementById("Quantum "+i).value = QUANTUMS[i-1];
+              list_fifos[i-1].quantum = QUANTUMS[i-1];
+              list_fifos[i-1].elem.text("Q = "+(QUANTUMS[i-1]));
+          }
+      }
+  }
 
   function open_close_info_div(){
       var x = document.getElementById("info_div")
-      var y = document.getElementById("button_4")
+      var y = document.getElementById("button_10")
       if (x.style.display == "block") {
          x.style.display = "none";
          y.style.background = "none"
@@ -267,7 +315,7 @@
 
   function open_close_logs_div(){
       var x = document.getElementById("logs_div")
-      var y = document.getElementById("button_5")
+      var y = document.getElementById("button_11")
       if (x.style.display == "block") {
          x.style.display = "none";
          y.style.background = "none"

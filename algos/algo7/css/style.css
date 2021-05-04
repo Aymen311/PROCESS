@@ -1,7 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
 body{
-    font-family: verdana;
+    scroll-behavior:smooth;
+    font-family: verdana, sans-serif ;;
 }
 
+.logo
+{
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    text-transform: uppercase;
+    letter-spacing:2px;
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    font-family: 'Poppins', sans-serif ;
+}
+
+#logo_suffix
+{
+   font-weight: 5;
+}
 
 .side_navbar{
   padding: 5px;
@@ -12,7 +33,9 @@ body{
   left: 0;
   top: 60px;
   color: white;
-  background-image: linear-gradient(black 0%, #282828 80%);
+  background-image: linear-gradient(#04000d 0%, #0a011e 80%);
+  border: 1px solid black;
+  z-index: 2;
 }
 
 
@@ -53,7 +76,7 @@ body{
 .small_menu{
    display: none;
    transition: 1s;
-   background: rgba(255, 255, 255, 0.12);
+   background: rgba(255, 255, 255, 0.07);
 }
 
 .add_process_menu {
@@ -222,15 +245,15 @@ body{
 
 .top_navbar {
   height: 60px;
-  background-image: linear-gradient(#131313, #000);
+  background-image: linear-gradient(#19014a, #0c0123);
   position: absolute;
   top: 0px;
   left: 0px;
   width: -moz-available;
-  width: -webkit-fill-available;
   text-align: center;
   z-index: 2;
 }
+
 .btn_top_navbar {
   border: 1px solid;
   background-color: inherit;
@@ -320,9 +343,24 @@ body{
     cursor: pointer;
     z-index: 2;
     width: 27px;
-    height: 20px;
+    height: 22px;
+}
+
+.hide_button {
+    position: absolute;
+    right: 47px;
+    top: 0px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 2;
+    width: 27px;
+    height: 28px;
 }
 
 .close_button:hover {
+    color: gray;
+}
+
+.hide_button:hover {
     color: gray;
 }
