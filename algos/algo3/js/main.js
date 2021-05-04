@@ -39,10 +39,10 @@ let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
-var SPEED = 1;
-var TIME_UNIT = 1;
+var SPEED = 1000;
+var TIME_UNIT = 1000;
 var ALL_PROCS = []
-var current_time = 0 
+var current_time = 0
 var quantum = 1
                   /********************************************/
 
@@ -92,7 +92,7 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
 
 function add_process(pere,deg,entrance){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,entrance=entrance)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -269,9 +269,9 @@ class Process {
         this.pere = pere
         this.entrance = entrance
         this.last_treated = entrance
-        this.end = 0 
+        this.end = 0
         this.deg = deg
-        this.block_time = 0 
+        this.block_time = 0
         this.int_counter = 0
         this.elem = svg.append("circle")
             .attr("id", id)
@@ -512,7 +512,7 @@ function RR(mode,proc) {
       if (! elem.hasint()){
         if (elem.left_time <= quantum){
           current_time+=elem.left_time
-          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)          
+          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
           if (elem.pere == -1 ){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
