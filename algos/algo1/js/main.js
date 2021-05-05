@@ -40,8 +40,8 @@ let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 
 //Genreal info
-var SPEED = 500;
-var TIME_UNIT = 1;
+var SPEED = 50;
+var TIME_UNIT = 50;
 var ALL_PROCS = []
 var current_time = 0
 
@@ -94,6 +94,7 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
 function add_process(pere,deg,entrance){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
   var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
+  ALLL.push(p)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
@@ -179,6 +180,8 @@ class Processor {
       return this.inProcess.length == 0
     }
 }
+
+var ALLL = []
 
 class Fifo {
     constructor(x, y, capacite, name=-1) {
@@ -304,6 +307,9 @@ class Process {
 
         this.x = 0;
         this.y = 0;
+
+        this.history = [[0, -1, "pret"]]
+
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -460,6 +466,39 @@ function update_left_time(elem, t,end,sub){
     }
 }
 
+function push_history_inProcess_pret(proc, time){
+    /*var a = proc.history[proc.history.length][1]
+    proc.history.push([ a, a + time, "In process"])*/
+
+    var l = proc.history.length
+    var b = proc.history[l-1][0] + time
+    console.log(proc.id, pret.processors.length, b, time);
+    proc.history[l-1][1] = b;
+    proc.history[l-1][2] = "In process"
+    proc.history.push([b, -1, ""])
+
+    for ( var i = 0; i < pret.processors.length; i++){
+        var p = pret.processors[i]
+        var l = p.history.length
+        p.history[l-1][1] = b;
+        p.history[l-1][2] = "Pret"
+        p.history.push([b, -1, ""])
+    }
+}
+
+
+function push_history_blocked(proc, time){
+    var l = proc.history.length
+    proc.history[l-1][1] = proc.history[l-1][0] + time;
+    proc.history[l-1][2] = "Blocked"
+    proc.history.push([proc.history[l-1][1], -1, ""])
+}
+
+
+
+
+
+
 var mem = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
             .attr("cy", PROCESSOR_Y-20)
@@ -516,6 +555,7 @@ function FCFS(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
       let elem = treat_process(0);
+      log_comment("Traitement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
           current_time+=elem.left_time
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
@@ -523,12 +563,14 @@ function FCFS(mode , proc){
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                push_history_inProcess_pret(elem, elem.left_time) // CORRECT
                 finish_process();FCFS()})
         }else {
           elem.pere.block_time +=current_time-elem.entrance
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                  push_history_inProcess_pret(elem, elem.left_time)
                   finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {FCFS()})})
         }
         }else{
@@ -539,6 +581,7 @@ function FCFS(mode , proc){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                    push_history_inProcess_pret(elem, elem.int_time())
                     block_process();
                     FCFS("block",elem)})
             })
@@ -547,6 +590,7 @@ function FCFS(mode , proc){
                 func_intr();block_process();
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
+                push_history_inProcess_pret(elem, elem.int_time())
                 add_process(elem,elem.deg+1,current_time);
                 sleep(SPEED).then(() => {
                     FCFS()
@@ -556,6 +600,7 @@ function FCFS(mode , proc){
        }
     }
     if (mode == "block"){
+      push_history_blocked(proc, proc.int_duration())
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int();
@@ -646,6 +691,7 @@ function scrap(document){
     var color = document.getElementById("Process_color").value
     var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color,0)
     id_proc += 1
+    ALLL.push(process)
     add_to_proc_info_menu(process, "proc_info_menu")
     process.move2fifo(pret)
 
