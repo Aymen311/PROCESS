@@ -40,8 +40,8 @@ let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 
 //Genreal info
-var SPEED = 50;
-var TIME_UNIT = 50;
+var SPEED = 0;
+var TIME_UNIT = 0;
 var ALL_PROCS = []
 var current_time = 0
 
@@ -472,7 +472,6 @@ function push_history_inProcess_pret(proc, time){
 
     var l = proc.history.length
     var b = proc.history[l-1][0] + time
-    console.log(proc.id, pret.processors.length, b, time);
     proc.history[l-1][1] = b;
     proc.history[l-1][2] = "In process"
     proc.history.push([b, -1, ""])
@@ -480,9 +479,16 @@ function push_history_inProcess_pret(proc, time){
     for ( var i = 0; i < pret.processors.length; i++){
         var p = pret.processors[i]
         var l = p.history.length
-        p.history[l-1][1] = b;
-        p.history[l-1][2] = "Pret"
-        p.history.push([b, -1, ""])
+        if (p.history[l-1][0] > b){
+            p.history[l-1][1] = p.history[l-1][0]
+            p.history[l-1][2] = "Pret"
+            p.history.push([p.history[l-1][0], -1, ""])
+        }
+        else{
+            p.history[l-1][1] = b;
+            p.history[l-1][2] = "Pret"
+            p.history.push([b, -1, ""])
+        }
     }
 }
 
@@ -581,6 +587,8 @@ function FCFS(mode , proc){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+
+
                     push_history_inProcess_pret(elem, elem.int_time())
                     block_process();
                     FCFS("block",elem)})
@@ -601,10 +609,13 @@ function FCFS(mode , proc){
     }
     if (mode == "block"){
       push_history_blocked(proc, proc.int_duration())
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+      sleep(SPEED + proc.int_duration() * TIME_UNIT  ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {FCFS()})})
+          sleep(SPEED).then(() => {
+              //resume_process(proc);proc.treat_int();
+              console.log(processor.inProcess.length, pret.processors.length);
+              FCFS()})})
     }
 
   }
@@ -612,6 +623,7 @@ function FCFS(mode , proc){
     std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
     console.log(std.avrg_time)
     sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
+    clean_data();  history2ganttdata(); draw_gantt(data);
   }
 }
 
