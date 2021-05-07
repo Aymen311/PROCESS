@@ -39,9 +39,10 @@ let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
-var SPEED = 1000;
-var TIME_UNIT = 1000;
+var SPEED = 500;
+var TIME_UNIT = 500;
 var ALL_PROCS = []
+var ALLL = [];
 var current_time = 0
 var quantum = 1
                   /********************************************/
@@ -95,6 +96,7 @@ function add_process(pere,deg,entrance){
   var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
   p.move2fifo(pret)
   add_to_proc_info_menu(p, "proc_info_menu")
+  ALLL.push(p)
   id_proc++;
 }
 
@@ -297,6 +299,8 @@ class Process {
 
         this.x = 0;
         this.y = 0;
+
+        this.history = [[0, -1, "pret"]]
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -452,6 +456,39 @@ function update_left_time(elem, t,end,sub){
     }
 }
 
+function push_history_inProcess_pret(proc, time){
+
+    var l = proc.history.length
+    var b = proc.history[l-1][0] + time
+    proc.history[l-1][1] = b;
+    proc.history[l-1][2] = "In process"
+    proc.history.push([b, -1, ""])
+
+    for ( var i = 0; i < pret.processors.length; i++){
+        var p = pret.processors[i]
+        var l = p.history.length
+        if (p.history[l-1][0] > b){
+            p.history[l-1][1] = p.history[l-1][0]
+            p.history[l-1][2] = "Pret"
+            p.history.push([p.history[l-1][0], -1, ""])
+        }
+        else{
+            p.history[l-1][1] = b;
+            p.history[l-1][2] = "Pret"
+            p.history.push([b, -1, ""])
+        }
+    }
+}
+
+function push_history_blocked(proc, time){
+    var l = proc.history.length
+    proc.history[l-1][1] = proc.history[l-1][0] + time;
+    proc.history[l-1][2] = "Blocked"
+    proc.history.push([proc.history[l-1][1], -1, ""])
+}
+
+
+
 var mem = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
             .attr("cy", PROCESSOR_Y-20)
@@ -517,12 +554,14 @@ function RR(mode,proc) {
           if (elem.pere == -1 ){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                  push_history_inProcess_pret(elem, elem.left_time)
                   finish_process();RR()})
           }else {
                 elem.pere.block_time +=current_time-elem.entrance
                 sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                     log_comment("Termination du processus "+elem.id,"blue", elem.color);
                     log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                    push_history_inProcess_pret(elem, elem.left_time)
                     finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {RR()})})
           }
         }else{
@@ -530,6 +569,7 @@ function RR(mode,proc) {
             sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-quantum,1);})
             sleep(SPEED + quantum * TIME_UNIT).then(() => {
                 log_comment("Qantum écoulé du processus "+elem.id,"black", elem.color);
+                push_history_inProcess_pret(elem, quantum)
                 change_process();elem.left_time-=quantum;sleep(SPEED).then(() => {RR()})})
         }
         }else{
@@ -541,12 +581,16 @@ function RR(mode,proc) {
             elem.block_time+=elem.int_time()
             sleep(SPEED + t * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process();RR("block",elem)})
+                mem_intr();
+                push_history_inProcess_pret(elem, t);
+                block_process();RR("block",elem)})
           }else{
             sleep(SPEED +  t * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                func_intr();block_process();add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {RR()})})
+                func_intr();
+                push_history_inProcess_pret(elem, t);
+                block_process();add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {RR()})})
           }
         }
         else {
@@ -554,14 +598,17 @@ function RR(mode,proc) {
            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-quantum,1);})
            sleep(SPEED + quantum * TIME_UNIT).then(() => {
                log_comment("Retour du processus "+elem.id, "black", elem.color);
+               push_history_inProcess_pret(elem, quantum);
                change_process();elem.left_time-=quantum;sleep(SPEED).then(() => { RR()})})
         }
        }
     }
     if (mode == "block"){
+        push_history_blocked(proc, proc.int_duration())
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int("RR");;sleep(SPEED).then(() => {RR()})})
+
     }
 
   }
@@ -569,6 +616,7 @@ function RR(mode,proc) {
     std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
     console.log(std.avrg_time)
     sleep(SPEED).then(() => { alert("Simualation Round Robin have finished")})
+      history2ganttdata(); draw_gantt(data);
   }
 }
 
@@ -649,6 +697,7 @@ function scrap(document){
     var color = document.getElementById("Process_color").value
     var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color,0)
     id_proc += 1
+    ALLL.push(process)
     add_to_proc_info_menu(process, "proc_info_menu")
     process.move2fifo(pret)
 
