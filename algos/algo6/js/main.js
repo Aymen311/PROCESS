@@ -39,10 +39,11 @@ let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
-var SPEED = 500;
-var TIME_UNIT = 500;
+var SPEED = 0;
+var TIME_UNIT = 100;
 
 var QUANTUMS = [1, 2, 3, 4];
+var ALLL = []
                   /********************************************/
 
 
@@ -94,6 +95,7 @@ function add_process(pere,deg){
   var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg)
   p.move2fifo(list_fifos[0]) //add to the list with level 0
   add_to_proc_info_menu(p, "proc_info_menu")
+  ALLL.push(p)
   id_proc++;
 }
 
@@ -297,6 +299,8 @@ class Process {
 
         this.x = 0;
         this.y = 0;
+
+        this.history = [[0, -1, "pret"]]
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -482,6 +486,41 @@ function update_left_time(elem, t,end,sub){
     }
 }
 
+function push_history_inProcess_pret(proc, time){
+
+    var l = proc.history.length
+    var b = proc.history[l-1][0] + time
+    proc.history[l-1][1] = b;
+    proc.history[l-1][2] = "In process"
+    proc.history.push([b, -1, ""])
+
+    for (var j = 0; j < list_fifos.length; j++){
+        for ( var i = 0; i < list_fifos[j].processors.length; i++){
+            var p = list_fifos[j].processors[i]
+            var l = p.history.length
+            if (p.history[l-1][0] > b){
+                p.history[l-1][1] = p.history[l-1][0]
+                p.history[l-1][2] = "Pret"
+                p.history.push([p.history[l-1][0], -1, ""])
+            }
+            else{
+                p.history[l-1][1] = b;
+                p.history[l-1][2] = "Pret"
+                p.history.push([b, -1, ""])
+            }
+        }
+    }
+
+}
+
+function push_history_blocked(proc, time){
+    var l = proc.history.length
+    proc.history[l-1][1] = proc.history[l-1][0] + time;
+    proc.history[l-1][2] = "Blocked"
+    proc.history.push([proc.history[l-1][1], -1, ""])
+}
+
+
 var mem = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
             .attr("cy", PROCESSOR_Y-20)
@@ -574,11 +613,13 @@ function MULTI_NV(mode,proc) {
           if (elem.pere == -1 ){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Terminaison du processus "+elem.id,"blue", elem.color);
+                  push_history_inProcess_pret(elem, elem.left_time)
                   finish_process();MULTI_NV()})
           }else {
                 sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                     log_comment("Terminaison du processus "+elem.id,"blue", elem.color);
                     log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                    push_history_inProcess_pret(elem, elem.left_time)
                     finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {MULTI_NV()})})
           }
         }
@@ -586,6 +627,7 @@ function MULTI_NV(mode,proc) {
             sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-qntm,1);})
             sleep(SPEED + qntm * TIME_UNIT).then(() => {
                 log_comment("Processus "+elem.id+" -> Fifo "+(lvl+2),"black", elem.color);
+                push_history_inProcess_pret(elem, qntm)
                 change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => {MULTI_NV()})})
         }
         }
@@ -596,24 +638,30 @@ function MULTI_NV(mode,proc) {
            if (elem.type_int() != "function"){
             sleep(SPEED + t * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process(lvl);MULTI_NV("block",elem)})
+                mem_intr();
+                push_history_inProcess_pret(elem, t);
+                block_process(lvl);MULTI_NV("block",elem)})
           }
           else{
             sleep(SPEED +  t * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                func_intr();block_process();add_process(elem,elem.deg+1);sleep(SPEED).then(() => {MULTI_NV()})})
+                func_intr();
+                push_history_inProcess_pret(elem, t);
+                block_process();add_process(elem,elem.deg+1);sleep(SPEED).then(() => {MULTI_NV()})})
           }
           }else {
           console.log("here")
            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-qntm,1);})
            sleep(SPEED + qntm * TIME_UNIT).then(() => {
                log_comment("Processus "+elem.id+" -> Fifo "+(lvl+2), "black", elem.color);
+               push_history_inProcess_pret(elem, qntm);
                change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => { MULTI_NV()})})
         }
        }
     }
     if (mode == "block"){
+        push_history_blocked(proc, proc.int_duration())
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id+" vers Fifo "+proc.level, "orange", proc.color);
           resume_process(proc);proc.treat_int("MULTI_NV");sleep(SPEED).then(() => {MULTI_NV()})})
@@ -622,6 +670,7 @@ function MULTI_NV(mode,proc) {
   }
   else {
     sleep(SPEED).then(() => { alert("Simualation Round Robin have finished")})
+    clean_data();  history2ganttdata(); draw_gantt(data);
   }
 }
 
@@ -701,6 +750,7 @@ function scrap(document){
     }
     var color = document.getElementById("Process_color").value
     var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color)
+    ALLL.push(process)
     id_proc += 1
     add_to_proc_info_menu(process, "proc_info_menu")
     process.move2fifo(list_fifos[0])

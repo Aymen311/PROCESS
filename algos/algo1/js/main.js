@@ -36,6 +36,7 @@ let MAX_PROC_TIME = 10
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
+let MIN_INTR_DURATION = 3
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 
@@ -82,7 +83,7 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
     int_t = randint(int_t+1,exec_time-1)
-    intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
+    intr = [int_t,randint(MIN_INTR_DURATION,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
       break
@@ -492,7 +493,6 @@ function push_history_inProcess_pret(proc, time){
     }
 }
 
-
 function push_history_blocked(proc, time){
     var l = proc.history.length
     proc.history[l-1][1] = proc.history[l-1][0] + time;
@@ -500,8 +500,28 @@ function push_history_blocked(proc, time){
     proc.history.push([proc.history[l-1][1], -1, ""])
 }
 
+function get_cpu_usage(){
+    var max = 0;
+    for (var p = 0; p < ALLL.length; p++){
+        if (max < ALLL[p].history[[ALLL[p].history.length-1]][0]){max = ALLL[p].history[[ALLL[p].history.length-1]][0]}
+    }
 
-
+    var cpt = 0;
+    for ( var i = 0; i < max; i++){
+        var b = 1;
+        for (var p = 0; p < ALLL.length; p++){
+            for (var state = 0; state < ALLL[p].history.length; state++){
+                if ( (ALLL[p].history[state][0] <= i) && (i <=  ALLL[p].history[state][1])){
+                    if  (ALLL[p].history[state][2] != "Blocked"){b = 0}
+                    break;
+                }
+            }
+            if (b == 0){break}
+        }
+        cpt = cpt + b;
+    }
+    console.log((max - cpt)/max);
+}
 
 
 

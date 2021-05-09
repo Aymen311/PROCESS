@@ -94,6 +94,8 @@
               <button class="btn btn_green " onclick="reset_parameters()" >Valider</button>
           </div>
 
+        <br><br><button class="btn btn_blue " onclick="afficher_gantt()" id="button_6">Afficher Diagramme de gantt</button>
+
       </nav>
 
     <div class="main">
@@ -381,6 +383,28 @@
                 }
                 else {
                     data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+                }
+            }
+        }
+    }
+
+    function history2ganttdata_2(H){
+        data = [];
+        for ( var i = 0; i < H.length; i++){
+            for ( var j = 0; j < H[i].length; j++){
+                var state = H[i][j][2];
+
+
+                if (state == "In process"){c = "green"}
+                else if (state == "Blocked") {c = "red"}
+                else if (state == "Pret") {c = "blue"}
+                else {c = "black"}
+
+                if ( H[i][j][1] == -1 ){
+                    data.push(["id"+i, state, c, H[i][j][0], 1+H[i][j][0]]);
+                }
+                else {
+                    data.push(["id"+i, state, c, H[i][j][0], H[i][j][1]]);
                 }
             }
         }

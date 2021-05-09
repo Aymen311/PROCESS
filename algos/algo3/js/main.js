@@ -616,7 +616,7 @@ function RR(mode,proc) {
     std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
     console.log(std.avrg_time)
     sleep(SPEED).then(() => { alert("Simualation Round Robin have finished")})
-      history2ganttdata(); draw_gantt(data);
+    clean_data();  history2ganttdata(); draw_gantt(data);
   }
 }
 
