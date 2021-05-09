@@ -269,7 +269,7 @@ function rand_intrs(exec_time, deg) {
   return intrs
 }
 
-function add_process(pere, deg, entrance) {
+function add_process(pere, deg, entrance, MIN_PROC_PRIORITY) {
   var exec_t = randint(MIN_PROC_TIME, MAX_PROC_TIME)
   var priority = randint(MAX_PROC_PRIORITY , MIN_PROC_PRIORITY)
   var ints =  rand_intrs(exec_t, deg)
@@ -281,12 +281,12 @@ function add_process(pere, deg, entrance) {
   return p;
 }
 
-function create_processes(nb_procs, allow_function_int) {
+function create_processes(nb_procs, allow_function_int, MIN_PROC_PRIORITY) {
   for (let i = 0; i < nb_procs; i++) {
     if (allow_function_int) {
-      list_processes.push(add_process(-1, 0, 0))
+      list_processes.push(add_process(-1, 0, 0, MIN_PROC_PRIORITY))
     } else {
-      list_processes.push(add_process(-1, MAX_PROC_DEGREE, 0))
+      list_processes.push(add_process(-1, MAX_PROC_DEGREE, 0, MIN_PROC_PRIORITY))
     }
   }
   return list_processes
@@ -812,6 +812,225 @@ function MULTI_NV_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
         function drawChart() {
 
           var container = document.getElementById('MULTI_NV');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'string', id: 'Role' });
+            dataTable.addColumn({ type: 'string', id: 'Name' });
+            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+            dataTable.addColumn({ type: 'number', id: 'Start' });
+            dataTable.addColumn({ type: 'number', id: 'End' });
+          dataTable.addRows(data);
+          var options = {
+              colors: ['#cbb69d', '#603913'],
+            };
+          chart.draw(dataTable);
+        }
+    }
+
+    function MULTI_NV(mode,proc) {
+      if (list_fifos_not_empty() || blocked.processors.length != 0 || processor.inProcess.length != 0){
+        if (processor.isready() && list_fifos_not_empty() != 0 ){
+          let elem = treat_process(0); //Send process to processor
+          let lvl = elem.level;
+          let qntm = list_fifos[lvl].quantum
+          if (! elem.hasint()){ //If processor doesn't have int
+            if (elem.left_time <= qntm){
+              if (elem.pere == -1 ){
+                  sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                      push_history_inProcess_pret_MULTI(elem, elem.left_time, list_fifos)
+                      finish_process();MULTI_NV()})
+              }else {
+                    sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                        push_history_inProcess_pret_MULTI(elem, elem.left_time, list_fifos)
+                        finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {MULTI_NV()})})
+              }
+          }
+            else{
+                sleep(SPEED + qntm * TIME_UNIT).then(() => {
+                    push_history_inProcess_pret_MULTI(elem, qntm, list_fifos)
+                    change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => {MULTI_NV()})})
+            }
+            }
+          else{
+              if (elem.real_int_time()-(elem.exe_time-elem.left_time) <= qntm){
+               var t = elem.real_int_time()-(elem.exe_time-elem.left_time)
+               if (elem.type_int() != "function"){
+                sleep(SPEED + t * TIME_UNIT).then(() => {
+                    push_history_inProcess_pret_MULTI(elem, t, list_fifos);
+                    block_process(lvl);MULTI_NV("block",elem)})
+              }
+              else{
+                sleep(SPEED +  t * TIME_UNIT).then(() => {
+                    push_history_inProcess_pret_MULTI(elem, t, list_fifos);
+                    block_process();add_process(elem,elem.deg+1);sleep(SPEED).then(() => {MULTI_NV()})})
+              }
+              }else {
+               sleep(SPEED + qntm * TIME_UNIT).then(() => {
+                   push_history_inProcess_pret_MULTI(elem, qntm, list_fifos);
+                   change_process(lvl);elem.left_time-=qntm;sleep(SPEED).then(() => { MULTI_NV()})})
+            }
+           }
+        }
+        if (mode == "block"){
+            push_history_blocked(proc, proc.int_duration())
+          sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+              resume_process(proc);proc.treat_int("RR");sleep(SPEED).then(() => {MULTI_NV()})})
+        }
+
+      }
+      else {
+          clean_data(ALLL);
+          data = history2ganttdata(ALLL);
+          draw_gantt(data);
+          var Hist = [];
+          for ( var i = 0; i < list_processes.length; i++){
+              Hist.push(ALLL[i].history)
+          }
+          all_histories["MULTI_NV"] = [Hist, ALLL]
+
+      }
+    }
+
+    create_processes_objects(list_processes)
+    MULTI_NV();
+}
+
+function MULTI_NV_PRIO_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
+
+    var ALLL = [];
+
+    function treat_process(n) {
+        for (var i = 0; i < NB_FIFO; i++){
+            if (list_fifos[i].processors.length != 0){
+                return list_fifos[i].treat(n, processor)
+            }
+        }
+    }
+    function finish_process() {
+        processor.finish_process()
+    }
+    function block_process(lvl) {
+        new_level = lvl
+        processor.inProcess[0].level = new_level
+        processor.block_process(blocked)
+    }
+    function change_process(lvl) {
+        new_level = lvl
+        processor.inProcess[0].level = new_level
+        processor.block_process(list_fifos[new_level])
+    }
+    function resume_process(elem) {
+        var i_elem = blocked.resume(elem, list_fifos[elem.level]);
+    }
+
+    function list_fifos_not_empty(){
+        for (var i = 0; i < NB_FIFO; i++){
+            if (list_fifos[i].processors.length != 0){
+                if (list_fifos[i].processors.length == 1 && list_fifos[i].UniqueProcessAvailable){
+                    return true;
+                }
+                else {return true}
+            }
+        }
+        return false
+    }
+
+    //FIFO, PROCESSOR INITS
+    var NB_FIFO = QUANTUMS.length;
+
+    var list_fifos = [];
+    for (var i = 0; i<NB_FIFO; i++){
+        var f = new Fifo(FIFO_CAPACITY,QUANTUMS[i])
+        list_fifos.push(f)
+    }
+
+    var blocked = new Fifo(FIFO_CAPACITY)
+    var processor = new Processor();
+
+    function create_processes_objects(list_processes) {
+        for (var i = 0; i < list_processes.length; i++) {
+            var info = list_processes[i]
+            var p = new Process(info[0],
+                                info[2],
+                                info[5],
+                                -1,
+                                0,
+                                info[3],
+                                info[1])
+            p.move2fifo(list_fifos[info[3]])
+            ALLL.push(p)
+        }
+    }
+    function clean_data(){
+      for(let i = 0 ; i < ALLL.length ; i++){
+        let arr = ALLL[i].history
+        arr.splice(arr.length,1)
+        let passed = false
+        while (!passed){
+          passed = true
+          for (let i = 0 ; i < arr.length -1 ; i++){
+            let sub_arr1 = arr[i]
+            let sub_arr2 = arr[i+1]
+              passed = true
+              if (sub_arr1[2]==sub_arr2[2]){
+                  sub_arr1[1] = sub_arr2[1]
+                  arr.splice(i+1,1)
+                  passed = false
+                  break
+                }
+            }
+        }
+      }
+    }
+    function history2ganttdata(){
+        var data = []
+        for ( var i = 0; i < ALLL.length; i++){
+            for ( var j = 0; j < ALLL[i].history.length; j++){
+                var state = ALLL[i].history[j][2];
+
+
+                if (state == "In process"){c = "green"}
+                else if (state == "Blocked") {c = "red"}
+                else if (state == "Pret") {c = "blue"}
+                else {c = "black"}
+
+                if ( ALLL[i].history[j][1] == -1 ){
+                    data.push(["id"+i+" priorite:"+ALLL[i].priority, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
+                }
+                else {
+                    data.push(["id"+i+" priorite:"+ALLL[i].priority, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+                }
+            }
+        }
+        return data;
+    }
+    function history2ganttdata_2(H){
+        data = [];
+        for ( var i = 0; i < H.length; i++){
+            for ( var j = 0; j < H[i].length; j++){
+                var state = H[i][j][2];
+
+
+                if (state == "In process"){c = "green"}
+                else if (state == "Blocked") {c = "red"}
+                else if (state == "Pret") {c = "blue"}
+                else {c = "black"}
+
+                if ( H[i][j][1] == -1 ){
+                    data.push(["id"+i, state, c, H[i][j][0], 1+H[i][j][0]]);
+                }
+                else {
+                    data.push(["id"+i, state, c, H[i][j][0], H[i][j][1]]);
+                }
+            }
+        }
+    }
+    function draw_gantt(){
+        google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+          var container = document.getElementById('MULTI_NV_PRIO');
             var chart = new google.visualization.Timeline(container);
             var dataTable = new google.visualization.DataTable();
             dataTable.addColumn({ type: 'string', id: 'Role' });
