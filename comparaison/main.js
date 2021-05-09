@@ -292,7 +292,69 @@ function create_processes(nb_procs, allow_function_int, MIN_PROC_PRIORITY) {
   return list_processes
 }
 
+function clean_data(ALLL){
+  for(let i = 0 ; i < ALLL.length ; i++){
+    let arr = ALLL[i].history
+    arr.splice(arr.length,1)
+    let passed = false
+    while (!passed){
+      passed = true
+      for (let i = 0 ; i < arr.length -1 ; i++){
+        let sub_arr1 = arr[i]
+        let sub_arr2 = arr[i+1]
+          passed = true
+          if (sub_arr1[2]==sub_arr2[2]){
+              sub_arr1[1] = sub_arr2[1]
+              arr.splice(i+1,1)
+              passed = false
+              break
+            }
+        }
+    }
+  }
+}
+function history2ganttdata(ALLL){
+    var data = []
+    for ( var i = 0; i < ALLL.length; i++){
+        for ( var j = 0; j < ALLL[i].history.length; j++){
+            var state = ALLL[i].history[j][2];
 
+
+            if (state == "In process"){c = "green"}
+            else if (state == "Blocked") {c = "red"}
+            else if (state == "Pret") {c = "blue"}
+            else {c = "black"}
+
+            if ( ALLL[i].history[j][1] == -1 ){
+                data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
+            }
+            else {
+                data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+            }
+        }
+    }
+    return data;
+}
+function draw_gantt(data, div){
+    google.charts.load("current", {packages:["timeline"]});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+      var container = document.getElementById(div);
+        var chart = new google.visualization.Timeline(container);
+        var dataTable = new google.visualization.DataTable();
+        dataTable.addColumn({ type: 'string', id: 'Role' });
+        dataTable.addColumn({ type: 'string', id: 'Name' });
+        dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+        dataTable.addColumn({ type: 'number', id: 'Start' });
+        dataTable.addColumn({ type: 'number', id: 'End' });
+      dataTable.addRows(data);
+      var options = {
+          colors: ['#cbb69d', '#603913'],
+        };
+      chart.draw(dataTable);
+    }
+}
 
 function FCFS_init( list_processes, TIME_UNIT, SPEED){
 
@@ -334,49 +396,7 @@ function FCFS_init( list_processes, TIME_UNIT, SPEED){
             ALLL.push(p)
         }
     }
-    function clean_data(){
-      for(let i = 0 ; i < ALLL.length ; i++){
-        let arr = ALLL[i].history
-        arr.splice(arr.length,1)
-        let passed = false
-        while (!passed){
-          passed = true
-          for (let i = 0 ; i < arr.length -1 ; i++){
-            let sub_arr1 = arr[i]
-            let sub_arr2 = arr[i+1]
-              passed = true
-              if (sub_arr1[2]==sub_arr2[2]){
-                  sub_arr1[1] = sub_arr2[1]
-                  arr.splice(i+1,1)
-                  passed = false
-                  break
-                }
-            }
-        }
-      }
-    }
-    function history2ganttdata(){
-        var data = []
-        for ( var i = 0; i < ALLL.length; i++){
-            for ( var j = 0; j < ALLL[i].history.length; j++){
-                var state = ALLL[i].history[j][2];
 
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( ALLL[i].history[j][1] == -1 ){
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
-                }
-            }
-        }
-        return data;
-    }
     function history2ganttdata_2(H){
         data = [];
         for ( var i = 0; i < H.length; i++){
@@ -398,26 +418,7 @@ function FCFS_init( list_processes, TIME_UNIT, SPEED){
             }
         }
     }
-    function draw_gantt(){
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
 
-          var container = document.getElementById('FCFS');
-            var chart = new google.visualization.Timeline(container);
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn({ type: 'string', id: 'Role' });
-            dataTable.addColumn({ type: 'string', id: 'Name' });
-            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-            dataTable.addColumn({ type: 'number', id: 'Start' });
-            dataTable.addColumn({ type: 'number', id: 'End' });
-          dataTable.addRows(data);
-          var options = {
-              colors: ['#cbb69d', '#603913'],
-            };
-          chart.draw(dataTable);
-        }
-    }
 
     function FCFS(mode , proc){
       if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
@@ -468,7 +469,7 @@ function FCFS_init( list_processes, TIME_UNIT, SPEED){
       else {
         clean_data(ALLL);
         data = history2ganttdata(ALLL);
-        draw_gantt(data);
+        draw_gantt(data, "FCFS");
         var Hist = [];
         for ( var i = 0; i < list_processes.length; i++){
             Hist.push(ALLL[i].history)
@@ -519,90 +520,6 @@ function RR_init( list_processes, TIME_UNIT, SPEED, quantum){
                                 info[1])
             p.move2fifo(pret)
             ALLL.push(p)
-        }
-    }
-    function clean_data(){
-      for(let i = 0 ; i < ALLL.length ; i++){
-        let arr = ALLL[i].history
-        arr.splice(arr.length,1)
-        let passed = false
-        while (!passed){
-          passed = true
-          for (let i = 0 ; i < arr.length -1 ; i++){
-            let sub_arr1 = arr[i]
-            let sub_arr2 = arr[i+1]
-              passed = true
-              if (sub_arr1[2]==sub_arr2[2]){
-                  sub_arr1[1] = sub_arr2[1]
-                  arr.splice(i+1,1)
-                  passed = false
-                  break
-                }
-            }
-        }
-      }
-    }
-    function history2ganttdata(){
-        var data = []
-        for ( var i = 0; i < ALLL.length; i++){
-            for ( var j = 0; j < ALLL[i].history.length; j++){
-                var state = ALLL[i].history[j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( ALLL[i].history[j][1] == -1 ){
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
-                }
-            }
-        }
-        return data;
-    }
-    function history2ganttdata_2(H){
-        data = [];
-        for ( var i = 0; i < H.length; i++){
-            for ( var j = 0; j < H[i].length; j++){
-                var state = H[i][j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( H[i][j][1] == -1 ){
-                    data.push(["id"+i, state, c, H[i][j][0], 1+H[i][j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, H[i][j][0], H[i][j][1]]);
-                }
-            }
-        }
-    }
-    function draw_gantt(){
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-
-          var container = document.getElementById('RR');
-            var chart = new google.visualization.Timeline(container);
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn({ type: 'string', id: 'Role' });
-            dataTable.addColumn({ type: 'string', id: 'Name' });
-            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-            dataTable.addColumn({ type: 'number', id: 'Start' });
-            dataTable.addColumn({ type: 'number', id: 'End' });
-          dataTable.addRows(data);
-          var options = {
-              colors: ['#cbb69d', '#603913'],
-            };
-          chart.draw(dataTable);
         }
     }
 
@@ -663,7 +580,7 @@ function RR_init( list_processes, TIME_UNIT, SPEED, quantum){
       else {
           clean_data(ALLL);
           data = history2ganttdata(ALLL);
-          draw_gantt(data);
+          draw_gantt(data, "RR");
           var Hist = [];
           for ( var i = 0; i < list_processes.length; i++){
               Hist.push(ALLL[i].history)
@@ -742,90 +659,6 @@ function MULTI_NV_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
             ALLL.push(p)
         }
     }
-    function clean_data(){
-      for(let i = 0 ; i < ALLL.length ; i++){
-        let arr = ALLL[i].history
-        arr.splice(arr.length,1)
-        let passed = false
-        while (!passed){
-          passed = true
-          for (let i = 0 ; i < arr.length -1 ; i++){
-            let sub_arr1 = arr[i]
-            let sub_arr2 = arr[i+1]
-              passed = true
-              if (sub_arr1[2]==sub_arr2[2]){
-                  sub_arr1[1] = sub_arr2[1]
-                  arr.splice(i+1,1)
-                  passed = false
-                  break
-                }
-            }
-        }
-      }
-    }
-    function history2ganttdata(){
-        var data = []
-        for ( var i = 0; i < ALLL.length; i++){
-            for ( var j = 0; j < ALLL[i].history.length; j++){
-                var state = ALLL[i].history[j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( ALLL[i].history[j][1] == -1 ){
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
-                }
-            }
-        }
-        return data;
-    }
-    function history2ganttdata_2(H){
-        data = [];
-        for ( var i = 0; i < H.length; i++){
-            for ( var j = 0; j < H[i].length; j++){
-                var state = H[i][j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( H[i][j][1] == -1 ){
-                    data.push(["id"+i, state, c, H[i][j][0], 1+H[i][j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, H[i][j][0], H[i][j][1]]);
-                }
-            }
-        }
-    }
-    function draw_gantt(){
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-
-          var container = document.getElementById('MULTI_NV');
-            var chart = new google.visualization.Timeline(container);
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn({ type: 'string', id: 'Role' });
-            dataTable.addColumn({ type: 'string', id: 'Name' });
-            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-            dataTable.addColumn({ type: 'number', id: 'Start' });
-            dataTable.addColumn({ type: 'number', id: 'End' });
-          dataTable.addRows(data);
-          var options = {
-              colors: ['#cbb69d', '#603913'],
-            };
-          chart.draw(dataTable);
-        }
-    }
 
     function MULTI_NV(mode,proc) {
       if (list_fifos_not_empty() || blocked.processors.length != 0 || processor.inProcess.length != 0){
@@ -881,7 +714,7 @@ function MULTI_NV_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
       else {
           clean_data(ALLL);
           data = history2ganttdata(ALLL);
-          draw_gantt(data);
+          draw_gantt(data, "MULTI_NV");
           var Hist = [];
           for ( var i = 0; i < list_processes.length; i++){
               Hist.push(ALLL[i].history)
@@ -961,90 +794,6 @@ function MULTI_NV_PRIO_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
             ALLL.push(p)
         }
     }
-    function clean_data(){
-      for(let i = 0 ; i < ALLL.length ; i++){
-        let arr = ALLL[i].history
-        arr.splice(arr.length,1)
-        let passed = false
-        while (!passed){
-          passed = true
-          for (let i = 0 ; i < arr.length -1 ; i++){
-            let sub_arr1 = arr[i]
-            let sub_arr2 = arr[i+1]
-              passed = true
-              if (sub_arr1[2]==sub_arr2[2]){
-                  sub_arr1[1] = sub_arr2[1]
-                  arr.splice(i+1,1)
-                  passed = false
-                  break
-                }
-            }
-        }
-      }
-    }
-    function history2ganttdata(){
-        var data = []
-        for ( var i = 0; i < ALLL.length; i++){
-            for ( var j = 0; j < ALLL[i].history.length; j++){
-                var state = ALLL[i].history[j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( ALLL[i].history[j][1] == -1 ){
-                    data.push(["id"+i+" priorite:"+ALLL[i].priority, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
-                }
-                else {
-                    data.push(["id"+i+" priorite:"+ALLL[i].priority, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
-                }
-            }
-        }
-        return data;
-    }
-    function history2ganttdata_2(H){
-        data = [];
-        for ( var i = 0; i < H.length; i++){
-            for ( var j = 0; j < H[i].length; j++){
-                var state = H[i][j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( H[i][j][1] == -1 ){
-                    data.push(["id"+i, state, c, H[i][j][0], 1+H[i][j][0]]);
-                }
-                else {
-                    data.push(["id"+i, state, c, H[i][j][0], H[i][j][1]]);
-                }
-            }
-        }
-    }
-    function draw_gantt(){
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-
-          var container = document.getElementById('MULTI_NV_PRIO');
-            var chart = new google.visualization.Timeline(container);
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn({ type: 'string', id: 'Role' });
-            dataTable.addColumn({ type: 'string', id: 'Name' });
-            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-            dataTable.addColumn({ type: 'number', id: 'Start' });
-            dataTable.addColumn({ type: 'number', id: 'End' });
-          dataTable.addRows(data);
-          var options = {
-              colors: ['#cbb69d', '#603913'],
-            };
-          chart.draw(dataTable);
-        }
-    }
 
     function MULTI_NV(mode,proc) {
       if (list_fifos_not_empty() || blocked.processors.length != 0 || processor.inProcess.length != 0){
@@ -1100,12 +849,12 @@ function MULTI_NV_PRIO_init( list_processes, TIME_UNIT, SPEED, QUANTUMS){
       else {
           clean_data(ALLL);
           data = history2ganttdata(ALLL);
-          draw_gantt(data);
+          draw_gantt(data, "MULTI_NV_PRIO");
           var Hist = [];
           for ( var i = 0; i < list_processes.length; i++){
               Hist.push(ALLL[i].history)
           }
-          all_histories["MULTI_NV"] = [Hist, ALLL]
+          all_histories["MULTI_NV_PRIO"] = [Hist, ALLL]
 
       }
     }
