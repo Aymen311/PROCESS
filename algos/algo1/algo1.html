@@ -14,14 +14,17 @@
         <!--<button class="btn_blue home_button" onclick="window.location.href='../../index.html'">Home</button>!-->
         <a href="../../index.html" class="logo" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
         <div class="algo_btns">
-            <button class=" btn_blue btn_top_navbar selected"  onclick="window.location.href='../algo1/algo1.html'">FCFS</button>
+            <button class=" btn_blue btn_top_navbar selected">FCFS</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >R-Robin</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >Priority_S</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >Priority_D</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >MULTI_NV</button>
-            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >MULTI_2</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >RR</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >SPRI</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >DPRI</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >MNIVR</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >MNIVP</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo8/algo8.html'" >SRJF</button>
+            <button class=" btn_blue btn_top_navbar" onclick="window.location.href='../algo9/algo9.html'">MNIV</button>
+
+
         </div>
     </nav>
 
@@ -338,4 +341,60 @@
     }
 
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    var data = []
+    var colors = []
+    function history2ganttdata(){
+        for ( var i = 0; i < ALLL.length; i++){
+            for ( var j = 0; j < ALLL[i].history.length; j++){
+                var state = ALLL[i].history[j][2];
+
+
+                if (state == "In process"){c = "green"}
+                else if (state == "Blocked") {c = "red"}
+                else if (state == "Pret") {c = "blue"}
+                else {c = "black"}
+
+                if ( ALLL[i].history[j][1] == -1 ){
+                    Date(0,0,0,12,0,0)
+                    Date.UTC()
+                    data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
+                }
+                else {
+                    data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+                }
+            }
+        }
+    }
+
+    function draw_gantt(data){
+        google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+          var container = document.getElementById('example3.1');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'string', id: 'Role' });
+            dataTable.addColumn({ type: 'string', id: 'Name' });
+            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+            dataTable.addColumn({ type: 'number', id: 'Start' });
+            dataTable.addColumn({ type: 'number', id: 'End' });
+          dataTable.addRows(data);
+          var options = {
+              colors: ['#cbb69d', '#603913'],
+            };
+          chart.draw(dataTable);
+        }
+    }
+
+
+
+</script>
+
+<div id="example3.1" style="height: 600px;width:1000px;position: absolute;top: 475px;left: 142px;"></div>
+
 </html>
