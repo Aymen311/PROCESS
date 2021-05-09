@@ -3,12 +3,12 @@
 
 
 //PRET FIFO CORDS
-let STARTING_PRET_X = 550;
-let STARTING_PRET_Y = 300;
+let STARTING_PRET_X = 600;
+let STARTING_PRET_Y = 200;
 
 //BLOCKED FIFO COORDS
 let STARTING_BLOCK_X = 50;
-let STARTING_BLOCK_Y = 300;
+let STARTING_BLOCK_Y = 350;
 
 
 //PROCS COORDS
@@ -32,19 +32,22 @@ let PROCESSOR_W = 30;
 
 //RPOCS GENERAL INFO
 let MIN_PROC_TIME = 2
-let MAX_PROC_TIME = 10
+let MAX_PROC_TIME = 12
+let MAX_PROC_PRIORITY = 0
+let MIN_PROC_PRIORITY = 4
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
-
 //Genreal info
-var SPEED = 50;
-var TIME_UNIT = 50;
-var ALL_PROCS = []
-var current_time = 0
-
+var SPEED = 500;
+var TIME_UNIT = 500;
+var pret = undefined
+var fifo_ind = 0 
+var QUANTUMS = [2,2,2,2,2];
+var list_fifos = [];
+var list_algos = ["FCFS","FCFS","FCFS","FCFS"]
                   /********************************************/
 
 
@@ -53,8 +56,8 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function randomChoice(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+function randomChoice(aMULTI_NV) {
+  return aMULTI_NV[Math.floor(Math.random() * aMULTI_NV.length)];
 }
 
 function isNumber(b){
@@ -91,11 +94,31 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   return intrs
 }
 
-function add_process(pere,deg,entrance){
+function find_the_shortest(){
+  var i = 0 ;
+  for (let index = 1; index < pret.processors.length; index++) {
+    if (pret.processors[index].exe_time < pret.processors[i].exe_time) {
+      i = index ;
+    }
+  }
+  return i ;
+}
+
+function find_the_shortest_srjf(){
+  var i = 0 ;
+  for (let index = 1; index < pret.processors.length; index++) {
+    if (pret.processors[index].left_time < pret.processors[i].left_time) {
+      i = index ;
+    }
+  }
+  return i ;
+}
+
+function add_process(pere,deg){
   var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
-  ALLL.push(p)
-  p.move2fifo(pret)
+  var priority = randint(0 , NB_FIFO)
+  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,priority)
+  p.move2fifo(list_fifos[priority])
   add_to_proc_info_menu(p, "proc_info_menu")
   id_proc++;
 }
@@ -104,18 +127,11 @@ function create_process() {
   nb_procs = parseInt(document.getElementById("nb_processes").value)
   checked  = document.getElementById("INT_TYPE_FUNCTION_CHECK_BOX").checked
   for (let i = 0 ; i<nb_procs ; i++){
-      if (checked){add_process(-1,0,0)}
-      else{add_process(-1,MAX_PROC_DEGREE,0)}
+      if (checked){add_process(-1,0)}
+      else{add_process(-1,MAX_PROC_DEGREE)}
     }
 }
 
-function log_comment(comment, color, elem_color){
-    var x = document.getElementById("logs");
-    var c = `<li style="color:${color}">   ${comment}
-        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
-    </li>`;
-    x.innerHTML = c + x.innerHTML;
-}
 
 
 
@@ -125,7 +141,7 @@ function log_comment(comment, color, elem_color){
 var svg = d3.select("main_svg")
     .append("svg")
     .attr("width", 1000)
-    .attr("height", 400);
+    .attr("height", 700);
 /**************************/
 
 /************************ CLASS *********************/
@@ -170,6 +186,10 @@ class Processor {
                 .duration(SPEED)
                 .attr("x", 1400)
                 .style("opacity", "0");
+            proc.p_text.transition()
+                .duration(SPEED)
+                .attr("x",1400)
+                .style("opacity","0")
             sleep(SPEED).then(() => {
                 proc.elem.remove();
             });
@@ -181,21 +201,22 @@ class Processor {
     }
 }
 
-var ALLL = []
-
 class Fifo {
-    constructor(x, y, capacite, name=-1) {
+    constructor(x, y, capacite, quantum=1, name=-1,algorithm="FCFS") {
         this.x = x;
         this.y = y;
         this.capacite = capacite;
         this.processors = [];
+        this.UniqueProcessAvailable = false;
         this.name = name
-
+        this.quantum = quantum;
+        this.algorithm = algorithm
+        this.elem = -1;
+        this.rects = []
     }
     createFifo() {
-
         for ( let i = 0; i < FIFO_CAPACITY; i++){
-            svg.append("rect")
+            let s =svg.append("rect")
                 .attr("x", this.x + i*PROCS_SPACE + PROC_R - 3)
                 .attr("y", this.y)
                 .attr("stroke", "black")
@@ -203,10 +224,11 @@ class Fifo {
                 .attr("position", "fixed")
                 .attr("fill", "#bdb4d0")
                 //.attr("rx", 5).attr("ry", 5)
+          this.rects.push(s)
         }
 
         if (this.name != -1){
-            svg.append('text')
+            this.elem = svg.append('text')
                 .text(this.name)
                 .attr('dy','10')
                 .attr("x", this.x +  PROCS_SPACE*FIFO_CAPACITY / 2 - 40)
@@ -219,6 +241,10 @@ class Fifo {
         this.processors.push(p)
         return this.processors.length;
     }
+    fifoAddPhysicProcess(p) {
+        this.processorsPhysic.push(p)
+        return this.processorsPhysic.length;
+    }
     treat(n) {
         if (this.processors.length != 0 ) {
               if (processor.isready()){
@@ -228,12 +254,12 @@ class Fifo {
               this.shift(n)
               return elem
           }
-    }
-  }
+        }
+      }
     resume(elem, fifo) {
         //if elem in numerical; resume the "elem"th element
         //else (ie elem is Process) resume elem
-        //it returns the indice of the elemt in the Fifo.processors array
+        //it returns the indice of the elemt in the Fifo.processors aMULTI_NVay
         if (isNumber(elem)){
             if (elem < this.processors.length){
               var elem_ = this.processors[elem]
@@ -264,7 +290,8 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg, color="-1",entrance=0) {
+    constructor(id, exe_time,ints,pere,deg,priority, color="-1") {
+        this.level = priority;
         this.id = id
         this.exe_time = exe_time
         this.previous_int_time = 0
@@ -273,11 +300,8 @@ class Process {
         this.left_time_anime = exe_time
         this.pere = pere
         this.deg = deg
-        this.entrance = entrance
-        this.last_treated = entrance
-        this.end = 0
+        this.priority = priority;
         this.int_counter = 0
-        this.block_time = 0
         this.elem = svg.append("circle")
             .attr("id", id)
             .attr("cx", STARTING_PROC_X)
@@ -286,10 +310,9 @@ class Process {
             .attr("stroke", "black")
             .attr("stroke_width", 2)
             .attr("position", "fixed");
-        console.log(color);
+
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
-                        this.elem.attr("fill", "rgb("+this.color+")")
-                    }
+                        this.elem.attr("fill", "rgb("+this.color+")")}
         else{this.color = color;
             this.elem.attr("fill",color)}
 
@@ -308,8 +331,13 @@ class Process {
         this.x = 0;
         this.y = 0;
 
-        this.history = [[0, -1, "pret"]]
-
+        this.p_text = svg.append('text')
+            .attr("id", "ptext_"+id)
+            .text(priority)
+            .attr('dy','7')
+            .attr('dx','-5')
+            .attr("x", STARTING_PROC_X )
+            .attr("y", STARTING_PROC_Y)
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -321,7 +349,10 @@ class Process {
             .attr("cy", this.y).attr("cx", this.x);
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x -4);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
 
 
     }
@@ -336,7 +367,10 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
     }
     treat() {
         var elem_ = this.elem;
@@ -348,7 +382,10 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x) ;
     }
     shift() {
         var elem_ = this.elem;
@@ -359,7 +396,10 @@ class Process {
             .attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x) ;
     }
     resume(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -372,7 +412,10 @@ class Process {
            . attr("cy", this.y)
         this.text.transition()
             .duration(SPEED)
-            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x - 4);
+            .attr("y", this.y + PROC_TEXT_SPACE).attr("x", this.x);
+        this.p_text.transition()
+            .duration(SPEED)
+            .attr("y",this.y).attr("x",this.x)
     }
 
     hasint(){return this.ints.length != this.int_counter}
@@ -391,28 +434,39 @@ class Process {
     int_time(){return this.ints[this.int_counter][0] - this.previous_int_time}
     real_int_time(){return this.ints[this.int_counter][0]}
     int_duration(){return this.ints[this.int_counter][1]}
-}
 
-class standard {
-  constructor(avrg_time){
-    this.avrg_time = avrg_time
-  }
 }
-
 
 /********************************************************/
 
 /********************** INITS *****************************/
-var pret = new Fifo(STARTING_PRET_X, STARTING_PRET_Y, FIFO_CAPACITY, "FIFO PRET")
-pret.createFifo();
 
-var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY, "FIFO BLOQUE")
+const SPACE_BETWEEN_FIFO = 50;
+var NB_FIFO = 2;
+
+function create_fifos(){
+  destroy()
+  let nb_fifo = document.getElementById("nb_fifos").value
+  if (nb_fifo != null && nb_fifo != ""){
+    NB_FIFO = nb_fifo
+  }
+  list_fifos = []
+  for (var i = 0; i<NB_FIFO; i++){
+    let Q = list_algos[i]=="RR" ? "Q = "+(QUANTUMS[i])   :  ""
+    var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,QUANTUMS[i],Q,list_algos[i])
+    list_fifos.push(f)
+    f.createFifo(); 
+  }
+  build_fifos()
+}
+
+create_fifos()
+
+var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY,0, "FIFO BLOQUE")
 blocked.createFifo();
 
 var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
 processor.createProcessor();
-
-var std = new standard(0)
 
 var id_proc = 0;
 
@@ -420,35 +474,45 @@ var id_proc = 0;
 
 /****************** ALIAS FUNCS ********************/
 function treat_process(n) {
-    return pret.treat(n)
+    for (var i = 0; i < NB_FIFO; i++){
+        if (list_fifos[i].processors.length != 0){
+            return list_fifos[i].treat(n)
+        }
+    }
 }
 
 function finish_process() {
     processor.finish_process()
 }
 
-function block_process() {
+function block_process(lvl) {
     processor.block_process(blocked)
 }
 
-function change_process() {
-    processor.block_process(pret)
+function change_process(lvl) {
+    processor.block_process(list_fifos[lvl])
 }
 
-function resume_process(elem) {
-    var i_elem = blocked.resume(elem, pret);
+function resume_process(elem,lvl) {
+    var i_elem = blocked.resume(elem, list_fifos[lvl]);
 }
 
 /***************************************************/
 
 
-/****** SPEED  **********/
+/****** SPEED - TU **********/
 
 
-var speed_slider = document.getElementById("myspeed");
+//var speed_slider = document.getElementById("myspeed");
+//var TU_slider = document.getElementById("myTU")
 
-speed_slider.oninput = function() {
+/*speed_slider.oninput = function() {
   SPEED = parseInt(this.value)
+}*/
+
+/*
+TU_slider.oninput = function() {
+  TIME_UNIT = parseInt(this.value)
 }
 
 
@@ -465,44 +529,6 @@ function update_left_time(elem, t,end,sub){
           update_left_time(elem, t-1,end,sub)})
     }
 }
-
-function push_history_inProcess_pret(proc, time){
-    /*var a = proc.history[proc.history.length][1]
-    proc.history.push([ a, a + time, "In process"])*/
-
-    var l = proc.history.length
-    var b = proc.history[l-1][0] + time
-    proc.history[l-1][1] = b;
-    proc.history[l-1][2] = "In process"
-    proc.history.push([b, -1, ""])
-
-    for ( var i = 0; i < pret.processors.length; i++){
-        var p = pret.processors[i]
-        var l = p.history.length
-        if (p.history[l-1][0] > b){
-            p.history[l-1][1] = p.history[l-1][0]
-            p.history[l-1][2] = "Pret"
-            p.history.push([p.history[l-1][0], -1, ""])
-        }
-        else{
-            p.history[l-1][1] = b;
-            p.history[l-1][2] = "Pret"
-            p.history.push([b, -1, ""])
-        }
-    }
-}
-
-function push_history_blocked(proc, time){
-    var l = proc.history.length
-    proc.history[l-1][1] = proc.history[l-1][0] + time;
-    proc.history[l-1][2] = "Blocked"
-    proc.history.push([proc.history[l-1][1], -1, ""])
-}
-
-
-
-
-
 
 var mem = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
@@ -552,41 +578,50 @@ function func_intr(){
 /***************************************************/
 
 /****************** ALGORITHM ***********************/
+function log_comment(comment, color, elem_color){
+    var x = document.getElementById("logs");
+    var c = `<li style="color:${color}">   ${comment}
+        <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
+    </li>`;
+    x.innerHTML = c + x.innerHTML;
+}
 
-// ALGORITHM 1 : //
+// ALGORITHMS : //
 //////////////////
 
 function FCFS(mode , proc){
+    if (mode == "block"){
+     choose_successor()
+      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+          log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          resume_process(proc,proc.priority);proc.treat_int();
+          sleep(SPEED).then(() => {FCFS()})})
+    }
+    if (upper_fifo(fifo_ind)){
+        muzan()
+    }else{
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
       let elem = treat_process(0);
-      log_comment("Traitement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
-          current_time+=elem.left_time
+              //choose_successor()  
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
-          ALL_PROCS.push((current_time-elem.entrance)-elem.exe_time-elem.block_time)
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                 log_comment("Termination du processus "+elem.id,"blue", elem.color);
-                push_history_inProcess_pret(elem, elem.left_time) // CORRECT
-                finish_process();FCFS()})
+                finish_process();choose_successor()})
         }else {
-          elem.pere.block_time +=current_time-elem.entrance
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  push_history_inProcess_pret(elem, elem.left_time)
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {FCFS()})})
+                  finish_process();elem.pere.treat_int();resume_process(elem.pere,elem.priority);sleep(SPEED).then(() => {choose_successor()})})
         }
         }else{
           sleep(SPEED).then(() => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
-          current_time+=elem.int_time()
           if (elem.type_int() != "function"){
-            elem.block_time+=elem.int_time()
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                    push_history_inProcess_pret(elem, elem.int_time())
                     block_process();
                     FCFS("block",elem)})
             })
@@ -595,56 +630,281 @@ function FCFS(mode , proc){
                 func_intr();block_process();
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
-                push_history_inProcess_pret(elem, elem.int_time())
                 add_process(elem,elem.deg+1,current_time);
                 sleep(SPEED).then(() => {
-                    FCFS()
+                    choose_successor()
                 })
             })
           }
        }
     }
-    if (mode == "block"){
-      push_history_blocked(proc, proc.int_duration())
-      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
-          log_comment("Resume du processus "+proc.id, "orange", proc.color);
-          resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {FCFS()})})
-    }
-
   }
   else {
-    std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
-    console.log(std.avrg_time)
-    console.log(ALLL)
-    clean_data()
-    sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
-    history2ganttdata(); draw_gantt(data);
+    fifo_ind++;
+    muzan()
   }
+}
+}
+
+function SJF(mode , proc){
+    if (mode == "block"){
+      choose_successor()
+      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+          log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          resume_process(proc,proc.priority);proc.treat_int(); sleep(SPEED).then(() => {choose_successor()})})
+    }
+    if (upper_fifo(fifo_ind)){
+        muzan()
+    }else {
+  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+    if (processor.isready() && pret.processors.length != 0 ){
+      let elem = treat_process(find_the_shortest());
+      log_comment("Traintement du processus "+elem.id,"§green", elem.color);
+      if (! elem.hasint()){
+             // choose_successor()  
+        sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
+        if (elem.pere == -1 ){
+            sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();choose_successor()})
+        }else {
+              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                  log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                  finish_process();elem.pere.treat_int();resume_process(elem.pere,elem.priority);sleep(SPEED).then(() => {choose_successor()})})
+        }
+        }else{
+          sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
+          if (elem.type_int() != "function"){
+            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                mem_intr();block_process();SJF("block",elem)})
+          }else{
+            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                func_intr();block_process();
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
+                add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {choose_successor()})})
+          }
+       }
+    }
+  }
+  else {
+    fifo_ind++;
+    muzan()
+  }
+}
+}
+
+function SRJF(mode , proc){
+    if (mode == "block"){
+      choose_successor()
+      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+          log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          resume_process(proc,proc.priority);proc.treat_int(); sleep(SPEED).then(() => {choose_successor()})})
+    }
+    if (upper_fifo(fifo_ind)){
+        muzan()
+    }else {
+  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+    if (processor.isready() && pret.processors.length != 0 ){
+      let elem = treat_process(find_the_shortest_srjf());
+      log_comment("Traintement du processus "+elem.id,"§green", elem.color);
+      if (! elem.hasint()){
+             // choose_successor()  
+        sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
+        if (elem.pere == -1 ){
+            sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();choose_successor()})
+        }else {
+              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                  log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                  finish_process();elem.pere.treat_int();resume_process(elem.pere,elem.priority);sleep(SPEED).then(() => {choose_successor()})})
+        }
+        }else{
+          sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
+          if (elem.type_int() != "function"){
+            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                mem_intr();block_process();SJF("block",elem)})
+          }else{
+            sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                func_intr();block_process();
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
+                add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {choose_successor()})})
+          }
+       }
+    }
+  }
+  else {
+    fifo_ind++;
+    muzan()
+  }
+}
 }
 
 
-function clean_data(){
-  for(let i = 0 ; i < ALLL.length ; i++){ 
-    let arr = ALLL[i].history
-    arr.splice(arr.length,1)
-    let passed = false
-    while (!passed){
-      passed = true 
-      for (let i = 0 ; i < arr.length -1 ; i++){
-        let sub_arr1 = arr[i]
-        let sub_arr2 = arr[i+1]
-          passed = true
-          if (sub_arr1[2]==sub_arr2[2]){
-              sub_arr1[1] = sub_arr2[1]
-              arr.splice(i+1,1)
-              passed = false
-              break 
-            }
+function RR(mode,proc) {
+    if (mode == "block"){
+      choose_successor()  
+      sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+          log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          resume_process(proc,proc.priority);proc.treat_int("RR");;sleep(SPEED).then(() => {choose_successor()})})
+    }
+    if (upper_fifo(fifo_ind)){
+        muzan()
+    }else {
+  if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+    if (processor.isready() && pret.processors.length != 0 ){
+      let elem = treat_process(0);
+      log_comment("Traintement du processus "+elem.id,"green", elem.color);
+      if (! elem.hasint()){
+        if (elem.left_time <= list_fifos[elem.priority].quantum){
+                //choose_successor()  
+          sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
+          if (elem.pere == -1 ){
+              sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                  log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                  finish_process();choose_successor()})
+          }else {
+                sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                    log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                    log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                    finish_process();elem.pere.treat_int();resume_process(elem.pere,elem.priority);sleep(SPEED).then(() => {choose_successor()})})
+          }
+        }else{
+            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-list_fifos[elem.priority].quantum,1);})
+            sleep(SPEED + list_fifos[elem.priority].quantum * TIME_UNIT).then(() => {
+                log_comment("Qantum écoulé du processus "+elem.id,"black", elem.color);
+                change_process(elem.priority);elem.left_time-=list_fifos[elem.priority].quantum;sleep(SPEED).then(() => {choose_successor()})})
         }
+        }else{
+          if (elem.real_int_time()-(elem.exe_time-elem.left_time) <= list_fifos[elem.priority].quantum){
+           var t = elem.real_int_time()-(elem.exe_time-elem.left_time)
+           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.exe_time - elem.real_int_time(),1);})
+           if (elem.type_int() != "function"){
+            sleep(SPEED + t * TIME_UNIT).then(() => {
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                mem_intr();block_process();RR("block",elem)})
+          }else{
+            sleep(SPEED +  t * TIME_UNIT).then(() => {
+                log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+                log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
+                func_intr();block_process();add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {choose_successor()})})
+          }
+        }
+        else {
+           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-list_fifos[elem.priority].quantum,1);})
+           sleep(SPEED + list_fifos[elem.priority].quantum * TIME_UNIT).then(() => {
+               log_comment("Retour du processus "+elem.id, "black", elem.color);
+               change_process(elem.priority);elem.left_time-=list_fifos[elem.priority].quantum;sleep(SPEED).then(() => { choose_successor()})})
+        }
+       }
+    }
+  }
+  else {
+        fifo_ind++;
+        muzan()
+    }
+}
+}
+
+
+
+// ALGORITHM 9 : //
+//////////////////
+
+
+function muzan(){
+    if (fifo_ind <list_fifos.length){
+        pret = list_fifos[fifo_ind] ; 
+        if (pret.algorithm == "FCFS"){
+            FCFS()
+        }
+        else if (pret.algorithm == "SJF"){
+            SJF()
+        }
+        else if (pret.algorithm == "RR"){
+            RR()
+        }
+        else if (pret.algorithm == "SRJF"){
+            SRJF()
+        }
+      }else {
+        fifo_ind = 0
+        sleep(SPEED).then(() => {alert("Nigerda bakayaro , Nigerda")})
+      } 
+  }
+function upper_fifo(pos){
+    for (let i = 0 ; i < pos ; i++ ){
+        if (list_fifos[i].processors.length != 0 ){
+            fifo_ind = i
+            return true 
+        }
+    }
+    return false 
+}
+function choose_successor(){
+        let unchanged = true 
+        for (let i = 0 ; i < list_fifos.length;i++){
+            if (list_fifos[i].processors.length != 0 ){
+                fifo_ind = i ;
+                unchanged = false 
+                muzan()
+                break
+        }      
+    }
+    if (unchanged &&  blocked.processors.length == 0 && processor.inProcess.length == 0){
+        fifo_ind = list_fifos.length
+        muzan()
+    }
+}
+
+
+function reset_parameters_FIFO(){
+    list_algos = []
+      for (var i = 1; i <= NB_FIFO; i++){
+          list_algos.push(document.getElementById("algo "+i).value)
+      }
+      create_fifos()
+  }
+
+function destroy(){
+  for (let i = 0 ; i < list_fifos.length ; i++){
+    f = list_fifos[i]
+    f.elem.remove()
+    for(let j = 0 ; j < f.rects.length ; j++){
+      f.rects[j].remove()
     }
   }
 }
+
+function 
+
+build_fifos(){
+  let div = document.getElementById("small_menu_4")
+  div.innerHTML = ""
+  let content = ""
+  content+="<table>"
+  for (let i = 0 ; i < NB_FIFO ; i++){
+    content+="<tr>"
+    content+="<th>NV "+i+"</th>"
+    content+="<th>"
+    content+='<select id="algo '+(i+1)+'" >'
+    content+='<option value="FCFS">FCFS</option>'
+    content+='<option value="SJF">SJF</option>'
+    content+='<option value="SRJF">SRJF</option>'
+    content+='<option value="RR">RR</option>'
+    content+="</select>"
+    content+="</th>"
+    content+="</tr>"
+  }
+  content+="</table>"
+  content+='<button class="btn btn_green " onclick="reset_parameters_FIFO()" >Valider</button>'
+  div.innerHTML = content
+}
+
 /*************************************************************/
 
 
@@ -718,11 +978,11 @@ function scrap(document){
                  document.getElementById(`Interuption_type_${i}`).value])
     }
     var color = document.getElementById("Process_color").value
-    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color,0)
+    var priority = document.getElementById("process priority").value
+    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, priority ,color)
     id_proc += 1
-    ALLL.push(process)
     add_to_proc_info_menu(process, "proc_info_menu")
-    process.move2fifo(pret)
+    process.move2fifo(list_fifos[priority])
 
     }
 
@@ -803,8 +1063,3 @@ function add_to_proc_info_menu(p, id){
 }
 
 /**************************************************/
-
-
-
-
-

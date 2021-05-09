@@ -13,25 +13,24 @@
         <div class="img_home">
 
         </div>
+        <!--<button class="btn_blue home_button" onclick="window.location.href='../../index.html'">Home</button>!-->
         <a href="../../index.html" class="logo" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
         <div class="algo_btns">
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo1/algo1.html'">FCFS</button>
-            <button class=" btn_blue btn_top_navbar selected"  >SJF</button>
+            <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo2/algo2.html'" >SJF</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo3/algo3.html'" >RR</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo4/algo4.html'" >SPRI</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo5/algo5.html'" >DPRI</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo6/algo6.html'" >MNIVR</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo7/algo7.html'" >MNIVP</button>
             <button class=" btn_blue btn_top_navbar"  onclick="window.location.href='../algo8/algo8.html'" >SRJF</button>
-            <button class=" btn_blue btn_top_navbar" onclick="window.location.href='../algo9/algo9.html'">MNIV</button>
-
+            <button class=" btn_blue btn_top_navbar selected">MNIV</button>
 
         </div>
     </nav>
-
     <nav class="side_navbar">
 
-        <br><br><button class="btn btn_green " onclick="SJF()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
+        <br><br><button class="btn btn_green " onclick="muzan()" id="button_0" ><bold style="font-size: 30px">Simuler</bold></button>
 
         <br><br><br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_1" >Ajouter Processus</button><br>
                 <!-- Add new process !-->
@@ -51,6 +50,10 @@
                             <th >Couleur</th>
                             <th><input type="color" name="color" id="Process_color" style="width: -moz-available"></th>
                         </tr>
+                        <tr>
+                          <th>Priority</th>
+                          <th><input type="text" name="priority" class="small_text_input" id="process priority" maxlength="1"></th>
+                        </tr>
                     </table>
                     <!-- END of Exe time, int nb, color !-->
                     <!--Start of interuptions menu !-->
@@ -65,18 +68,46 @@
                <div class="small_menu add_process_menu" id="small_menu_2">
                    <table>
                        <tr>
-                           <th >Nombre de processus</th>
+                           <th >Nombre de Processus</th>
                            <th><input type="text" class="small_text_input" maxlength="2" id="nb_processes"></th>
                        </tr>
                    </table>
                    <button class="btn btn_green " onclick="create_process()"  >Ajouter les Processus</button>
                </div>
 
+        <br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_6">Nombre de Niveaux</button><br>
+               <div class="small_menu add_process_menu" id="small_menu_6">
+                   <table>
+                       <tr>
+                           <th >Nombre </th>
+                           <th><input type="number" class="small_text_input" min="1" max="5" id="nb_fifos"></th>
+                       </tr>
+                   </table>
+                   <button class="btn btn_green " onclick="create_fifos()"  >Valider</button>
+               </div>
         <br><button class="btn btn_blue " onclick="reset_proc()" >Reset</button>
 
-        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_5">Afficher Les Commentaires</button>
+        <br><br><button class="btn btn_blue " onclick="open_close_logs_div()" id="button_11">Afficher Les Commentaires</button>
 
-        <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_4">Afficher Les Processus</button>
+        <br><br><button class="btn btn_blue " onclick="open_close_info_div()" id="button_10">Afficher Les Processus</button>
+
+        <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_4">Les FIFOs</button><br>
+          <div class="small_menu add_process_menu" id="small_menu_4">
+              <table>
+                  <tr>
+                      <th>NV 1 </th>
+                      <th>
+                        <select id="algo 1" >
+                          <option value="FCFS">FCFS</option>
+                          <option value="SJF">SJF</option>
+                          <option value="SRJF">SRJF</option>
+                          <option value="RR">RR</option>
+                        </select>
+                    </th>
+                  </tr>
+              </table>
+              <button class="btn btn_green " onclick="reset_parameters_FIFO()" >Valider</button>
+          </div>
 
         <br><br><button class="btn btn_blue " onclick="open_close_small_menu(id)" id="button_3">Parametre</button><br>
           <div class="small_menu add_process_menu" id="small_menu_3">
@@ -138,14 +169,13 @@
             </div>
         </div>
 
+     </div>
 
-    </div>
 
-
-    <div class="slidecontainer">
+    <!--<div class="slidecontainer">
       <input type="range" min="100" max="10000" value="2000" class="slider" id="myspeed">
       <p>SPEED </span></p>
-  </div>
+  </div>!-->
 
 </body>
 <script src="../../bib/d3.js"></script>
@@ -154,7 +184,7 @@
 
     document.getElementById("TIME_UNIT").value = TIME_UNIT;
     document.getElementById("SPEED").value = SPEED;
-  var open_menus_nb = 3;
+  var open_menus_nb = 4;
   var nb_interuption;
 
   for (let i = 1; i <= open_menus_nb; i++){document.getElementById("small_menu_"+i).style.display = "none";}
@@ -174,7 +204,6 @@
 
   function open_close_small_int_menu(id){
       var ii = id.slice(12)
-      console.log(ii);
       for (let i = 1; i <= nb_interuption; i++){if (i != ii){document.getElementById("small_int_menu_"+i).style.display = "none";}}
       var menu_id = "small_int_menu_"+ii;
       var x = document.getElementById(menu_id)
@@ -191,7 +220,6 @@
       nb_interuption = nb_int
       var menu = ""
       for (var i = 1; i <= nb_int; i++){
-          console.log(i);
           menu += `
           <button class="btn_int" onclick="open_close_small_int_menu(id)" id="interuption_${i}" >Interuption ${i}</button>
                  <div class="small_menu add_int_menu shadow" id="small_int_menu_${i}">
@@ -222,25 +250,27 @@
       for (let i = 1; i <= nb_interuption; i++){document.getElementById("small_int_menu_"+i).style.display = "none";}
   }
 
-  function reset_proc(){
+  function reset_proc(mode=-1){
 
       document.getElementById("proc_info_menu").innerHTML = "";
       document.getElementById("logs").innerHTML = "";
       id_proc = 0
       //for (var i = 0; i < pret.processors.length; i++){
-      while (pret.processors.length != 0){
-          var proc = pret.processors.shift()
-          proc.elem.transition()
-              .duration(200)
-              .attr("cx", 1400)
-              .style("opacity", "0");
-          proc.text.transition()
-              .duration(200)
-              .attr("x", 1400)
-              .style("opacity", "0");
-          sleep(200).then(() => {
-              proc.elem.remove();
-          });
+      if (mode==-1){
+          while (pret.processors.length != 0){
+              var proc = pret.processors.shift()
+              proc.elem.transition()
+                  .duration(200)
+                  .attr("cx", 1400)
+                  .style("opacity", "0");
+              proc.text.transition()
+                  .duration(200)
+                  .attr("x", 1400)
+                  .style("opacity", "0");
+              sleep(200).then(() => {
+                  proc.elem.remove();
+              });
+          }
       }
   }
 
@@ -255,7 +285,7 @@
 
   function open_close_info_div(){
       var x = document.getElementById("info_div")
-      var y = document.getElementById("button_4")
+      var y = document.getElementById("button_10")
       if (x.style.display == "block") {
          x.style.display = "none";
          y.style.background = "none"
@@ -268,7 +298,7 @@
 
   function open_close_logs_div(){
       var x = document.getElementById("logs_div")
-      var y = document.getElementById("button_5")
+      var y = document.getElementById("button_11")
       if (x.style.display == "block") {
          x.style.display = "none";
          y.style.background = "none"
