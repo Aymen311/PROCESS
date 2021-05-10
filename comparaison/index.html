@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Comparaison</title>
+
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<!-- Import lib -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<!-- End import lib -->
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body class="overlay-scrollbar">
+
+
+	<!-- navbar -->
+	<div class="navbar">
+		<!-- nav left -->
+		<ul class="navbar-nav">
+
+			<div class = "div_logo">
+				<a href="#" class="logo">Pro<span id="logo_suffix">cess</span></a>
+				<a class="nav-link">
+					<i class="fas fa-list-ul" onclick="collapseSidebar()"></i>
+				</a>
+			</div>
+		</ul>
+		<!-- end nav left -->
+
+		<!-- nav right -->
+		<ul class="navbar-nav nav-right">
+			<li class="nav-item mode">
+				<a class="nav-link" href="#" onclick="switchTheme()">
+					<i class="fas fa-moon dark-icon"></i>
+					<i class="fas fa-sun light-icon"></i>
+				</a>
+			</li>
+			<li class="nav-item dropdown">
+				<a class="nav-link">
+					<i class="fas fa-bell dropdown-toggle" data-toggle="notification-menu"></i>
+					<span class="navbar-badge">15</span>
+				</a>
+				<ul id="notification-menu" class="dropdown-menu notification-menu">
+					<div class="dropdown-menu-header">
+						<span>
+							Notifications
+						</span>
+					</div>
+					<div class="dropdown-menu-content overlay-scrollbar scrollbar-hover">
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-gift"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+						<li class="dropdown-menu-item">
+							<a href="#" class="dropdown-menu-link">
+								<div>
+									<i class="fas fa-tasks"></i>
+								</div>
+								<span>
+									Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+									<br>
+									<span>
+										15/07/2020
+									</span>
+								</span>
+							</a>
+						</li>
+					</div>
+					<div class="dropdown-menu-footer">
+						<span>
+							View all notifications
+						</span>
+					</div>
+				</ul>
+			</li>
+		</ul>
+		<!-- end nav right -->
+	</div>
+	<!-- end navbar -->
+
+
+	<!-- sidebar -->
+	<div class="sidebar">
+		<ul class="sidebar-nav">
+			<li class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tachometer-alt"></i>
+					</div>
+					<span>
+						Title
+					</span>
+				</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link active">
+					<div>
+						<i class="fab fa-accusoft"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tasks"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-spinner"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-check-circle"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-bug"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-chart-line"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-book-open"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-adjust"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fab fa-algolia"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-audio-description"></i>
+					</div>
+					<span>Title</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-audio-description"></i>
+					</div>
+					<span>Title5</span>
+				</a>
+			</li>
+			
+
+		</ul>
+	</div>
+	<!-- end sidebar -->
+	<!-- main content -->
+	<div class="wrapper">
+		<div class="row">
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-primary">
+					<p>
+						<i class="fas fa-tasks"></i>
+					</p>
+					<h3>100+</h3>
+					<p>To do</p>
+				</div>
+			</div>
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-warning">
+					<p>
+						<i class="fas fa-spinner"></i>
+					</p>
+					<h3>100+</h3>
+					<p>In progress</p>
+				</div>
+			</div>
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-success">
+					<p>
+						<i class="fas fa-check-circle"></i>
+					</p>
+					<h3>100+</h3>
+					<p>Completed</p>
+				</div>
+			</div>
+			<div class="col-3 col-m-6 col-sm-6">
+				<div class="counter bg-danger">
+					<p>
+						<i class="fas fa-bug"></i>
+					</p>
+					<h3>100+</h3>
+					<p>Issues</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-8 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							Table
+						</h3>
+						<i class="fas fa-ellipsis-h"></i>
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Algorithm</th>
+									<th>Status</th>
+									<th>Complexity</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>FCFS</td>
+									<td>
+										<span class="dot">
+											<i class="bg-success"></i>
+											Completed
+										</span>
+									</td>
+									<td>O(n)</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>SJF</td>
+									<td>
+										<span class="dot">
+											<i class="bg-warning"></i>
+											In progress
+										</span>
+									</td>
+									<td>O(2n)</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>R-robin</td>
+									<td>
+										<span class="dot">
+											<i class="bg-warning"></i>
+											In progress
+										</span>
+									</td>
+									<td>O(log(n))</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>PRIORITY_S</td>
+									<td>
+										<span class="dot">
+											<i class="bg-danger"></i>
+											Delayed
+										</span>
+									</td>
+									<td>O(n^2)</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>PRIORITY_D</td>
+									<td>
+										<span class="dot">
+											<i class="bg-primary"></i>
+											Pending
+										</span>
+									</td>
+									<td>O(exp(n))</td>
+								</tr>
+								<tr>
+									<td>6</td>
+									<td>MULTI_NV</td>
+									<td>
+										<span class="dot">
+											<i class="bg-primary"></i>
+											Pending
+										</span>
+									</td>
+									<td>O(n+k)</td>
+								</tr>
+								<tr>
+									<td>7</td>
+									<td>ALGO_7</td>
+									<td>
+										<span class="dot">
+											<i class="bg-primary"></i>
+											Pending
+										</span>
+									</td>
+									<td>O(n!)</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-4 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							Status
+						</h3>
+						<i class="fas fa-ellipsis-h"></i>
+					</div>
+					<div class="card-content">
+						<div class="progress-wrapper">
+							<p>
+								CPU
+								<span class="float-right">50%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-success" style="width: 50%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								MEMORY
+								<span class="float-right">60%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-primary" style="width:60%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								DISK
+								<span class="float-right">40%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-warning" style="width:40%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								I/O
+								<span class="float-right">20%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-danger" style="width:20%"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							Chartjs
+						</h3>
+					</div>
+					<div class="card-content">
+						<canvas id="myChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end main content -->
+	<!-- import script -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<script src="index.js"></script>
+	<!-- end import script -->
+</body>
+</html>
