@@ -8,8 +8,61 @@
 </body>
 <script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<div id="FCFS" style="height: 200px;width:1000px; position: relative;"></div>
-<div id="RR" style="height: 200px;width:1000px; position: relative;"></div>
-<div id="MULTI_NV" style="height: 200px;width:1000px; position: relative;"></div>
-<div id="MULTI_NV_PRIO" style="height: 200px;width:1000px; position: relative;"></div>
+<div>
+	<h3>FCFS</h3>
+	<div id="FCFS" style="height: 200px;width:1000px; position: relative;"></div>
+</div>
+<div class="">
+	<h3>RR</h3><div id="RR" style="height: 200px;width:1000px; position: relative;"></div>
+</div>
+<div class="">
+	<h3>MULTI_NV</h3><div id="MULTI_NV" style="height: 200px;width:1000px; position: relative;"></div>
+
+</div>
+<div class="">
+	<h3>MULTI_NV_PRIO</h3> <div id="MULTI_NV_PRIO" style="height: 200px;width:1000px; position: relative;"></div>
+</div>
+<div class=""><h3>SJF</h3> <div id="SJF" style="height: 200px;width:1000px; position: relative;"></div></div>
+<div class=""><h3>SRJF</h3> <div id="SRJF" style="height: 200px;width:1000px; position: relative;"></div></div>
+<div class=""><h3>PRIO STAT</h3> <div id="PS" style="height: 200px;width:1000px; position: relative;"></div></div>
+<div class=""><h3>PD</h3> <div id="PD" style="height: 200px;width:1000px; position: relative;"></div></div>
 </html>
+
+
+<script>
+/*
+Config = {
+    "MIN_PROC_TIME":20,
+    "MAX_PROC_TIME":35,
+    "MAX_PROC_PRIORITY":0,
+    "MIN_PROC_PRIORITY":4,
+    "MAX_PROC_INTRS":4,
+    "MAX_PROC_DEGREE":3,
+    "MAX_INTR_DURATION":10,
+    "MIN_INTR_DURATION":5,
+    "allow_function_int": 0,
+    "UPDATE_TIME":2,
+    "MAX_ENTRANCE":7,
+    "MIN_ENTRANCE":5,
+}
+
+// create_processes(nb processes, Config)
+L = create_processes(5, Config)
+//L = [id:int, entrance:int, exe time:int, priority:int, nb ints:int, ints:list]
+/*L = [
+    [0, 0,  2, 10, 0, []],
+    [1, 5, 10, 11, 0, []],
+]*/
+//PD_init(L, 50, 0, true)
+//PS_init(L, 50, 0, true)
+//FCFS_init(L, 0, 0, true)
+//SJF_init(L, 50, 0, true)
+//SRJF_init(L, 50, 0, true)
+//RR_init(L, 50, 0, 3, true)
+//MULTI_NV_init(L, 50, 0, [2, 3, 4, 10], true)
+//MULTI_NV_PRIO_init(L, 50, 0, [10, 7, 5, 3], true)
+
+
+//All histories are in the dict all_histories
+
+</script>

@@ -31,19 +31,21 @@ let PROCESSOR_H = 30;
 let PROCESSOR_W = 30;
 
 //RPOCS GENERAL INFO
-let MIN_PROC_TIME = 2
-let MAX_PROC_TIME = 10
+let MIN_PROC_TIME = 10
+let MAX_PROC_TIME = 30
 let MAX_PROC_PRIORITY = 0
 let MIN_PROC_PRIORITY = 10
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
-let MAX_INTR_DURATION = 10
+let MAX_INTR_DURATION = 20
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
 var SPEED = 500;
 var TIME_UNIT = 500;
-var quantum = 1
+var quantum = 1;
+
+var update_time = 20;
                   /********************************************/
 
 
@@ -183,6 +185,7 @@ class Fifo {
         this.capacite = capacite;
         this.processors = [];
         this.name = name
+
     }
     createFifo() {
       for ( let i = 0; i < FIFO_CAPACITY; i++){
@@ -217,8 +220,7 @@ class Fifo {
               this.shift(n)
               return elem
           }
-    }
-  }
+    }}
     resume(elem, fifo) {
         //if elem in numerical; resume the "elem"th element
         //else (ie elem is Process) resume elem
@@ -294,6 +296,7 @@ class Process {
             .attr('dx','-5')
             .attr("x", STARTING_PROC_X )
             .attr("y", STARTING_PROC_Y)
+        this.update_on = true;
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -373,7 +376,6 @@ class Process {
             .duration(SPEED)
             .attr("y",this.y).attr("x",this.x)
     }
-
     hasint(){return this.ints.length != this.int_counter}
     treat_int(upd){
       let int = this.ints[this.int_counter]
@@ -390,6 +392,18 @@ class Process {
     int_time(){return this.ints[this.int_counter][0] - this.previous_int_time}
     real_int_time(){return this.ints[this.int_counter][0]}
     int_duration(){return this.ints[this.int_counter][1]}
+
+    update_priority(){
+        if ( this.update_on ){
+            sleep(update_time * TIME_UNIT).then(() => {
+                if (this.priority > 0){
+                    this.priority = this.priority - 1;
+                    this.p_text.text(this.priority)
+                    this.update_priority()
+                }
+            })
+        }
+    }
 
 }
 
@@ -428,6 +442,11 @@ function change_process() {
 
 function resume_process(elem) {
     var i_elem = blocked.resume(elem, pret);
+}
+
+function start_update_counter(proc){
+    proc.update_on = true;
+    proc.update_priority();
 }
 
 /***************************************************/
@@ -492,7 +511,6 @@ svg.append("text")
             .attr("position", "fixed")
             .text("Interuption function");
 
-
 function mem_intr(){
   mem.transition()
   .attr("fill","red")
@@ -514,22 +532,17 @@ function func_intr(){
 
 /****************** ALGORITHM ***********************/
 
-
 function log_comment(comment, color, elem_color){
     var x = document.getElementById("logs");
-    /*var c = `
-    <div class='int_class_header'>
-        <span style="color:${color}"> ${comment} </span><br>
-    </div>`*/
-    console.log(elem_color);
     var c = `<li style="color:${color}">   ${comment}
         <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
     </li>`;
     x.innerHTML = c + x.innerHTML;
 }
+
+
 // ALGORITHM 5 : //
 //////////////////
-
 
 
 //fonction pour choisir le plus prioritaire
@@ -544,41 +557,20 @@ function find_the_highest_priority(){
   return i ;
 }
 
-//initialization de update time
-//by default = 5000 (5s) if the user gives nothing
-//else we work with the user input
-var up = true
-var UPDATE_UNIT = document.getElementById("update_time").value * 1000 ;//valeur de mise a jour en s
-if (UPDATE_UNIT == "") {
-  UPDATE_UNIT = 5000
-}else{
-  UPDATE_UNIT *= 1000
-}
+var first = true;
 
-//fonction pour la mise a jour des priorités tous le UPDATE_UNIT s
-function update_priority(){
-  if (pret.processors.length != 0){
-    for (let index = 0; index < pret.processors.length; index++) {
-      let elem = pret.processors[index] 
-      if ((elem.priority!=0)&&(elem.left_time_anime == elem.exe_time)) {
-        elem.priority -= 1 ;
-        elem.p_text.text(pret.processors[index].priority)
-        document.getElementById("menu_priority_proc_"+elem.id).innerHTML = ",Priority : "+ elem.priority
-      }
-    }
-    log_comment("Mise à jour des priorité ","black");
-    setTimeout(function(){update_priority()}, UPDATE_UNIT);    
-  }
-}
 
 function Priority_dynamique(mode , proc){
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+    if (first){
+        for (var i = 0; i < pret.processors.length; i++){
+            start_update_counter(pret.processors[i]);
+        }
+        first = false;
+    }
     if (processor.isready() && pret.processors.length != 0 ){
-      if (up == true) {
-        up = false ;
-        setTimeout(function(){update_priority()}, UPDATE_UNIT);
-      }
       let elem = treat_process(find_the_highest_priority());
+      elem.update_on = false;
       log_comment("Traintement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
           sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
@@ -589,7 +581,8 @@ function Priority_dynamique(mode , proc){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
-                  finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {Priority_dynamique()})})
+                  finish_process();elem.pere.treat_int();resume_process(elem.pere);start_update_counter(elem.pere);
+                  sleep(SPEED).then(() => {Priority_dynamique()})})
         }
         }else{
           sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,(elem.left_time-elem.int_time()+elem.previous_int_time),1);})
@@ -609,6 +602,7 @@ function Priority_dynamique(mode , proc){
     if (mode == "block"){
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
+          start_update_counter(proc);
           resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {Priority_dynamique()})})
     }
 

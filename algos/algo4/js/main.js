@@ -218,8 +218,7 @@ class Fifo {
               this.shift(n)
               return elem
           }
-    }
-  }
+    }}
     resume(elem, fifo) {
         //if elem in numerical; resume the "elem"th element
         //else (ie elem is Process) resume elem
@@ -374,7 +373,6 @@ class Process {
             .duration(SPEED)
             .attr("y",this.y).attr("x",this.x)
     }
-
     hasint(){return this.ints.length != this.int_counter}
     treat_int(upd){
       let int = this.ints[this.int_counter]
@@ -391,6 +389,8 @@ class Process {
     int_time(){return this.ints[this.int_counter][0] - this.previous_int_time}
     real_int_time(){return this.ints[this.int_counter][0]}
     int_duration(){return this.ints[this.int_counter][1]}
+    
+
 
 }
 
