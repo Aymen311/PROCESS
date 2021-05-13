@@ -173,7 +173,6 @@
 
   function open_close_small_int_menu(id){
       var ii = id.slice(12)
-      console.log(ii);
       for (let i = 1; i <= nb_interuption; i++){if (i != ii){document.getElementById("small_int_menu_"+i).style.display = "none";}}
       var menu_id = "small_int_menu_"+ii;
       var x = document.getElementById(menu_id)
@@ -190,7 +189,6 @@
       nb_interuption = nb_int
       var menu = ""
       for (var i = 1; i <= nb_int; i++){
-          console.log(i);
           menu += `
           <button class="btn_int" onclick="open_close_small_int_menu(id)" id="interuption_${i}" >Interuption ${i}</button>
                  <div class="small_menu add_int_menu shadow" id="small_int_menu_${i}">
@@ -340,4 +338,79 @@
     }
 
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    var data = []
+    var colors = []
+
+    function clean_data(){
+      for(let i = 0 ; i < ALLL.length ; i++){
+        let arr = ALLL[i].history
+        arr.splice(arr.length,1)
+        let passed = false
+        while (!passed){
+          passed = true
+          for (let i = 0 ; i < arr.length -1 ; i++){
+            let sub_arr1 = arr[i]
+            let sub_arr2 = arr[i+1]
+              passed = true
+              if (sub_arr1[2]==sub_arr2[2]){
+                  sub_arr1[1] = sub_arr2[1]
+                  arr.splice(i+1,1)
+                  passed = false
+                  break
+                }
+            }
+        }
+      }
+    }
+
+    function history2ganttdata(){
+        for ( var i = 0; i < ALLL.length; i++){
+            for ( var j = 0; j < ALLL[i].history.length; j++){
+                var state = ALLL[i].history[j][2];
+
+
+                if (state == "In process"){c = "green"}
+                else if (state == "Blocked") {c = "red"}
+                else if (state == "Pret") {c = "blue"}
+                else {c = "black"}
+
+                if ( ALLL[i].history[j][1] == -1 ){
+                    data.push(["id"+i, state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
+                }
+                else {
+                    data.push(["id"+i, state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+                }
+            }
+        }
+    }
+
+    function draw_gantt(data){
+        google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+          var container = document.getElementById('example3.1');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'string', id: 'Role' });
+            dataTable.addColumn({ type: 'string', id: 'Name' });
+            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+            dataTable.addColumn({ type: 'number', id: 'Start' });
+            dataTable.addColumn({ type: 'number', id: 'End' });
+          dataTable.addRows(data);
+          var options = {
+              colors: ['#cbb69d', '#603913'],
+            };
+          chart.draw(dataTable);
+        }
+    }
+
+
+
+</script>
+<div id="example3.1" style="height: 600px;width:1000px;position: absolute;top: 475px;left: 142px;"></div>
+
 </html>

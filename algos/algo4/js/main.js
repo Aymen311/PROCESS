@@ -72,15 +72,15 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2*MAX_PROC_INTRS){
+  if (exec_time > 2){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = 1
+      var nb_intrs = randint(0,2)
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time-1)
+    int_t = randint(int_t+1,exec_time)
     intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
@@ -454,7 +454,6 @@ TU_slider.oninput = function() {
 
 /***************** FUNCTION TO TEST AREA **************/
 function update_left_time(elem, t,end,sub){
-    console.log(sub)
     if (t > end){
         sleep(TIME_UNIT).then(() => {
           elem.left_time_anime -= sub;
@@ -520,7 +519,6 @@ function log_comment(comment, color, elem_color){
     <div class='int_class_header'>
         <span style="color:${color}"> ${comment} </span><br>
     </div>`*/
-    console.log(elem_color);
     var c = `<li style="color:${color}">   ${comment}
         <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
     </li>`;
