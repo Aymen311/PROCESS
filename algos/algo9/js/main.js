@@ -42,7 +42,7 @@ let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
 var SPEED = 500;
-var TIME_UNIT = 500;
+var TIME_UNIT = 200;
 var pret = undefined
 var fifo_ind = 0 
 var QUANTUMS = [2,2,2,2,2];
@@ -76,15 +76,15 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2*MAX_PROC_INTRS){
+  if (exec_time > 2){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = 1
+      var nb_intrs = randint(0,2)
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time-1)
+    int_t = randint(int_t+1,exec_time)
     intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
@@ -210,6 +210,7 @@ class Fifo {
         this.UniqueProcessAvailable = false;
         this.name = name
         this.quantum = quantum;
+        this.UniqueProcessAvailable = false
         this.algorithm = algorithm
         this.elem = -1;
         this.rects = []
@@ -402,6 +403,12 @@ class Process {
             .attr("y",this.y).attr("x",this.x) ;
     }
     resume(fifo) {
+        if (fifo.processors.length == 0){
+            sleep(SPEED).then(() => {fifo.UniqueProcessAvailable = true})
+        }
+        else {
+            fifo.UniqueProcessAvailable = false
+        }
         var l = fifo.fifoAddProcess(this);
         var elem_ = this.elem;
         this.x = fifo.x + (fifo.processors.length - 1) * PROCS_SPACE + 2*PROC_R;
@@ -586,6 +593,18 @@ function log_comment(comment, color, elem_color){
     x.innerHTML = c + x.innerHTML;
 }
 
+function list_fifos_not_empty(){
+    for (var i = 0; i < NB_FIFO; i++){
+        if (list_fifos[i].processors.length != 0){
+            if (list_fifos[i].processors.length == 1 && list_fifos[i].UniqueProcessAvailable){
+                return true;
+            }
+            else {return true}
+        }
+    }
+    return false
+}
+
 // ALGORITHMS : //
 //////////////////
 
@@ -601,7 +620,7 @@ function FCFS(mode , proc){
         muzan()
     }else{
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
+    if (processor.isready() && list_fifos_not_empty() != 0 ){
       let elem = treat_process(0);
       if (! elem.hasint()){
               //choose_successor()  
@@ -657,7 +676,7 @@ function SJF(mode , proc){
         muzan()
     }else {
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
+    if (processor.isready() && list_fifos_not_empty() != 0 ){
       let elem = treat_process(find_the_shortest());
       log_comment("Traintement du processus "+elem.id,"§green", elem.color);
       if (! elem.hasint()){
@@ -706,7 +725,7 @@ function SRJF(mode , proc){
         muzan()
     }else {
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
+    if (processor.isready() && list_fifos_not_empty() != 0 ){
       let elem = treat_process(find_the_shortest_srjf());
       log_comment("Traintement du processus "+elem.id,"§green", elem.color);
       if (! elem.hasint()){
@@ -756,7 +775,7 @@ function RR(mode,proc) {
         muzan()
     }else {
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
-    if (processor.isready() && pret.processors.length != 0 ){
+    if (processor.isready() && list_fifos_not_empty() != 0){
       let elem = treat_process(0);
       log_comment("Traintement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){

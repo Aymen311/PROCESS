@@ -205,7 +205,6 @@
 
   function open_close_small_int_menu(id){
       var ii = id.slice(12)
-      console.log(ii);
       for (let i = 1; i <= nb_interuption; i++){if (i != ii){document.getElementById("small_int_menu_"+i).style.display = "none";}}
       var menu_id = "small_int_menu_"+ii;
       var x = document.getElementById(menu_id)
@@ -222,7 +221,6 @@
       nb_interuption = nb_int
       var menu = ""
       for (var i = 1; i <= nb_int; i++){
-          console.log(i);
           menu += `
           <button class="btn_int" onclick="open_close_small_int_menu(id)" id="interuption_${i}" >Interuption ${i}</button>
                  <div class="small_menu add_int_menu shadow" id="small_int_menu_${i}">

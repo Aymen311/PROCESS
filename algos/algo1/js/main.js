@@ -36,12 +36,18 @@ let MAX_PROC_TIME = 10
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
+let MIN_INTR_DURATION = 3
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 
 //Genreal info
+
 var SPEED = 50;
 var TIME_UNIT = 50;
+
+var SPEED = 0;
+var TIME_UNIT = 0;
+
 var ALL_PROCS = []
 var current_time = 0
 
@@ -73,16 +79,16 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2*MAX_PROC_INTRS){
+  if (exec_time > 2){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = 1
+      var nb_intrs = randint(0,2)
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time-1)
-    intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
+    int_t = randint(int_t+1,exec_time)
+    intr = [int_t,randint(MIN_INTR_DURATION,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
       break
@@ -286,7 +292,6 @@ class Process {
             .attr("stroke", "black")
             .attr("stroke_width", 2)
             .attr("position", "fixed");
-        console.log(color);
         if (color == -1){this.color = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
                         this.elem.attr("fill", "rgb("+this.color+")")
                     }
@@ -499,9 +504,27 @@ function push_history_blocked(proc, time){
     proc.history.push([proc.history[l-1][1], -1, ""])
 }
 
+function get_cpu_usage(){
+    var max = 0;
+    for (var p = 0; p < ALLL.length; p++){
+        if (max < ALLL[p].history[[ALLL[p].history.length-1]][0]){max = ALLL[p].history[[ALLL[p].history.length-1]][0]}
+    }
 
-
-
+    var cpt = 0;
+    for ( var i = 0; i < max; i++){
+        var b = 1;
+        for (var p = 0; p < ALLL.length; p++){
+            for (var state = 0; state < ALLL[p].history.length; state++){
+                if ( (ALLL[p].history[state][0] <= i) && (i <=  ALLL[p].history[state][1])){
+                    if  (ALLL[p].history[state][2] != "Blocked"){b = 0}
+                    break;
+                }
+            }
+            if (b == 0){break}
+        }
+        cpt = cpt + b;
+    }
+}
 
 
 var mem = svg.append("circle")
@@ -586,6 +609,7 @@ function FCFS(mode , proc){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
+
                     push_history_inProcess_pret(elem, elem.int_time())
                     block_process();
                     FCFS("block",elem)})
@@ -609,17 +633,19 @@ function FCFS(mode , proc){
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {FCFS()})})
+          sleep(SPEED).then(() => {
+              //resume_process(proc);proc.treat_int();
+              FCFS()})})
     }
 
   }
   else {
     std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
-    console.log(std.avrg_time)
-    console.log(ALLL)
     clean_data()
     sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
     history2ganttdata(); draw_gantt(data);
+    clean_data();  history2ganttdata(); draw_gantt(data);
+
   }
 }
 
