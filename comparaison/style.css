@@ -110,7 +110,7 @@ body {
 }
 
 /* logo */
-.div_logo {
+.logo {
     position: relative;
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -120,28 +120,13 @@ body {
     display: flex;
     float: left;
     height: 67px;
-    width: 250px;
+    width: 140px;
     text-align: center;
     text-transform: uppercase;
-    padding: 0px 5px;
+    padding: 3px 3px;
     background-color: var(--main-bg-color);
 }
 
-.logo 
-{
-    color: var(--white-color);
-    font-weight: 700;
-    text-decoration: none;
-    font-size: 2em;
-    text-transform: uppercase;
-    letter-spacing:2px;
-    padding-right: 20px;
-}
-
-#logo_suffix
-{
-   font-weight: 5; 
-}
 
 /********/
 
@@ -297,7 +282,7 @@ body {
 	overflow: hidden;
 	z-index: 100;
 	transition: width .5s;
-	overflow: ;
+	overflow: hidden;
 }
 
 .sidebar:hover {
@@ -562,3 +547,6 @@ table th {
 	border-radius: .25rem;
 	box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
 }
+
+
+

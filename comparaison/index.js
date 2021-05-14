@@ -83,7 +83,7 @@ function openCloseDropdown(event) {
 	}
 }
 
-var ctx = document.getElementById('myChart')
+var ctx = document.getElementById('myChart1')
 ctx.height = 500
 ctx.width = 500
 var data = {
@@ -113,3 +113,54 @@ var lineChart = new Chart(ctx, {
 		bezierCurve: false,
 	}
 })
+
+var ctx2 = document.getElementById('myChart2')
+ctx2.height = 500
+ctx2.width = 500
+
+
+var lineChart2 = new Chart(ctx2, {
+	type: 'line',
+	data: data,
+	options: {
+		maintainAspectRatio: false,
+		bezierCurve: false,
+	}
+})
+
+/* Get the documentElement (<html>) to display the page in fullscreen */
+var elem = document.documentElement;
+
+/* View in fullscreen */
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
+
+
+function switchScreen()
+{
+	if((window.fullScreen) ||
+   (window.innerWidth == screen.width && window.innerHeight == screen.height)) {
+	   closeFullscreen() ; 
+
+} else {
+	openFullscreen() ;
+}
+}
