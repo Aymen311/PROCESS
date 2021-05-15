@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>HOME</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+<header>
+	<a href="#" class="logo">Pro<span id="logo_suffix">cess</span></a>
+	<ul>
+		<li><a href="#" class="active">Home</a></li>
+		<li><a href="algos/algo1/algo1.html">Simuler</a></li>
+		<li><a href="#">Documentation</a></li>
+		<li><a href="#">Contact</a></li>
+	</ul>
+</header>
+
+<section>
+
+	<img src="image/processor.jpg" id="processor">
+	<div class="content">
+		<div class="textBox translate" data-speed="0">
+			<h2 class="translate" data-speed="0">projet 2CP</h2>
+			<p class="translate" data-speed="0">PROCESS est un outil d'aide à la simulation visuelle d'algorithmes d'ordonnancement dans la mémoire centrale.<br>
+			<b>	Simulez, visualisez et comparez </b> les différents algorithmes <br> d'ordonnancement avec notre outil.
+			</p>
+			<a href="#Explore_algo" id="btn" class="translate" data-speed="0">Explorer</a>
+		</div>
+	</div>
+</section>
+
+<div class="sec">
+	<h2>Les algorithmes d'ordonnancement</h2>
+	<p> Dans les systèmes d'exploitation, l’ordonnanceur désigne le composant du noyau du système d'exploitation choisissant l'ordre d'exécution des processus sur les processeurs d'un ordinateur. <br> 
+		À un instant donné, il y a souvent davantage de processus à exécuter que de processeurs.
+		<br>
+		Un des rôles des algorihtmes d'ordonnancement, est de permettre à tous ces processus de s'exécuter à un moment ou un autre et d'utiliser au mieux le processeur pour l'utilisateur.
+		</p>
+</div>
+
+<div class="container" id="Explore_algo">
+
+	<div class="card" id="algo1">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>01</h2>
+			<h3>FCFS</h3>
+			<p>Le principe de fonctionnement de cet algorithme est simple : <br>
+				 Quand un processus est prêt à s’exécuter, il est mis en queue de la file d’attente des processus prêts. <br>
+				 Quand le processeur devient libre, il est alloué au processus se trouvant en tête de file d’attente des processus prêts. <br>
+				 Le processus élu relâche le processeur s’il se termine ou s’il demande une entrée sortie.</p>
+			<a href="algos/algo1/algo1.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+	<div class="card" id="algo2">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>02</h2>
+			<h3>SJF</h3>
+			<p>SJF ou SRTF (Shortest Remaining Time First) (plus court temps d’exécution restant PCTER) choisit de façon prioritaire les processus ayant le plus court temps d’exécution sans réellement tenir compte de leur date d’arrivée. </p>
+			<a href="algos/algo2/algo2.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+	<div class="card" id="algo3">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>03</h2>
+			<h3>R-Robin</h3>
+			<p>Cet algorithme d'ordonnancement est régit par les règles suivantes : <br>
+				Un processus qui rentre dans l’état éligible est mis en queue de la file d'attente des prêts. <br>
+				Si un processus élu se termine ou se bloque avant de consommer son quantum de temps, le processeur est immédiatement alloué au prochain processus se trouvant en tête de la file d'attente des prêts.  <br>
+				Si le processus élu continue de s'exécuter au bout de son quantum, dans ce cas le processus sera interrompu et mis en queue de la file d'attente des prêts et le processeur est réquisitionné pour être ré-alloué au prochain processus en tête de cette même file d’attente. </p>
+			<a href="algos/algo3/algo3.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+
+
+</div>
+
+<div class="container">
+
+	<div class="card">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>04</h2>
+			<h3>Priorité statique</h3>
+			<p>Cet algorithme d'ordonnancement est régit par les règles suivantes : <br>
+				Quand un processus est admis par le système il est inséré dans la file d’attente des processus prêts à sa position appropriée selon sa valeur de priorité. <br> 
+				Quand le processeur devient libre il est alloué au processus se trouvant en tête de file d’attente des processus prêts <br>
+				Dans un cas de non préemption un processus élu relâche le processeur que s’il se termine ou se bloque.
+			 </p>
+			<a href="algos/algo4/algo4.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+	<div class="card">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>05</h2>
+			<h3>Priorite dinamique</h3>
+			<p>Cet algorithme a le meme principe que l'algorithme de priorité statique sauf que la priorité des processus change au fur et a mesure de l'exécution <br>
+				Pour Linux ,plus un processus utilise le temps CPU qui lui est imparti, plus le noyau diminue sa priorité dynamique <br>
+				Au contraire, plus le processus rend vite la main lorsqu’on l’exécute, plus le noyau augmente sa priorité.</p>
+			<a href="algos/algo5/algo5.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+	<div class="card">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>06</h2>
+			<h3>Multi-niveaux</h3>
+			<p> Le principe de cette methode consiste a gérer les déplacements des processus prêts entre le disque et la RAM. <br>
+			 L'ensemble des processus prêts est souvent trop important pour tenir en RAM. Certains sont donc sur disque. Un processus élu qui est sur disque prend beaucoup plus de temps qu'un processus en RAM pour être chargé dans l'UC et c'est pour cela qu'un deuxième algorithme d'ordonnancement est conçu pour gérer ces déplacements .</p>
+			<a href="algos/algo6/algo6.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+
+
+</div>
+
+
+<div class="container">
+
+	<div class="card">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>07</h2>
+			<h3>Algo 7</h3>
+			<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem veniam assumenda consequatur, rerum vero obcaecati.</p>
+			<a href="algos/algo7/algo7.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+	<div class="card">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		<div class="content_card">
+			<h2>08</h2>
+			<h3>Comparaison</h3>
+			<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatem veniam assumenda consequatur, rerum vero obcaecati.</p>
+			<a href="comparaison/comp.html">Simuler</a>
+			<a href="#">Documentation</a>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+
+<script src="js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,401 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif ;
+    box-sizing: border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(10, 50, 200), rgba(200, 50, 10));
+    overflow-x: : hidden;
+}
+
+.container {
+    max-width: 950px;
+    background: #fff;
+    width: 100%;
+    padding: 25px 30px;
+    border-radius: 5px;
+    position: absolute;
+    height:600px;
+    transition: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+
+.small_container {
+    max-width: 700px;
+    background: #fff;
+    width: 620px;
+    padding: 25px 30px;
+    border-radius: 5px;
+    position: absolute;
+    height: 400px;
+    left: calc(50% - 310px);
+    top: calc(50% - 200px);
+    z-index: 6;
+}
+
+.small_container_blur_background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000078;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.container .title{
+    font-size: 25px;
+    font-weight: 500;
+}
+
+
+.container .title::before{
+    content: '';
+    position: relative;
+    left: 0;
+    bottom: 0;
+    background: rgb(18, 18, 110);
+    width: 30px;
+    height: 30px;
+}
+
+
+.container .configuration{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.configuration .input_box{
+    margin: 20px 0 12px 0;
+    width: calc(100% / 2 - 20px);
+}
+
+.configuration .input_box span{
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+
+
+.configuration .input_box input[type="checkbox"] {
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    bottom: -10px;
+    opacity: 1;
+}
+
+.suivant_button {
+    right: 20px;
+}
+.suivant_button:active .container{
+    left: -100;
+}
+
+
+.retour_button {
+    left: 20px;
+}
+
+.suivant_retour_button{
+    position: absolute;
+    bottom: 10px;
+    border: none;
+    background: inherit;
+    font-weight: 200;
+    font-size: 25px;
+    width: 115px;
+    border-radius: 5px;
+    transition: 0.25s;
+}
+
+.suivant_retour_button:hover {
+    background: rgba(225, 225, 225, 0.5);
+    color: green;
+}
+
+.suivant_retour_button:active {
+    background: rgba(236, 236, 236, 0.5);
+    color: #09dd16;
+    transition: 0.1s;
+}
+
+
+
+.progress_bar{
+    position: relative;
+    height: 0px;
+    margin-bottom: 27px;
+    background: yellow;
+    width: 100%;
+    font-size: 18px;
+    top: 20px;
+}
+
+
+.bar_1{
+    position: absolute;
+    left: 0;
+    height: 15px;
+    width: calc(100% / 3);
+    background: #3bdf00;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    /*! border: 1px solid; */
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.bar_2{
+    position: absolute;
+    left: calc(100% / 3);
+    height: 15px;
+    width: calc(100% / 3);
+    background: #3bdf004d;
+    border: 1px solid;
+}
+
+.bar_3{
+    position: absolute;
+    left: calc(100% / 3 * 2);
+    height: 15px;
+    width: calc(100% / 3);
+    background: #3bdf004d;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.circle{
+    position: absolute;
+    width: 40px;
+    border: 3px solid black;
+    border-radius: 20px;
+    height: 40px;
+    text-align: center;
+}
+
+#container1 .circle_1{
+    left: calc(50% - 150px - 20px);
+    background: green;
+}
+#container1 .circle_2{
+    left: calc(50% - 20px);
+    background: white;
+}
+#container1 .circle_3{
+    left: calc(50% + 150px - 20px);
+    background: white;
+}
+
+#container2 .circle_1{
+    left: calc(50% - 150px - 20px);
+    background: green;
+}
+#container2 .circle_2{
+    left: calc(50% - 20px);
+    background: green;
+}
+#container2 .circle_3{
+    left: calc(50% + 150px - 20px);
+    background: white;
+}
+
+#container3 .circle_1{
+    left: calc(50% - 150px - 20px);
+    background: green;
+}
+#container3 .circle_2{
+    left: calc(50% - 20px);
+    background: green;
+}
+#container3 .circle_3{
+    left: calc(50% + 150px - 20px);
+    background: green;
+}
+
+.circle span{
+    position: relative;
+    top: 0px;
+    font-size: 22px;
+}
+
+.link{
+    background: black;
+    height: 5px;
+    width: 100px;
+    position: absolute;
+    border-radius: 2px;
+}
+
+.link_1{
+    left: calc(50% - 150px + 25px);
+    top: 18px;
+}
+.link_2{
+    top: 18px;
+    left: calc(50% + 25px);
+}
+
+.steps{
+
+    position: absolute;
+    top: -29px;
+    width: 125px;
+    text-align: center;
+}
+.step_1{
+    left: calc(50% - 150px - 62px);
+}
+.step_2{
+    left: calc(50% - 62px);
+}
+.step_3{
+    left: calc(50% + 150px - 62px);
+}
+
+table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.button_suprimer {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background: #f22828;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.button_suprimer:hover {
+    background: #d91717;
+}
+.button_suprimer:active {
+    background: #bd0707;
+}
+.button_modifier {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background: #2835f2;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.button_modifier:hover {
+    background: #1723ca;
+}
+.button_modifier:active {
+    background: #071199;
+}
+
+
+
+.deplacer_buttons {
+    background: aqua;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.UpDownButton {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: calc(50% - 15px);
+    border: none;
+    cursor: pointer;
+}
+.UpDownButton:hover{
+    background: #ddd;
+}
+.UpDownButton:active{
+    background: #b5b3b3;
+}
+.UpButton {
+    left: calc(50% - 29px);
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+}
+.DownButton {
+    left: 50%;
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+
+.ajouter_button {
+    width: 100%;
+    font-size: 23px;
+    border: none;
+    font-weight: bold;
+    height: 52px;
+    cursor: pointer;
+    background: #00ff003b;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.ajouter_button:hover{
+
+    background: #00ff008c;
+    color: white;
+}
+.ajouter_button:active{
+
+    background: #00ff00d6;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.classs{
+
+}

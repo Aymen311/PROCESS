@@ -1719,8 +1719,8 @@ function afficher_criteres(simulation_history)
   }
 
   console.log("----Critères de la Simulation-----") ;
-  console.log("nombres de processus finie en chaque UT: "  + throughput(value)) ;
-  console.log("Moyenne du temps de chargement: " + load_average(value)+ " UT") ;
+  console.log("nombres de processus finie en chaque  8 UT: "  + throughput(value)) ;
+  console.log("Nombre de processus pret moyen: " + load_average(value) + " 1/UT") ;
   console.log("Temps de résidence moyen: "  + mean_turn_around_time(value)+ " UT") ;
   console.log("Temps d'attente moyen: "  + mean_waiting_time(value)+ " UT") ;
   console.log("Temps de réponse moyen: "  + mean_respond_time(value)+ " UT") ;

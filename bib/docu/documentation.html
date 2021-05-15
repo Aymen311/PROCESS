@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>PROCESS - Documentation</title>
+</head>
+<body class = "body-container">
+    <nav class="nav-container" id="navbar">
+        <div class="nav-inner-container">
+            <header>
+                <div class="logo-decorative-square">
+                </div>
+                <h2>PROCESS</h2>
+            </header>
+                <div class="menu-link-container">
+                    <a href="#introduction" class="nav-link"> Introduction </a>
+                    <a href="#FIFO" class="nav-link"> FIFO </a>
+                    <a href="#SJF" class="nav-link"> SJF</a>
+                    <a href="#SRJF" class="nav-link"> SRJF </a>
+                    <a href="#R-ROBIN" class="nav-link">Round Robin</a>
+                    <a href="#priorite_stat" class="nav-link"> Priorité statique </a>
+                    <a href="#priorite_dyn" class="nav-link"> Priorité dynamique </a>
+                    <a href="#multiniv" class="nav-link"> Multi niveaux </a>
+                    <a href="#multiniv_recyc" class="nav-link"> Multi niveaux avec recyclage </a>
+                    <a href="#multiniv_priorite" class="nav-link"> Multi niveaux avec priorité </a>
+                </div>
+            </ul>
+        </div>
+    </nav>
+    <main class="main-container" id="main-doc">
+        <div class="social-icons-tablet">
+            <div class="social-icons-tablet__github">
+                <a href="https://github.com/Aymen311/App-2CP" target="_blank" rel="noopener">
+                    <img src="./icons/github-logo.svg" alt="Github Icon">
+                </a>
+            </div>
+        </div>
+        <div class="section-container">
+            <section class="main-section" id="introduction">
+                <header><h2>C'est quoi PROCESS</h2></header>
+                <h3>PROCESS est un outil d'apprentissage</h3>
+                <p>PROCESS est un outil de simulation visuelle d'algorithmes d'ordonnancement de processus dans un systeme d'exploitation.</p>
+            </section>
+            <section class="main-section" id="FIFO">
+                <header><h2>FIFO</h2></header>
+                <h3>FIFO ou FCFS(first come first served)</h3>
+                <p>Cet algorithme est classé dans la catégorie des ordonnanceurs non préemptifs ou sans réquisition. Ce qui veut dire que si un processus est élu, il ne relâche le processeur que lorsqu'il a fini son exécution.
+                </p>
+                <p>Le principe de fonctionnement de cet outil est le suivant :</p>
+                <ul>
+                    <li>Quand un processus est prêt à s’exécuter, il est mis en queue de la file d’attente des processus prêts    </li>
+                    <li>Quand le processeur devient libre, il est alloué au processus se trouvant en tête de file d’attente des processus prêts.</li>
+                    <li>Many useful functions for manipulating colors and other values</li>
+                    <li>Le processus élu relâche le processeur s’il se termine ou s’il demande une entrée sortie.</li>
+                </ul>
+            </section>
+            <section class="main-section" id="SJF">
+                <header><h2>SJF</h2></header>
+                <h3>SJF(Shortest Job First)
+                </h3>
+                <p>L'algorithme plus court d’abord choisit de façon prioritaire les processus ayant le plus court temps d’exécution sans réellement tenir compte de leur date d’arrivée.</p>
+                <p>Les règles régissant cet ordonnancement sont :</p>
+                <ul>
+                    <li>Quand un processus est prêt à s’exécuter, il est inséré dans la file d’attente des processus prêts à sa position approprie.</li>
+                    <li>Quand le processeur devient libre, il est assigné au processus se trouvant en tête de la file d’attente des processus prêts (ce processus possède le plus petit cycle processeur.). Si deux processus ont la même longueur de cycle, on applique dans ce cas l’algorithme FIFO</li>
+                    <li>Si le système ne met pas en œuvre la réquisition, le processus élu relâche le processeur s’il se termine ou s’il demande une entrée sortie. Dans le cas contraire(avec réquisition), le processus élu perd le processeur également. Quand un processus ayant un cycle d’exécution inférieur au temps processeur restant du processus élu, vient d’entrer dans la file d’attente des prêts. Le processus élu dans ce cas sera mis dans la file d’attente des éligibles, et le processeur est alloué au processus qui vient d’entrer.</li>
+                </ul>
+            </section>
+            <section class="main-section" id="SRJF">
+                <header><h2>SRJF</h2></header>
+                <h3>Shortest remaining job first (plus court temps d'execution restant d'abord).
+                </h3>
+                <p>Cet algorithme est également connu sous le nom de temps restant le plus court en premier, c'est-à-dire que nous planifions le processus en fonction du temps restant le plus court des processus.</p>
+                <p>Il s'agit de l'approche préventive de l'algorithme Shortest Job First:</p>
+                <ul>
+                    <li> A chaque instant, le processeur vérifiera la tâche la plus courte</li>
+                    <li>Le principe SJF est donc appliqué à chaque instant </li>
+                </ul>
+            </section>
+            <section class="main-section" id="R-ROBIN">
+                <header><h2>R-Robin</h2></header>
+                <h3>Round Robin (Tourniquet)
+                </h3>
+                <p>Cet algorithme est uniquement avec réquisition.
+                </p>
+                <p>Cet ordonnancement est régi par les règles suivantes :</p>
+                <ul>
+                    <li>Un processus qui rentre dans l’état éligible est mis en queue de la file d'attente des prêts. </li>
+                    <li>Si un processus élu se termine ou se bloque avant de consommer son quantum de temps, le processeur est immédiatement alloué au prochain processus se trouvant en tête de la file d'attente des prêts.</li>
+                    <li>Si le processus élu continue de s'exécuter au bout de son quantum, <b>ce quantum peut-être saisi par l'utilisateur (il est de 1s par défaut)</b>, dans ce cas le processus sera interrompu et mis en queue de la file d'attente des prêts et le processeur est réquisitionné pour être ré-alloué au prochain processus en tête de cette même file d’attente. </li>
+                </ul>
+            </section>
+            <section class="main-section" id="priorite_stat">
+                <header><h2>Priorite statique </h2></header>
+                <h3>Ordonnancement avec priorité statique .
+                </h3>
+                <p>Cet algorithme est sans réquisition,chaque processus a une priorité statique allouée au début.</p>
+                <p>Le principe de fonctionnement est le suivant:</p>
+                <ul>
+                    <li>Quand un processus est admis par le système il est inséré dans la file d’attente des processus prêts à sa position appropriée (selon la valeur de priorité)</li>
+                    <li>Quand le processeur devient libre ,il est alloué au processus se trouvant en tête de la file d’attente des processus prêts</li>
+                    <li>Un processus élu relâche le processeur que s’il se termine ou se bloque.</li>
+                </ul>
+            </section>
+
+            <section class="main-section" id="priorite_dyn">
+                <header><h2>Priorité dynamique</h2></header>
+                <h3>Ordonnancement avec priorité dynamique.
+                </h3>
+                <p>Cet Ordonnanceur est similaire au précédent sauf qu'il est avec réquisition,les priorités des processus sont dynamiques.</p>
+                <ul>
+                    <li>Quand un processus est admis par le système il est inséré dans la file d’attente des processus prêts à sa position appropriée (selon la valeur de priorité)</li>
+                    <li>Quand le processeur devient libre ,il est alloué au processus se trouvant en tête de la file d’attente des processus prêts</li>
+                    <li>Si un processus de priorité supérieure à celle du processus élu entre dans l’état prêt ;<b> le processus élu sera mis dans la file d’attente des éligibles à la positi on appropriée</b> et le processeur est alloué au processus qui vient d’entrer.</li>
+                </ul>
+            </section>
+            <section class="main-section" id="multiniv">
+                <header><h2>Multi-niveaux </h2></header>
+                <h3>Multi-niveaux ou multi-files avec priorité.
+                </h3>
+                <p>La planification de files d'attente à plusieurs niveaux comme son nom l'indique nécessite plusieurs files .</p>
+                <p>Le principe de fonctionnement de cette méthode est le suivant </p>
+                <ul>
+                    <li>Chaque processus a une priorité,il est mis dans la file portant son numéro de priorité.</li>
+                    <li>Ainsi, tous les processus de la queue la plus prioritaire seront exécutés en premier jusqu'à leur fin ou qu'ils soient bloqués ,puis la prochaine queue.</li>
+                    <li>A l'intérieur de chaque queue un algorithme d'ordonnancement classique peut-etre appliqué.
+                    </li>
+                </ul>
+            </section>
+            <section class="main-section" id="multiniv_recyc">
+                <header><h2>Multi-niveaux avec recyclage</h2></header>
+                <h3>Multi-niveaux ou multi-files avec recyclage.
+                </h3>
+                <p>Cet algorithme est similaire à l'ordonnancement à plusieurs niveaux, mais les processus peuvent également modifier leur file d'attente.</p>
+                <ul>
+                    <li>Si un processus est bloqué ,il est envoyé a la prochaine file <b>i-1</b> .</li>
+                    <li>Si son quantum écoule,il est envoyé à la file précédente <b>i+1</b>.</li>
+                </ul>
+            </section>
+            <section class="main-section" id="multiniv_priorite">
+                <header><h2>Multi-niveaux avec priorité.</h2></header>
+                <h3>Multi-niveaux ou multi-files avec priorité.
+                </h3>
+                <p>La planification des files d'attente à plusieurs niveaux avec priorité est similaire à l'ordonnancement à plusieurs niveaux sauf que l'algorithme classique appliqué est fixe.</p>
+                <p>Le principe de fonctionnement de cette méthode est le suivant </p>
+                <ul>
+                    <li>L'ensemble des processus est divisé en certains lots ou files d'attente .</li>
+                    <li> Chaque file d'attente reçoit un numéro de priorité. </li>
+                    <li>Ainsi, tous les processus de la queue la plus prioritaire seront exécutés en premier jusqu'à leur fin ou qu'ils soient bloqués ,puis la prochaine queue.</li>
+                    <li>A l'intérieur de chaque queue un algorithme d'ordonnancement classique peut-être appliqué,qui est le meme pour toutes les files .Dans notre cas c'est le <b>Round Robin</b>.
+                    </li>
+                </ul>
+            </section>
+        </div>
+        <footer>
+            <small> Equipe 33
+                <a href="https://github.com/Aymen311/App-2CP" target="_blank" rel="noopener">
+                    <p>Technical Documentation Page</p>
+                </a>
+            </small>
+        </footer>
+    </main>
+</body>
+</html>
