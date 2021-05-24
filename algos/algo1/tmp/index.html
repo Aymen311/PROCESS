@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PROCESS-Comparaison</title>
+
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="icon" type="image/png" href="assets/PROCESS-LOGO.png"/>
+
+	<!-- Import lib -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="comp1.css">
+    <link rel="stylesheet" href="button.css">
+	<!-- End import lib -->
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body class="overlay-scrollbar">
+	<!-- POP UP DIV !-->
+	<bodypopup id="bodypopup" style="display:flex">
+        <div class="container" id="container1" style="display:block;">
+            <div class="progress_bar">
+                <span class="steps step_1">Configuration</span>
+                <span class="steps step_2">Processus</span>
+                <span class="steps step_3">Algorithmes</span>
+                <div class="circle circle_1" id="circle_1" ><span>1</span></div>
+                <div class="link link_1"></div>
+                <div class="circle circle_2" id="circle_2" ><span>2</span></div>
+                <div class="link link_2"></div>
+                <div class="circle circle_3" id="circle_3" ><span>3</span></div>
+            </div>
+            <br><br>
+            <div class="title">Configuration</div>
+            <hr>
+            <form class="">
+                <div class="configuration">
+                    <div class="input_box">
+                        <span>Temps d'éxecution minimum</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_0" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="0" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Temps d'éxecution maximum</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_1" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="1" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Priorite minimale</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="2" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_2" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="2" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Priorite maximale</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="3" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_3" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="3" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Nombre miximal d'interuption</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_4" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="4" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Temps miximal d'interuption</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_5" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="5" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Temps minimal d'interuption</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_6" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="6" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box">
+                        <span>Temps de rafraichissement de priorite</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="7" onclick="add_nb(id)"> <span>+</span></div>
+                            <input id="number_7" type="text" name="" value="0" maxlength="2">
+                            <div class="number_controller minus" id="7" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        </div>
+                    </div>
+                    <div class="input_box" style="font-size:18px">
+                        <span>Par defaut</span>
+                        <input type="checkbox" id="default_checkbox" style="width:auto; bottom: 0px;">
+                    </div>
+                    <button type="button" class="suivant_retour_button suivant_button" onclick="slide2()"> Suivant </button>
+                    <button type="button" class="suivant_retour_button retour_button"  onclick="slide1()"> Retour </button>
+                </div>
+            </form>
+        </div>
+        <div class="container" id="container2" style="display:none;">
+            <div class="progress_bar">
+                <span class="steps step_1">Configuration</span>
+                <span class="steps step_2">Processus</span>
+                <span class="steps step_3">Algorithmes</span>
+                <div class="circle circle_1" id="circle_1" ><span>1</span></div>
+                <div class="link link_1"></div>
+                <div class="circle circle_2" id="circle_2" ><span>2</span></div>
+                <div class="link link_2"></div>
+                <div class="circle circle_3" id="circle_3" ><span>3</span></div>
+            </div>
+            <br><br>
+            <div class="title">Generation de processus</div>
+            <div class="configuration">
+                <div class="input_box" style="width:100%">
+                    <span>Nombre de processus</span>
+                    <div class="button_">
+                        <div class="number_controller plus" id="8" onclick="add_nb(id); generate_processes_table('add')"> <span>+</span></div>
+                        <input id="number_8" type="text" name="" value="0" maxlength="2" onchange="generate_processes_table()">
+                        <div class="number_controller minus" id="8" onclick="sub_nb(id); generate_processes_table()"><span id="minus_caracter">_</span></div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="configuration">
+                <div class="input_box" style="width:100%">
+                    <span>Generation aleatoir selon la configuration</span>
+                    <input type="checkbox" style="width:auto" id="processes_checkbox">
+                </div>
+            </div>
+            <hr>
+            <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
+                <table id="table">
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="suivant_retour_button suivant_button" onclick="slide3()"> Suivant </button>
+            <button type="button" class="suivant_retour_button retour_button"  onclick="slide1()"> Retour </button>
+
+        </div>
+        <div class="container" id="container3" style="display:none;">
+            <div class="progress_bar">
+                <span class="steps step_1">Configuration</span>
+                <span class="steps step_2">Processus</span>
+                <span class="steps step_3">Algorithmes</span>
+                <div class="circle circle_1" id="circle_1" ><span>1</span></div>
+                <div class="link link_1"></div>
+                <div class="circle circle_2" id="circle_2" ><span>2</span></div>
+                <div class="link link_2"></div>
+                <div class="circle circle_3" id="circle_3" ><span>3</span></div>
+            </div>
+            <br><br>
+            <div class="title">Choix des Algorithmes</div>
+            <hr><br><br>
+            <button type="button" name="button" class="ajouter_button" onclick="add_algorithme()">Ajouter Un Algorithme</button>
+
+
+            <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
+                <table id="table_2">
+
+                </table>
+            </div>
+            <div class="configuration">
+                <button type="button" class="suivant_retour_button suivant_button" onclick="comparaison()"> Generation de processus </button>
+                <button type="button" class="suivant_retour_button retour_button"  onclick="slide2()"> Retour </button>
+            </div>
+        </div>
+
+        <div name="interuptions_hidden_divs" id="stock"></div>
+        <div name="algo_infos_hidden_divs" id="stock_algo"></div>
+    </bodypopup>
+
+
+
+
+	<!-- navbar -->
+	<div class="navbar">
+		<!-- nav left -->
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link">
+					<i class="fas fa-bars" onclick="collapseSidebar()"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
+				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark">
+			</li>
+		</ul>
+		<!-- end nav left -->
+
+		<!-- nav right -->
+		<ul class="navbar-nav nav-right">
+			<li class="nav-item config">
+				<a class="nav-link" href="#" onclick="switchScreen()">
+					<i class="fas fa-expand"></i>
+				</a>
+			</li>
+			<li class="nav-item mode">
+				<a class="nav-link" href="#" onclick="switchTheme()">
+					<i class="fas fa-moon dark-icon"></i>
+					<i class="fas fa-sun light-icon"></i>
+				</a>
+			</li>
+		</ul>
+		<!-- end nav right -->
+	</div>
+	<!-- end navbar -->
+	<!-- sidebar -->
+	<div class="sidebar">
+		<ul class="sidebar-nav">
+			<li class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-plus-circle"></i>
+					</div>
+					<span>Nouvelle comparaison</span>
+				</a>
+			</li>
+			<li class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link active">
+					<div>
+						<i class="fas fa-percentage"></i>
+					</div>
+					<span>CPU usage</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-sync-alt"></i>
+					</div>
+					<span>Temps de résidence</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="far fa-pause-circle"></i>
+					</div>
+					<span>Temps d'attente</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-stream"></i>
+					</div>
+					<span>débit</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-spinner"></i>
+					</div>
+					<span>Moyenne de chargement</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-reply-all"></i>
+					</div>
+					<span>Temps de réponse</span>
+				</a>
+			</li>
+			-------
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tachometer-alt"></i>
+					</div>
+					<span>Simulation</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-book-open"></i>
+					</div>
+					<span>Documentation</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fab fa-github"></i>
+					</div>
+					<span>Contribuer</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-exclamation-circle"></i>
+					</div>
+					<span>About</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- end sidebar -->
+	<!-- main content -->
+	<div class="wrapper">
+		<div class="row">
+			<div class="col-6 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							FCFS
+						</h3>
+					</div>
+					<div class="card-content">
+						<canvas id="myChart1"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-6 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							R-Robin
+						</h3>
+					</div>
+					<div class="card-content">
+						<canvas id="myChart2"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-8 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							Classement des algorithmes
+						</h3>
+						<i class="fas fa-ellipsis-h"></i>
+					</div>
+					<div class="card-content">
+						<table>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Project</th>
+									<th>Manager</th>
+									<th>Status</th>
+									<th>Due date</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>React</td>
+									<td>Tran Anh Tuat</td>
+									<td>
+										<span class="dot">
+											<i class="bg-success"></i>
+											Completed
+										</span>
+									</td>
+									<td>17/07/2020</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>Vue</td>
+									<td>Bui Nhu Sang</td>
+									<td>
+										<span class="dot">
+											<i class="bg-warning"></i>
+											In progress
+										</span>
+									</td>
+									<td>18/07/2020</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>Laravel</td>
+									<td>Phan Nhat Truong</td>
+									<td>
+										<span class="dot">
+											<i class="bg-warning"></i>
+											In progress
+										</span>
+									</td>
+									<td>17/07/2020</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>Django</td>
+									<td>Le Anh Tuan</td>
+									<td>
+										<span class="dot">
+											<i class="bg-danger"></i>
+											Delayed
+										</span>
+									</td>
+									<td>07/07/2020</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>MEAN</td>
+									<td>John Evan</td>
+									<td>
+										<span class="dot">
+											<i class="bg-primary"></i>
+											Pending
+										</span>
+									</td>
+									<td>20/08/2020</td>
+								</tr>
+								<tr>
+									<td>6</td>
+									<td>MERN</td>
+									<td>Robert</td>
+									<td>
+										<span class="dot">
+											<i class="bg-primary"></i>
+											Pending
+										</span>
+									</td>
+									<td>20/08/2020</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-4 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<h3>
+							Temps d'éxecution
+						</h3>
+						<i class="fas fa-ellipsis-h"></i>
+					</div>
+					<div class="card-content">
+						<div class="progress-wrapper">
+							<p>
+								Process 1
+								<span class="float-right">50%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-success" style="width: 50%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								Process 2
+								<span class="float-right">60%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-primary" style="width:60%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								Process 3
+								<span class="float-right">40%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-warning" style="width:40%"></div>
+							</div>
+						</div>
+						<div class="progress-wrapper">
+							<p>
+								Process 4
+								<span class="float-right">20%</span>
+							</p>
+							<div class="progress">
+								<div class="bg-danger" style="width:20%"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- end main content -->
+	<!-- import script -->
+
+	<!-- end import script -->
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="index.js"></script>
+<!-- SCRIPT FOR GENERAL CONTROLS !-->
+<script>
+	function slide1(){
+		document.getElementById("container1").style.display = "block";
+		document.getElementById("container2").style.display = "none";
+		document.getElementById("container3").style.display = "none";
+	}
+	function slide2(){
+		document.getElementById("container1").style.display = "none";
+		document.getElementById("container2").style.display = "block";
+		document.getElementById("container3").style.display = "none";
+	}
+	function slide3(){
+		document.getElementById("container1").style.display = "none";
+		document.getElementById("container2").style.display = "none";
+		document.getElementById("container3").style.display = "block";
+	}
+
+	function add_nb(id){
+		x = document.getElementById("number_"+id)
+		if (x.value == ""){x.value = 0}
+		if (x.value < 99){x.value = parseInt(x.value) + 1}
+	}
+	function sub_nb(id){
+		x = document.getElementById("number_"+id)
+		if (x.value == ""){x.value = 0}
+		if (x.value > 0){x.value = parseInt(x.value) - 1}
+	}
+</script>
+<!-- SCRIPT FOR PROCESSES CONTROLS !-->
+<script type="text/javascript">
+
+	//INITS:
+	var processes_index = 1;
+	document.getElementById("table").innerHTML = `<tr>
+												  <th>Processus</th>
+												  <th style='width:130px'>Temps d'entrée</th>
+												  <th>Temps éstimé d'éxécution</th>
+												  <th>Nombre d'interuptions</th>
+												  <th>Suprimer</th>
+												  <th>Modifier</th>
+												  <th>Deplacer</th></tr>`;
+	document.getElementById("stock").innerHTML =  `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`
+	document.getElementById("number_8").value = 0;
+
+
+	//FUNCTIONS:
+	function upNdown(direction, id){
+		var rows = document.getElementById("table").rows;
+		var index = document.getElementById(id).parentElement.parentElement.parentElement.rowIndex;
+		var index_int = parseInt(index);
+		var parent = rows[index_int].parentNode;
+		console.log(index_int);
+		 if(direction === "up"){if(index_int > 1){parent.insertBefore(rows[index_int],rows[index_int - 1]);}}
+		 if(direction === "down"){if(index_int < rows.length -1){parent.insertBefore(rows[index_int + 1],rows[index_int]);}}
+	}
+	function generate_processes_table(mode="-1"){
+		var rows = document.getElementById("table").rows;
+		if (mode == "add"){
+			// save the old values
+			var nb = parseInt(document.getElementById("number_8").value) ;
+			var table = document.getElementById("table").children[0];
+
+			new_row = document.createElement("TR")
+			new_row.innerHTML = `<td>Proc ${processes_index}</td>
+									<td>
+										<div class="button_">
+											<div class="number_controller plus" id="entrance${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+											<input id="number_entrance${processes_index}" type="text" name="" value="0" maxlength="2">
+											<div class="number_controller minus" id="entrance${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+										</div>
+									</td>
+									<td>
+										<div class="button_">
+											<div class="number_controller plus" id="execution${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+											<input id="number_execution${processes_index}" type="text" name="" value="0" maxlength="2">
+											<div class="number_controller minus" id="execution${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+										</div>
+									</td>
+									<td>
+										<div class="button_">
+											<div class="number_controller plus" id="interuption${processes_index}"  onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
+											<input id="number_interuption${processes_index}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
+											<div class="number_controller minus" id="interuption${processes_index}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
+										</div>
+									</td>
+									<td>
+										<button class="button_suprimer" id="suprimer${processes_index}" onclick="delete_row(id)">Suprimer</button>
+									</td>
+									<td>
+										<button class="button_modifier" id="modifier${processes_index}"  onclick="modify_row(id)">Modifier</button>
+									</td>
+									<td>
+										<div class="deplacer_buttons">
+											<button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${processes_index}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
+											<button type="button" name="button" class="UpDownButton DownButton" id="upNdown${processes_index}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
+										</div>
+									</td>`
+			table.appendChild(new_row)
+
+			new_div = document.createElement("DIV")
+			new_div.className = "small_container"
+			new_div.id = "interuption_table_"+processes_index;
+			new_div.style.display = "none";
+			new_div.innerHTML = `
+									<div class="input_box">
+										<span>Priorite</span>
+										<div class="button_">
+											<div class="number_controller plus" id="prio${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+											<input id="number_prio${processes_index}" type="text" name="" value="0" maxlength="2">
+											<div class="number_controller minus" id="prio${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+										</div>
+									</div>
+									<table id="table">
+										<tr>
+											<th style="width:100px">Interuption</th>
+											<th>debut</th>
+											<th>Duree</th>
+											<th style="width:200px">Type</th>
+										</tr>
+									</table>`
+			document.getElementById("stock").appendChild(new_div);
+
+			processes_index++;
+
+		}
+		else{
+			var table = document.getElementById("table").children[0];
+			var stock = document.getElementById("stock");
+
+			table_innerHtml = `<tr>
+			  <th>Processus</th>
+			  <th style="width:130px">Temps d'entrée</th>
+			  <th>Temps éstimé d'éxécution</th>
+			  <th>Nombre d'interuptions</th>
+			  <th>Suprimer</th>
+			  <th>Modifier</th>
+			  <th>Deplacer</th></tr>`;
+			stock_innerHtml = `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`;
+
+			var nb_processes = parseInt(document.getElementById("number_8").value);
+
+			for ( var i = 1; i <= nb_processes; i++){
+				table_innerHtml = table_innerHtml + `<tr>
+				  <td>Proc ${i}</td>
+				  <td>
+					  <div class="button_">
+						  <div class="number_controller plus" id="entrance${i}" onclick="add_nb(id)"> <span>+</span></div>
+						  <input id="number_entrance${i}" type="text" name="" value="0" maxlength="2">
+						  <div class="number_controller minus" id="entrance${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+					  </div>
+				  </td>
+				  <td>
+					  <div class="button_">
+						  <div class="number_controller plus" id="execution${i}" onclick="add_nb(id)"> <span>+</span></div>
+						  <input id="number_execution${i}" type="text" name="" value="0" maxlength="2">
+						  <div class="number_controller minus" id="execution${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+					  </div>
+				  </td>
+				  <td>
+					  <div class="button_">
+						  <div class="number_controller plus" id="interuption${i}" onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
+						  <input id="number_interuption${i}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
+						  <div class="number_controller minus" id="interuption${i}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
+					  </div>
+				  </td>
+				  <td>
+					  <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Suprimer</button>
+				  </td>
+				  <td>
+					  <button class="button_modifier" id="modifier${i}" onclick="modify_row(id)">Modifier</button>
+				  </td>
+				  <td>
+					  <div class="deplacer_buttons">
+						  <button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${i}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
+						  <button type="button" name="button" class="UpDownButton DownButton" id="upNdown${i}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
+					  </div>
+				  </td></tr>`
+				stock_innerHtml = stock_innerHtml +    `<div class="small_container" id="interuption_table_${i}" style="display:none">
+														<div class="input_box">
+															<span>Priorite</span>
+															<div class="button_">
+																<div class="number_controller plus" id="prio${i}" onclick="add_nb(id)"> <span>+</span></div>
+																<input id="number_prio${i}" type="text" name="" value="0" maxlength="2">
+																<div class="number_controller minus" id="prio${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+															</div>
+														</div>
+														<table id="table">
+															<tr>
+																<th style="width:100px">Interuption</th>
+																<th>debut</th>
+																<th>Duree</th>
+																<th style="width:150px">Type</th>
+															</tr>
+														</table></div>`
+			}
+			processes_index = nb_processes + 1;
+			table.innerHTML = table_innerHtml
+			stock.innerHTML = stock_innerHtml
+		}
+	}
+	function modify_interuptions(id){
+		console.log(id);
+		if (id.includes("number")){
+			nb = parseInt(document.getElementById(id).value);
+			id_ = parseInt(id.slice(18));
+		}
+		else{
+			nb = parseInt(document.getElementById("number_"+id).value);
+			id_ = parseInt(id.slice(11))
+		}
+		int_table = document.getElementById("interuption_table_"+id_);
+		int_table_innerHtml = `<div class="input_box">
+									<span>Priorite</span>
+									<div class="button_">
+										<div class="number_controller plus" id="prio${id_}" onclick="add_nb(id)"> <span>+</span></div>
+										<input id="number_prio${id_}" type="text" name="" value="0" maxlength="2">
+										<div class="number_controller minus" id="prio${id_}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+									</div>
+								</div>
+								<table id="table">
+								<tr>
+									<th style="width:100px">Interuption</th>
+									<th>debut</th>
+									<th>Duree</th>
+									<th style="width:150px">Type</th>
+								</tr>`
+		for (var i = 0; i < nb; i++){
+			int_table_innerHtml = int_table_innerHtml + `<tr>
+															<td>Int ${i}</td>
+															<td>
+																<div class="button_">
+																	<div class="number_controller plus" id="start_time_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+																	<input id="number_start_time_${id_}_${i}" type="text" name="" value="0" maxlength="2">
+																	<div class="number_controller minus" id="start_time_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+																</div>
+															</td>
+															<td>
+																<div class="button_">
+																	<div class="number_controller plus" id="duration_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+																	<input id="number_duration_${id_}_${i}" type="text" name="" value="0" maxlength="2">
+																	<div class="number_controller minus" id="duration_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+																</div>
+															</td>
+															<td>
+																<select class="select" id="int_type_${id_}_${i}">
+																	<option value="input"> I/O </option>
+																	<option value="memory"> Memoire </option>
+																</select>
+															</td>
+
+														</tr>`
+		}
+
+		int_table.innerHTML = int_table_innerHtml;
+
+	}
+
+
+
+	function delete_row(id){
+		var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
+		document.getElementById("table").deleteRow(index);
+		document.getElementById("number_8").value --;
+		document.getElementById("interuption_table_"+id.slice(8)).remove()
+	}
+
+	var last_openned_int_id;
+	var last_openned_algo_id;
+	function modify_row(id){
+		last_openned_int_id = "interuption_table_"+id.slice(8)
+		document.getElementById(last_openned_int_id).style.display = "block";
+		document.getElementById("blur_background").style.display = "block";
+	}
+	function close_popup(){
+		try {
+			if (document.getElementById(last_openned_int_id).style.display == "block"){
+				document.getElementById(last_openned_int_id).style.display = "none";
+			}
+		} catch { }
+		try {
+			if (document.getElementById(last_openned_algo_id).style.display == "block"){
+				document.getElementById(last_openned_algo_id).style.display = "none"
+			}
+		} catch { }
+
+		document.getElementById("blur_background").style.display = "none";
+	}
+</script>
+<!-- SCRIPT FOR ALGORITHMES CONTROLS !-->
+<script type="text/javascript">
+	//INITS:
+	document.getElementById("table_2").innerHTML = `<tr>
+														<th>Numero d'Algorithme</th>
+														<th>Algorithme </th>
+														<th>Modifier</th>
+														<th>Suprimer</th>
+													</tr>`
+
+	function delete_row2(id){
+		var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
+		document.getElementById("table_2").deleteRow(index);
+		//document.getElementById("interuption_table_"+id.slice(8)).remove()
+	}
+
+	var nb_algos = 0;
+	function add_algorithme(){
+		nb_algos++;
+		algo_table = document.getElementById("table_2");
+
+		new_row = document.createElement("TR");
+		new_row.innerHTML = `<tr id="algo_${nb_algos}">
+								<td>Algorithme ${nb_algos}</td>
+								<td>
+									<select class="select" id="algo${nb_algos}" onchange="create_algo_info_div(id)">
+										<option value="FCFS"> FCFS </option>
+										<option value="SJF"> Shortest Job First </option>
+										<option value="SRJF"> Shortest Remaining Job First</option>
+										<option value="RR">Round Robint</option>
+										<option value="PS">Static Priority</option>
+										<option value="PD">Dynamic Priority</option>
+										<option value="MULTI+REC">Multi-level + Recycle</option>
+										<option value="MULTI+PRIO">Multi-level + Priority</option>
+										<option value="MULTI">Multi-level (The Beast)</option>
+									</select>
+								</td>
+								<td>
+									<button class="button_modifier" id="modifier${nb_algos}" onclick="modify_row2(id)">Modifier</button>
+								</td>
+								<td>
+									 <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Suprimer</button>
+								</td>
+
+							</tr>`
+		algo_table.appendChild(new_row)
+	}
+
+	function modify_row2(id){
+		last_openned_algo_id = "algo_info_"+id.slice(8)
+		try {
+			document.getElementById(last_openned_algo_id).style.display = "block";
+			document.getElementById("blur_background").style.display = "block";
+		} catch (e) {
+			alert("NO MODIFICATION")
+		}
+
+	}
+
+	function create_algo_info_div(id){
+		algo = document.getElementById(id).parentElement.parentElement.children[1].children[0].value
+		algo_id = document.getElementById(id).parentElement.parentElement.children[0].innerHTML.slice(11)
+		console.log(algo);
+		if (document.getElementById("algo_info_"+algo_id)){document.getElementById("algo_info_"+algo_id).remove()}
+		new_div = document.createElement("DIV")
+		new_div.className = "small_container"
+		new_div.id = "algo_info_"+algo_id;
+		new_div.style.display = "none";
+		var innerHTML;
+		var valide = false;
+		if (algo == "RR"){
+			valide = true
+			new_div.style.height = "240px"
+			new_div.style.top    = "calc(50% - 120px)"
+			innerHTML = `<h2>Configuration de l'Algorithme Round Robin</h2>
+							<hr><br><br>
+							<div class="input_box">
+								<span>Quantum:</span>
+								<div class="button_">
+									<div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
+									<input id="number_quantum_${id}" type="text" name="" value="2" maxlength="2">
+									<div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+								</div>
+							</div>`
+		}
+		else if (algo == "MULTI+REC") {
+			valide = true
+			new_div.style.height = "350px"
+			new_div.style.top    = "calc(50% - 175px)"
+			innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec recyclage</h2>
+							<hr><br><br>
+							<div class="input_box">
+								<span>Nombre de niveaux:</span>
+								<div class="button_">
+									<div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
+									<input id="number_quantum_${id}" type="text" name="" value="4" maxlength="2">
+									<div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+								</div>
+							</div>
+							<br>
+							<div class="input_box">
+								<span>Liste de Quantums par niveaux:</span>
+								<span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
+								<div class="button_">
+									<input id="quantums_list_${id}" type="text" name="" value="1,2,3,4">
+								</div>
+							</div>`
+
+		}
+		else if (algo == "MULTI+PRIO") {
+			valide = true
+			new_div.style.height = "350px"
+			new_div.style.top    = "calc(50% - 175px)"
+			innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec priorité</h2>
+							<hr><br><br>
+							<h3>Remarque: Le nombre de niveaux est le meme nombre de priorité donné dans la configuration !</h3>
+							<div class="input_box">
+								<span>Liste de Quantums par priorité (Par niveaux):</span>
+								<span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
+								<div class="button_">
+									<input id="number_quantum_${id}" type="text" name="" value="1,2,3,4">
+								</div>
+							</div>`
+
+		}
+		else if (algo == "MULTI"){
+			valide = true
+
+		}
+		new_div.innerHTML = innerHTML;
+		if ( valide ){document.getElementById("stock_algo").appendChild(new_div);}
+
+
+	}
+
+</script>
+<script src="main.js"></script>
+<!-- SCRIPT FOR DATA GATHERING !-->
+<script type="text/javascript">
+	function get_config(){
+		if (document.getElementById("default_checkbox").checked){
+			Config = {
+				"MIN_PROC_TIME":5,
+				"MAX_PROC_TIME":15, /**/
+				"MAX_PROC_PRIORITY":0, /**/
+				"MIN_PROC_PRIORITY":10, /**/
+				"MAX_PROC_INTRS":4, /**/
+				"MAX_PROC_DEGREE":3, /**/
+				"MAX_INTR_DURATION":10, /**/
+				"MIN_INTR_DURATION":5,
+				"allow_function_int": 0,
+				"UPDATE_TIME":20,
+				"MAX_ENTRANCE":7,
+				"MIN_ENTRANCE":5,
+			}
+		}
+		else{
+			Config = {
+				"MIN_PROC_TIME":parseInt(document.getElementById("number_0").value),
+				"MAX_PROC_TIME":parseInt(document.getElementById("number_1").value), /**/
+				"MAX_PROC_PRIORITY":parseInt(document.getElementById("number_3").value), /**/
+				"MIN_PROC_PRIORITY":parseInt(document.getElementById("number_2").value), /**/
+				"MAX_PROC_INTRS":parseInt(document.getElementById("number_4").value), /**/
+				"MAX_PROC_DEGREE":3, /**/
+				"MAX_INTR_DURATION":parseInt(document.getElementById("number_5").value), /**/
+				"MIN_INTR_DURATION":parseInt(document.getElementById("number_6").value),
+				"allow_function_int": 0,
+				"UPDATE_TIME":parseInt(document.getElementById("number_7").value),
+				"MAX_ENTRANCE":7,
+				"MIN_ENTRANCE":5,
+			}
+		}
+		return Config
+	}
+
+	function get_processes_interuptions(){
+		nb_processes = parseInt(document.getElementById("number_8").value);
+		if ( !document.getElementById("processes_checkbox").checked ){
+			rows = document.getElementById("table").rows
+			L = []
+			for ( var i = 1; i <= nb_processes; i++){
+				r = rows[i];
+				id_ = parseInt(r.children[0].innerText.slice(5))
+				nb_ints = parseInt(r.children[3].children[0].children[1].value)
+				L_ = [
+					id_,
+					parseInt(r.children[1].children[0].children[1].value),
+					parseInt(r.children[2].children[0].children[1].value),
+					parseInt(document.getElementById("number_prio"+id_).value),
+					nb_ints,
+				]
+				ints = [];
+
+				for ( var j = 0; j < nb_ints; j++){
+					ints.push([
+						parseInt(document.getElementById(`number_start_time_${i}_${j}`).value),
+						parseInt(document.getElementById(`number_duration_${i}_${j}`).value),
+						document.getElementById(`int_type_${i}_${j}`).value,
+					])
+				}
+				L_.push(ints)
+
+				L.push(L_)
+			}
+			return L}
+		else{
+			return create_processes(nb_processes, get_config())
+		}
+	}
+
+	function get_algorithmes(){
+		var table = document.getElementById("table_2");
+		var rows = table.rows;
+		var nb_algorithmes = rows.length-1;
+		console.log(nb_algorithmes);
+		L = [] //[id, algo_name]
+		for ( var i = 1 ; i <= nb_algorithmes; i++){
+			algo_name = rows[i].children[1].children[0].value
+			algo_id   = parseInt(rows[i].children[0].innerText.slice(11))
+			L_ = [
+				algo_id,
+				algo_name
+			]
+			if (algo_name == "RR"){
+				L_.push(parseInt(document.getElementById("number_quantum_algo"+algo_id).value))
+			}
+			else if (algo_name == "MULTI+REC") {
+				q_l = document.getElementById("quantums_list_algo"+algo_id).value.split(",");
+				q_l_ = []
+				for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
+				L_.push(q_l_)
+			}
+			else if (algo_name == "MULTI+PRIO") {
+				q_l = document.getElementById("number_quantum_algo"+algo_id).value.split(",");
+				q_l_ = []
+				for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
+				L_.push(q_l_)
+			}
+			L.push(L_)
+		}
+		return L
+	}
+
+	var nb_finished_algo = 0;
+	var nb_alogs_comparaison = 0;
+	function comparaison(){
+		config = get_config();
+		processes = get_processes_interuptions();
+		algos = get_algorithmes()
+		nb_finished_algo = 0;
+		nb_alogs_comparaison = algos.length;
+		for ( var i = 0; i < nb_algos; i++){
+			if (algos[i][1] == "FCFS"){
+				FCFS_init(processes, 0, 0)
+			}
+			else if (algos[i][1] == "SJF"){
+				SJF_init(processes, 50, 0)
+			}
+			else if (algos[i][1] == "SRJF"){
+				SRJF_init(processes, 50, 0)
+			}
+			else if (algos[i][1] == "RR"){
+				RR_init(processes, 50, 0, algos[i][2])
+			}
+			else if (algos[i][1] == "PS"){
+				PS_init(processes, 50, 0)
+			}
+			else if (algos[i][1] == "PD"){
+				PD_init(processes, 50, 0)
+			}
+			else if (algos[i][1] == "MULTI+REC"){
+				MULTI_NV_init(processes, 50, 0, algos[i][2])
+			}
+			else if (algos[i][1] == "MULTI+PRIO"){
+				MULTI_NV_PRIO_init(processes, 50, 0, algos[i][2])
+			}
+		}
+	}
+
+	function end_comparaison(){
+		console.log("[ALERT]    END OF COMP");
+		document.getElementById("bodypopup").style.display = "none"
+
+	}
+</script>
+
+</html>
