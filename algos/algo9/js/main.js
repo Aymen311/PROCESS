@@ -44,10 +44,11 @@ let MIN_INT_TYPES = ["memory","input"]
 var SPEED = 500;
 var TIME_UNIT = 200;
 var pret = undefined
-var fifo_ind = 0 
+var fifo_ind = 0
 var QUANTUMS = [2,2,2,2,2];
 var list_fifos = [];
 var list_algos = ["FCFS","FCFS","FCFS","FCFS"]
+var ALLL = []
                   /********************************************/
 
 
@@ -114,13 +115,13 @@ function find_the_shortest_srjf(){
   return i ;
 }
 
-function add_process(pere,deg){
-  var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var priority = randint(0 , NB_FIFO)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,priority)
-  p.move2fifo(list_fifos[priority])
-  add_to_proc_info_menu(p, "proc_info_menu")
+
+function add_process(pere,deg,entrance, Config){
+  var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
+  var prio  =  randint(Config["MAX_PROC_PRIORITY"],Config["MIN_PROC_PRIORITY"] + 1)
   id_proc++;
+  ints = rand_intrs(exec_t,deg)
+  return [id_proc, entrance, exec_t, prio, ints.s, ints]
 }
 
 function create_process() {
@@ -131,6 +132,7 @@ function create_process() {
       else{add_process(-1,MAX_PROC_DEGREE)}
     }
 }
+
 
 
 
@@ -152,7 +154,9 @@ class Processor {
         this.x = x
         this.y = y
         this.inProcess = []
+        this.rect = -1
     }
+
     createProcessor() {
         var elem = svg.append("svg:image")
             .attr('x', this.x - 35.5) // 465
@@ -161,7 +165,7 @@ class Processor {
             .attr('height', 70)
             .attr("xlink:href", "../../image/processor_2.svg")
 
-        var elem = svg.append("rect")
+        this.rect = svg.append("rect")
             .attr("x", this.x - 10.5)
             .attr("y", 65)
             .attr("width", 20).attr("height", 20)
@@ -453,21 +457,24 @@ var NB_FIFO = 2;
 
 function create_fifos(){
   destroy()
-  let nb_fifo = document.getElementById("nb_fifos").value
+  let nb_fifo = get_algorithmes().length;
   if (nb_fifo != null && nb_fifo != ""){
     NB_FIFO = nb_fifo
   }
   list_fifos = []
   for (var i = 0; i<NB_FIFO; i++){
-    let Q = list_algos[i]=="RR" ? "Q = "+(QUANTUMS[i])   :  ""
-    var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,QUANTUMS[i],Q,list_algos[i])
+    let Q = ""
+    if ( list_algos[i][0]=="RR" ){Q = "Q = "+(list_algos[i][1])}
+    else {Q = list_algos[i][0]}
+    console.log(list_algos[i][0], Q);
+    var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,list_algos[i][1],Q,list_algos[i][0])
     list_fifos.push(f)
-    f.createFifo(); 
+    f.createFifo();
   }
-  build_fifos()
+  //build_fifos()
 }
 
-create_fifos()
+//create_fifos()
 
 var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY,0, "FIFO BLOQUE")
 blocked.createFifo();
@@ -623,7 +630,7 @@ function FCFS(mode , proc){
     if (processor.isready() && list_fifos_not_empty() != 0 ){
       let elem = treat_process(0);
       if (! elem.hasint()){
-              //choose_successor()  
+              //choose_successor()
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
@@ -680,7 +687,7 @@ function SJF(mode , proc){
       let elem = treat_process(find_the_shortest());
       log_comment("Traintement du processus "+elem.id,"§green", elem.color);
       if (! elem.hasint()){
-             // choose_successor()  
+             // choose_successor()
         sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
@@ -729,7 +736,7 @@ function SRJF(mode , proc){
       let elem = treat_process(find_the_shortest_srjf());
       log_comment("Traintement du processus "+elem.id,"§green", elem.color);
       if (! elem.hasint()){
-             // choose_successor()  
+             // choose_successor()
         sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
@@ -766,7 +773,7 @@ function SRJF(mode , proc){
 
 function RR(mode,proc) {
     if (mode == "block"){
-      choose_successor()  
+      choose_successor()
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc,proc.priority);proc.treat_int("RR");;sleep(SPEED).then(() => {choose_successor()})})
@@ -780,7 +787,7 @@ function RR(mode,proc) {
       log_comment("Traintement du processus "+elem.id,"green", elem.color);
       if (! elem.hasint()){
         if (elem.left_time <= list_fifos[elem.priority].quantum){
-                //choose_successor()  
+                //choose_successor()
           sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,0,1);})
           if (elem.pere == -1 ){
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
@@ -837,7 +844,7 @@ function RR(mode,proc) {
 
 function muzan(){
     if (fifo_ind <list_fifos.length){
-        pret = list_fifos[fifo_ind] ; 
+        pret = list_fifos[fifo_ind] ;
         if (pret.algorithm == "FCFS"){
             FCFS()
         }
@@ -853,26 +860,27 @@ function muzan(){
       }else {
         fifo_ind = 0
         sleep(SPEED).then(() => {alert("Nigerda bakayaro , Nigerda")})
-      } 
+        end_of_simulation = true
+      }
   }
 function upper_fifo(pos){
     for (let i = 0 ; i < pos ; i++ ){
         if (list_fifos[i].processors.length != 0 ){
             fifo_ind = i
-            return true 
+            return true
         }
     }
-    return false 
+    return false
 }
 function choose_successor(){
-        let unchanged = true 
+        let unchanged = true
         for (let i = 0 ; i < list_fifos.length;i++){
             if (list_fifos[i].processors.length != 0 ){
                 fifo_ind = i ;
-                unchanged = false 
+                unchanged = false
                 muzan()
                 break
-        }      
+        }
     }
     if (unchanged &&  blocked.processors.length == 0 && processor.inProcess.length == 0){
         fifo_ind = list_fifos.length
@@ -883,9 +891,11 @@ function choose_successor(){
 
 function reset_parameters_FIFO(){
     list_algos = []
-      for (var i = 1; i <= NB_FIFO; i++){
-          list_algos.push(document.getElementById("algo "+i).value)
-      }
+    var algos = get_algorithmes()
+    for (var i = 0; i < algos.length; i++){
+      list_algos.push([algos[i][1], algos[i][2]])
+      if (i == 4){break}
+    }
       create_fifos()
   }
 
@@ -897,32 +907,16 @@ function destroy(){
       f.rects[j].remove()
     }
   }
-}
-
-function 
-
-build_fifos(){
-  let div = document.getElementById("small_menu_4")
-  div.innerHTML = ""
-  let content = ""
-  content+="<table>"
-  for (let i = 0 ; i < NB_FIFO ; i++){
-    content+="<tr>"
-    content+="<th>NV "+i+"</th>"
-    content+="<th>"
-    content+='<select id="algo '+(i+1)+'" >'
-    content+='<option value="FCFS">FCFS</option>'
-    content+='<option value="SJF">SJF</option>'
-    content+='<option value="SRJF">SRJF</option>'
-    content+='<option value="RR">RR</option>'
-    content+="</select>"
-    content+="</th>"
-    content+="</tr>"
+  for (let i = 0 ; i < ALLL.length ; i++){
+      ALLL[i].elem.remove()
+      ALLL[i].text.remove()
+      ALLL[i].p_text.remove()
   }
-  content+="</table>"
-  content+='<button class="btn btn_green " onclick="reset_parameters_FIFO()" >Valider</button>'
-  div.innerHTML = content
+  ALL_PROCS = []; ALLL = []; data = [];all_processes_list = [];
+  document.getElementById("FCFS_").innerHTML = "";
 }
+
+
 
 /*************************************************************/
 

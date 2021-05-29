@@ -44,6 +44,10 @@ let MIN_INT_TYPES = ["memory","input"]
 var SPEED = 500;
 var TIME_UNIT = 500;
 var quantum = 1
+
+
+
+var ALLL = []
                   /********************************************/
 
 
@@ -72,15 +76,15 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2){
+  if (exec_time > 2*MAX_PROC_INTRS){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = randint(0,2)
+      var nb_intrs = 1
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time)
+    int_t = randint(int_t+1,exec_time-1)
     intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
@@ -90,13 +94,14 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   return intrs
 }
 
-function add_process(pere,deg){
-  var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var priority = randint(MAX_PROC_PRIORITY , MIN_PROC_PRIORITY)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,priority)
-  p.move2fifo(pret)
-  add_to_proc_info_menu(p, "proc_info_menu")
+
+
+function add_process(pere,deg,entrance, Config){
+  var priority = randint(Config["MAX_PROC_PRIORITY"] , Config["MIN_PROC_PRIORITY"])
+  var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
   id_proc++;
+  ints = rand_intrs(exec_t,deg)
+  return [id_proc, entrance, exec_t, priority, ints.length, ints]
 }
 
 function create_process() {
@@ -127,16 +132,17 @@ class Processor {
         this.x = x
         this.y = y
         this.inProcess = []
+        this.rect = -1
     }
     createProcessor() {
-        var elem = svg.append("svg:image")
+         svg.append("svg:image")
             .attr('x', this.x - 35.5) // 465
             .attr('y', 15) //15
             .attr('width', 70)
             .attr('height', 70)
             .attr("xlink:href", "../../image/processor_2.svg")
 
-        var elem = svg.append("rect")
+        this.rect = svg.append("rect")
             .attr("x", this.x - 10.5)
             .attr("y", 65)
             .attr("width", 20).attr("height", 20)
@@ -218,8 +224,7 @@ class Fifo {
               this.shift(n)
               return elem
           }
-    }
-  }
+    }}
     resume(elem, fifo) {
         //if elem in numerical; resume the "elem"th element
         //else (ie elem is Process) resume elem
@@ -295,6 +300,8 @@ class Process {
             .attr('dx','-5')
             .attr("x", STARTING_PROC_X )
             .attr("y", STARTING_PROC_Y)
+
+        this.history = [[0, -1, "pret"]]
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -374,7 +381,6 @@ class Process {
             .duration(SPEED)
             .attr("y",this.y).attr("x",this.x)
     }
-
     hasint(){return this.ints.length != this.int_counter}
     treat_int(upd){
       let int = this.ints[this.int_counter]
@@ -391,6 +397,8 @@ class Process {
     int_time(){return this.ints[this.int_counter][0] - this.previous_int_time}
     real_int_time(){return this.ints[this.int_counter][0]}
     int_duration(){return this.ints[this.int_counter][1]}
+
+
 
 }
 
@@ -437,7 +445,7 @@ function resume_process(elem) {
 /****** SPEED - TU **********/
 
 
-var speed_slider = document.getElementById("myspeed");
+/*var speed_slider = document.getElementById("myspeed");
 //var TU_slider = document.getElementById("myTU")
 
 speed_slider.oninput = function() {
@@ -454,6 +462,7 @@ TU_slider.oninput = function() {
 
 /***************** FUNCTION TO TEST AREA **************/
 function update_left_time(elem, t,end,sub){
+    console.log(sub)
     if (t > end){
         sleep(TIME_UNIT).then(() => {
           elem.left_time_anime -= sub;
@@ -463,6 +472,40 @@ function update_left_time(elem, t,end,sub){
           update_left_time(elem, t-1,end,sub)})
     }
 }
+
+function push_history_inProcess_pret(proc, time){
+    /*var a = proc.history[proc.history.length][1]
+    proc.history.push([ a, a + time, "In process"])*/
+
+    var l = proc.history.length
+    var b = proc.history[l-1][0] + time
+    proc.history[l-1][1] = b;
+    proc.history[l-1][2] = "In process"
+    proc.history.push([b, -1, ""])
+
+    for ( var i = 0; i < pret.processors.length; i++){
+        var p = pret.processors[i]
+        var l = p.history.length
+        if (p.history[l-1][0] > b){
+            p.history[l-1][1] = p.history[l-1][0]
+            p.history[l-1][2] = "Pret"
+            p.history.push([p.history[l-1][0], -1, ""])
+        }
+        else{
+            p.history[l-1][1] = b;
+            p.history[l-1][2] = "Pret"
+            p.history.push([b, -1, ""])
+        }
+    }
+}
+
+function push_history_blocked(proc, time){
+    var l = proc.history.length
+    proc.history[l-1][1] = proc.history[l-1][0] + time;
+    proc.history[l-1][2] = "Blocked"
+    proc.history.push([proc.history[l-1][1], -1, ""])
+}
+
 
 var mem = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
@@ -519,6 +562,7 @@ function log_comment(comment, color, elem_color){
     <div class='int_class_header'>
         <span style="color:${color}"> ${comment} </span><br>
     </div>`*/
+    console.log(elem_color);
     var c = `<li style="color:${color}">   ${comment}
         <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
     </li>`;
@@ -551,11 +595,14 @@ function Priority_statique(mode , proc){
           sleep(SPEED).then( () => { update_left_time(elem, elem.left_time,0,1);})
         if (elem.pere == -1 ){
             sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
-                log_comment("Termination du processus "+elem.id,"blue", elem.color);finish_process();Priority_statique()})
+                log_comment("Termination du processus "+elem.id,"blue", elem.color);
+                push_history_inProcess_pret(elem, elem.left_time) // CORRECT
+                finish_process();Priority_statique()})
         }else {
               sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
                   log_comment("Termination du processus "+elem.id,"blue", elem.color);
                   log_comment("Debloquage du processus "+elem.pere.id,"orange", elem.color);
+                  push_history_inProcess_pret(elem, elem.left_time)
                   finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {Priority_statique()})})
         }
         }else{
@@ -563,10 +610,14 @@ function Priority_statique(mode , proc){
           if (elem.type_int() != "function"){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-                mem_intr();block_process();Priority_statique("block",elem)})
+                mem_intr();
+                push_history_inProcess_pret(elem, elem.left_time)
+                block_process();Priority_statique("block",elem)})
           }else{
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
-                func_intr();block_process();
+                func_intr();
+                push_history_inProcess_pret(elem, elem.left_time)
+                block_process();
                 log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
                 log_comment("Appel de processus fils du processus "+elem.id, "black", elem.color);
                 add_process(elem,elem.deg+1);sleep(SPEED).then(() => {Priority_statique()})})
@@ -574,6 +625,7 @@ function Priority_statique(mode , proc){
        }
     }
     if (mode == "block"){
+      push_history_blocked(proc, proc.int_duration())
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {Priority_statique()})})
@@ -582,6 +634,13 @@ function Priority_statique(mode , proc){
   }
   else {
     sleep(SPEED).then(() => { alert("Simualation Priority_statique have finished")})
+    sleep(2000).then(() => {
+        document.getElementById('gantt_div').style.display = "block" ; 
+        document.getElementById('tab_div').style.display = "block" ; 
+        draw_gantt_(data_PS, "FCFS_");
+        plot_time_table(all_histories["PS"], "plot_time")
+        end_of_simulation = true;
+    })
   }
 }
 

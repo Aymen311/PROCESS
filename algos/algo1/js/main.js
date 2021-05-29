@@ -36,18 +36,12 @@ let MAX_PROC_TIME = 10
 let MAX_PROC_INTRS = 3
 let MAX_PROC_DEGREE = 3
 let MAX_INTR_DURATION = 10
-let MIN_INTR_DURATION = 3
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 
 //Genreal info
-
-var SPEED = 50;
-var TIME_UNIT = 50;
-
-var SPEED = 0;
-var TIME_UNIT = 0;
-
+var SPEED = 200;
+var TIME_UNIT = 1000;
 var ALL_PROCS = []
 var current_time = 0
 
@@ -79,16 +73,16 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2){
+  if (exec_time > 2*MAX_PROC_INTRS){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = randint(0,2)
+      var nb_intrs = 1
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time)
-    intr = [int_t,randint(MIN_INTR_DURATION,MAX_INTR_DURATION),randomChoice(possible_ints)]
+    int_t = randint(int_t+1,exec_time-1)
+    intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
       break
@@ -97,23 +91,13 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   return intrs
 }
 
-function add_process(pere,deg,entrance){
-  var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg,-1,entrance=entrance)
-  ALLL.push(p)
-  p.move2fifo(pret)
-  add_to_proc_info_menu(p, "proc_info_menu")
+function add_process(pere,deg,entrance, Config){
+  var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
   id_proc++;
+  ints = rand_intrs(exec_t,deg)
+  return [id_proc, entrance, exec_t, -1, ints.s, ints]
 }
 
-function create_process() {
-  nb_procs = parseInt(document.getElementById("nb_processes").value)
-  checked  = document.getElementById("INT_TYPE_FUNCTION_CHECK_BOX").checked
-  for (let i = 0 ; i<nb_procs ; i++){
-      if (checked){add_process(-1,0,0)}
-      else{add_process(-1,MAX_PROC_DEGREE,0)}
-    }
-}
 
 function log_comment(comment, color, elem_color){
     var x = document.getElementById("logs");
@@ -142,16 +126,18 @@ class Processor {
         this.x = x
         this.y = y
         this.inProcess = []
+        this.elem = -1
+        this.rect = -1
     }
     createProcessor() {
-        var elem = svg.append("svg:image")
+        this.elem = svg.append("svg:image")
             .attr('x', this.x - 35.5) // 465
             .attr('y', 15) //15
             .attr('width', 70)
             .attr('height', 70)
             .attr("xlink:href", "../../image/processor_2.svg")
 
-        var elem = svg.append("rect")
+        this.rect = svg.append("rect")
             .attr("x", this.x - 10.5)
             .attr("y", 65)
             .attr("width", 20).attr("height", 20)
@@ -450,11 +436,6 @@ function resume_process(elem) {
 /****** SPEED  **********/
 
 
-var speed_slider = document.getElementById("myspeed");
-
-speed_slider.oninput = function() {
-  SPEED = parseInt(this.value)
-}
 
 
 /****************************/
@@ -466,7 +447,7 @@ function update_left_time(elem, t,end,sub){
           elem.left_time_anime -= sub;
           // To update the text
           elem.text.text(elem.left_time_anime)
-          document.getElementById("menu_proc_exe_time_"+elem.id).innerHTML = ", Temps restant: "+elem.left_time_anime
+          //document.getElementById("menu_proc_exe_time_"+elem.id).innerHTML = ", Temps restant: "+elem.left_time_anime
           update_left_time(elem, t-1,end,sub)})
     }
 }
@@ -504,27 +485,8 @@ function push_history_blocked(proc, time){
     proc.history.push([proc.history[l-1][1], -1, ""])
 }
 
-function get_cpu_usage(){
-    var max = 0;
-    for (var p = 0; p < ALLL.length; p++){
-        if (max < ALLL[p].history[[ALLL[p].history.length-1]][0]){max = ALLL[p].history[[ALLL[p].history.length-1]][0]}
-    }
 
-    var cpt = 0;
-    for ( var i = 0; i < max; i++){
-        var b = 1;
-        for (var p = 0; p < ALLL.length; p++){
-            for (var state = 0; state < ALLL[p].history.length; state++){
-                if ( (ALLL[p].history[state][0] <= i) && (i <=  ALLL[p].history[state][1])){
-                    if  (ALLL[p].history[state][2] != "Blocked"){b = 0}
-                    break;
-                }
-            }
-            if (b == 0){break}
-        }
-        cpt = cpt + b;
-    }
-}
+
 
 
 var mem = svg.append("circle")
@@ -609,7 +571,6 @@ function FCFS(mode , proc){
             sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
                 mem_intr();sleep(SPEED).then( () => {
                     log_comment("Interuption "+elem.type_int()+" du processus "+elem.id, "red", elem.color);
-
                     push_history_inProcess_pret(elem, elem.int_time())
                     block_process();
                     FCFS("block",elem)})
@@ -633,64 +594,28 @@ function FCFS(mode , proc){
       sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
           log_comment("Resume du processus "+proc.id, "orange", proc.color);
           resume_process(proc);proc.treat_int();
-          sleep(SPEED).then(() => {
-              //resume_process(proc);proc.treat_int();
-              FCFS()})})
+          sleep(SPEED).then(() => {FCFS()})})
     }
 
   }
   else {
     std.avrg_time = ALL_PROCS.reduce((a, b) => a + b, 0) / ALL_PROCS.length
-    clean_data()
+    //clean_data(ALLL)
     sleep(SPEED).then(() => { alert("Simualation FCFS have finished")})
-    history2ganttdata(); draw_gantt(data);
-    clean_data();  history2ganttdata(); draw_gantt(data);
-
+    document.getElementById('gantt_div').style.display = "block" ; 
+    document.getElementById('tab_div').style.display = "block" ; 
+    draw_gantt_(data_FCFS, "FCFS_");
+    plot_time_table(all_histories["FCFS_"], "plot_time")
+    end_of_simulation = true;
   }
 }
 
 
-function clean_data(){
-  for(let i = 0 ; i < ALLL.length ; i++){ 
-    let arr = ALLL[i].history
-    arr.splice(arr.length,1)
-    let passed = false
-    while (!passed){
-      passed = true 
-      for (let i = 0 ; i < arr.length -1 ; i++){
-        let sub_arr1 = arr[i]
-        let sub_arr2 = arr[i+1]
-          passed = true
-          if (sub_arr1[2]==sub_arr2[2]){
-              sub_arr1[1] = sub_arr2[1]
-              arr.splice(i+1,1)
-              passed = false
-              break 
-            }
-        }
-    }
-  }
-}
 /*************************************************************/
 
 
 /************************ UI ********************************/
-function create_process_html(){
-  var value = document.getElementById("nb_procs").value
-  var x = document.getElementById("menu")
-  x.innerHTML = ""
-  for (let i = 0; i < value; i++){
-    var int_html = ""
 
-    int_html += '<label >Process '+i+' :</label>'
-    int_html += '<label >Execution time:</label>      <input id="exe_time_'+i+'" type="text"   maxlength="2"  size="2">'
-    int_html += '<label >Interuption number:</label>       <input id="int_n_'+i+'" type="text" maxlength="1"  size="2" onchange="create_int_html(id, value);">'
-
-    x.innerHTML += "<div id='int_"+i+"' style='cursor: pointer'  onclick='open_menu(id)' > " + int_html +" </div>"
-    x.innerHTML += '<div id="int_menu_'+i+'" ></div>'
-  }
-  x.innerHTML += '<br><input id="scrap"  value="Create process"  type="button" onclick="scrap(document);" />'
-}
 function create_int_html(id, value){
   let x = document.getElementById('int_menu_'+id.slice(6))
   x.innerHTML = ""
@@ -732,25 +657,6 @@ function open_menu_proc_ints(id){
     }
 }
 
-
-function scrap(document){
-    var exe_time = document.getElementById("Exe_time").value
-    var nb_int   = document.getElementById("Int_nb").value
-    var ints = []
-    for (var i = 1; i <= nb_int; i++){
-
-      ints.push([parseInt(document.getElementById(`Start_time_${i}`).value),
-                 parseInt(document.getElementById(`Duration_${i}`).value),
-                 document.getElementById(`Interuption_type_${i}`).value])
-    }
-    var color = document.getElementById("Process_color").value
-    var process = new Process(id_proc, parseInt(exe_time), ints, -1, 0, color,0)
-    id_proc += 1
-    ALLL.push(process)
-    add_to_proc_info_menu(process, "proc_info_menu")
-    process.move2fifo(pret)
-
-    }
 
 /*************************************************************/
 
@@ -829,8 +735,3 @@ function add_to_proc_info_menu(p, id){
 }
 
 /**************************************************/
-
-
-
-
-

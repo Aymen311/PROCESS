@@ -1,0 +1,114 @@
+.choice-container
+{
+    display: flex;
+    margin-bottom: 0.8rem;
+    width: 100%;
+    border-radius: 4px;
+    background: rgb(18, 93, 255);
+    font-size: 1rem;
+    min-width: 70rem;
+}
+
+.choice-container:hover
+{
+    cursor: pointer;
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(6, 103, 247, 0.5);
+    ;
+    transform: scale(1.02);
+    transform: transform 100ms;
+}
+
+.choice-prefix
+{
+    padding: 2rem 2.5rem;
+}
+
+.choice-text
+{
+    padding: 2rem;
+    width: 100%;
+    color: #fff;
+}
+
+.correct
+{
+    background: linear-gradient(32deg, rgba(11,223,36) 0% , rgb(41,232,111) 100%);
+}
+
+.incorrect
+{
+    background: linear-gradient(32deg, rgb(230, 29, 29, 1) 0% , rgb(224,11,11, 1) 100%);
+}
+
+#hud
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.hud-prefix
+{
+    text-align: left;
+    font-size: 4rem;
+}
+
+.hud-main-text
+{
+    text-align: center;
+    font-size: 5rem;
+}
+
+#progressBar
+{
+    
+    width: 15rem;
+    height: 2rem;
+    border: 0.2rem solid rgb(11, 233, 36);
+    margin-bottom : 1rem;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+#progressBarFull
+{
+    height: 100%;
+    background: rgb(11, 223, 36);
+    width: 0%;
+}
+
+
+@media screen and (max-width: 1300px) {
+    .choice-container
+    {min-width: 45rem;}
+}
+
+
+@media screen and (max-width: 1200px) {
+    .choice-container
+    {min-width: 35rem;}
+}
+
+@media screen and (max-width: 1000px) {
+    .choice-container
+    {min-width: 30rem;}
+}
+
+@media screen and (max-width: 768px) {
+    .choice-container
+    {min-width: 20rem;}
+}
+
+@media screen and (max-width: 380px) {
+    .choice-container
+    {min-width: 10rem;}
+}
+
+
+.final_statement
+{
+    justify-content: space-between;
+    font-size: 2rem;
+}
+
+
+

@@ -39,7 +39,7 @@ let MAX_INTR_DURATION = 10
 let INT_TYPES = ["memory","function","input"]
 let MIN_INT_TYPES = ["memory","input"]
 //Genreal info
-var SPEED = 0;
+var SPEED = 200;
 var TIME_UNIT = 100;
 
 var QUANTUMS = [1, 2, 3, 4];
@@ -72,15 +72,15 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   if (deg < MAX_PROC_DEGREE){
     possible_ints = INT_TYPES
   }
-  if (exec_time > 2){
+  if (exec_time > 2*MAX_PROC_INTRS){
     var nb_intrs = randint(0,MAX_PROC_INTRS)
     }else{
-      var nb_intrs = randint(0,2)
+      var nb_intrs = 1
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time)
+    int_t = randint(int_t+1,exec_time-1)
     intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
@@ -90,13 +90,11 @@ function rand_intrs(exec_time,deg){ //function that chooses a random intr from t
   return intrs
 }
 
-function add_process(pere,deg){
-  var exec_t = randint(MIN_PROC_TIME,MAX_PROC_TIME)
-  var p =  new Process(id_proc,exec_t,rand_intrs(exec_t,deg),pere,deg)
-  p.move2fifo(list_fifos[0]) //add to the list with level 0
-  add_to_proc_info_menu(p, "proc_info_menu")
-  ALLL.push(p)
+function add_process(pere,deg,entrance, Config){
+  var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
   id_proc++;
+  ints = rand_intrs(exec_t,deg)
+  return [id_proc, entrance, exec_t, -1, ints.s, ints]
 }
 
 function create_process() {
@@ -117,7 +115,7 @@ function create_process() {
 var svg = d3.select("main_svg")
     .append("svg")
     .attr("width", 1000)
-    .attr("height", 700);
+    .attr("height", 550);
 /**************************/
 
 /************************ CLASS *********************/
@@ -128,6 +126,7 @@ class Processor {
         this.x = x
         this.y = y
         this.inProcess = []
+        this.rect = -1
     }
     createProcessor() {
         var elem = svg.append("svg:image")
@@ -137,7 +136,7 @@ class Processor {
             .attr('height', 70)
             .attr("xlink:href", "../../image/processor_2.svg")
 
-        var elem = svg.append("rect")
+        this.rect= svg.append("rect")
             .attr("x", this.x - 10.5)
             .attr("y", 65)
             .attr("width", 20).attr("height", 20)
@@ -398,6 +397,46 @@ class Process {
 
 /********************** INITS *****************************/
 
+
+
+
+
+function update_fifos(){
+    q_l = document.getElementById("quantums").value.split(",");
+    q_l_ = []
+    for ( var j = 0; j < q_l.length; j++){
+        if (! isNaN(parseInt(q_l[j]))) {q_l_.push(parseInt(q_l[j]))}
+    }
+
+    q_l_ = q_l_.sort(function(a, b) {return a - b;})
+    QUANTUMS = q_l_
+    document.getElementById("main_svg").innerHTML = ""
+
+    svg = d3.select("main_svg")
+        .append("svg")
+        .attr("width", 1000)
+        .attr("height", 550);
+
+    var NB_FIFO = [4, q_l_.length ].sort(function(a, b) {return a - b;})[0];
+    list_fifos = [];
+    for (var i = 0; i<NB_FIFO; i++){
+        var f = new Fifo(STARTING_PRET_X, STARTING_PRET_Y + i*(SPACE_BETWEEN_FIFO+FIFO_HEIGHT), FIFO_CAPACITY,q_l_[i],  "Q = "+(q_l_[i]))
+        list_fifos.push(f)
+        f.createFifo();
+    }
+
+    var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY,0, "FIFO BLOQUE")
+    blocked.createFifo();
+
+    var processor = new Processor(0, PROCESSOR_X, PROCESSOR_Y);
+    processor.createProcessor();
+
+    ALL_PROCS = []; ALLL = []; data = [];all_processes_list = [];
+
+}
+
+
+
 const SPACE_BETWEEN_FIFO = 50;
 var NB_FIFO = 4;
 
@@ -407,10 +446,6 @@ for (var i = 0; i<NB_FIFO; i++){
     list_fifos.push(f)
     f.createFifo();
 }
-
-
-
-
 
 var blocked = new Fifo(STARTING_BLOCK_X, STARTING_BLOCK_Y, FIFO_CAPACITY,0, "FIFO BLOQUE")
 blocked.createFifo();
@@ -444,6 +479,7 @@ function block_process(lvl) {
 function change_process(lvl) {
     new_level = (lvl + 1)*(lvl < NB_FIFO - 1) + (lvl)*(lvl == NB_FIFO - 1)
     processor.inProcess[0].level = new_level
+    console.log("xxxxx", new_level);
     processor.block_process(list_fifos[new_level])
 }
 
@@ -474,6 +510,7 @@ TU_slider.oninput = function() {
 
 /***************** FUNCTION TO TEST AREA **************/
 function update_left_time(elem, t,end,sub){
+    console.log(sub)
     if (t > end){
         sleep(TIME_UNIT).then(() => {
           elem.left_time_anime -= sub;
@@ -573,6 +610,7 @@ function log_comment(comment, color, elem_color){
     <div class='int_class_header'>
         <span style="color:${color}"> ${comment} </span><br>
     </div>`*/
+    console.log(elem_color);
     var c = `<li style="color:${color}">   ${comment}
         <span style="position: relative;bottom: -7px;">  <svg  height='30' width='30'>  <circle cx='15' cy='15' r='10' stroke='black' stroke_width='3' fill='rgb(${elem_color},1)'/> </svg> </span>
     </li>`;
@@ -648,6 +686,7 @@ function MULTI_NV(mode,proc) {
                 block_process();add_process(elem,elem.deg+1);sleep(SPEED).then(() => {MULTI_NV()})})
           }
           }else {
+          console.log("here")
            sleep(SPEED).then( () => {update_left_time(elem, elem.left_time,elem.left_time-qntm,1);})
            sleep(SPEED + qntm * TIME_UNIT).then(() => {
                log_comment("Processus "+elem.id+" -> Fifo "+(lvl+2), "black", elem.color);
@@ -666,7 +705,13 @@ function MULTI_NV(mode,proc) {
   }
   else {
     sleep(SPEED).then(() => { alert("Simualation Round Robin have finished")})
-    clean_data();  history2ganttdata(); draw_gantt(data);
+    sleep(2000).then(() => {
+        document.getElementById('gantt_div').style.display = "block" ; 
+        document.getElementById('tab_div').style.display = "block" ; 
+        draw_gantt_(data_MULTI_NV, "FCFS_");
+        plot_time_table(all_histories["MULTI_NV"], "plot_time")
+        end_of_simulation = true;
+    })
   }
 }
 

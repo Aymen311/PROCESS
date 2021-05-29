@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PROCESS-Quizz-game</title>
+
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="icon" type="image/png" href="assets/PROCESS-LOGO.png"/>
+
+	<!-- Import lib -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+	<link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+	<!-- End import lib -->
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="game.css">
+</head>
+<body class="overlay-scrollbar">
+	<!-- navbar -->
+	<div class="navbar">
+		<!-- nav left -->
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link">
+					<i class="fas fa-bars" onclick="collapseSidebar()"></i>
+				</a>
+			</li>
+			<li class="nav-item">
+				<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
+				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark">
+			</li>
+		</ul>
+		<!-- end nav left -->
+
+		<!-- nav right -->
+		<ul class="navbar-nav nav-right">
+			<li class="nav-item config">
+				<a class="nav-link" href="#" onclick="switchScreen()">
+					<i class="fas fa-expand fullscreen"></i>
+				</a>
+			</li>
+			<li class="nav-item mode">
+				<a class="nav-link" href="#" onclick="switchTheme()">
+					<i class="fas fa-moon dark-icon"></i>
+					<i class="fas fa-sun light-icon"></i>
+				</a>
+			</li>
+		</ul>
+		<!-- end nav right -->
+	</div>
+	<!-- end navbar -->
+	<!-- sidebar -->
+	<div class="sidebar">
+		<ul class="sidebar-nav">
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tachometer-alt"></i>
+					</div>
+					<span>Simulation</span>
+				</a>
+			</li>
+            <li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-tachometer-alt"></i>
+					</div>
+					<span>Comparaison</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-book-open"></i>
+					</div>
+					<span>Documentation</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fab fa-github"></i>
+					</div>
+					<span>Contribuer</span>
+				</a>
+			</li>
+			<li  class="sidebar-nav-item">
+				<a href="#" class="sidebar-nav-link">
+					<div>
+						<i class="fas fa-exclamation-circle"></i>
+					</div>
+					<span>About</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+	<!-- end sidebar -->
+	<!-- main content -->
+	<div class="wrapper">
+		<div class="row">
+			<div class="col-12 col-m-12 col-sm-12">
+				<div class="card">
+					<div class="container">
+                        <div id="end_statement" class="flex-center flex-column">
+							<div class="hud-item">
+								<p class="hud-prefix">
+									Score
+								</p>
+								<h1 class="hud-main-text" id="Score">
+									0
+								</h1>
+							</div>
+
+                            <a href="game.html" class="btn">Try again</a>
+                            <a href="#" class="btn">Go Home
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </div>
+					</div>
+					
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<!-- end main content -->
+	<!-- import script -->
+	<script src="index.js"></script>
+    <script src="game.js"></script>
+	<script src="end.js"></script>
+	<!-- end import script -->
+</body>
+</html>
