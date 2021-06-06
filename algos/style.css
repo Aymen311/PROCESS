@@ -2,7 +2,7 @@
 	--primary-color: #4834d4;
 	--success-color: #6ab04c;
 	--warning-color: #f0932b;
-	--danger-color: #eb4d4b;
+	--danger-color: #2383D8;
 
 	--light-color: #212529;
 	--light-second-color: #727475;
@@ -281,10 +281,10 @@ body {
 	margin-top: 65px;
 	background: var(--main-bg-color);
 	box-shadow: rgba(0,0,0,0.12) 0px 1px 4px 1px;
-	overflow: hidden;
 	z-index: 100;
 	transition: width .5s;
 	overflow: hidden;
+	height: 100%;
 }
 
 .sidebar:hover {
@@ -620,3 +620,46 @@ body {
 }
 
 
+
+ @media screen and (min-width:940px) and (max-width:1300px) {
+	html {    
+	   zoom: 80% ;
+	   -moz-transform: scale(.8);
+	}
+ }
+
+ @media screen and (min-width:800px) and (max-width:940px) {
+	html {    
+	   zoom: 70% ;
+	   -moz-transform: scale(.7);
+	}
+ }
+
+ @media screen and (min-width:600px) and (max-width:800px) {
+	html {    
+	   zoom: 60% ; 
+	   -moz-transform: scale(.6);
+	}
+ }
+
+ .logo_prefix {
+    color: var(--danger-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 4%;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+   font-family: 'Poppins', 
+}
+
+text
+{
+	color: var(--main-color);
+}
