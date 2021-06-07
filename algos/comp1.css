@@ -28,7 +28,7 @@ bodypopup {
     border-radius: 5px;
     position: absolute;
     height: 600px;
-    box-shadow: 5px 10px 8px black;
+    box-shadow: 5px 10px 8px #00000042;
     z-index: 1;
 }
 .container_light{background: #fff;}
@@ -277,6 +277,7 @@ bodypopup table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  margin-top: 1%;
 }
 
 bodypopup table td, table th {
@@ -296,8 +297,8 @@ bodypopup table th {
   /*background-color: #4CAF50*/
 }
 
-.bodypopup_table_th_light{background-color: #4CAF50}
-.bodypopup_table_th_dark {background-color: #110D0F;}
+.bodypopup_table_th_light{background-color: #2383D8}
+.bodypopup_table_th_dark {background-color: #2383D8;}
 
 .button_suprimer {
     width: 100%;

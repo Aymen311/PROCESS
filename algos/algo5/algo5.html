@@ -36,12 +36,10 @@
                 </div>
             </div>
             <hr>
-            <div class="configuration">
-                <div class="input_box" style="width:100%">
-                    <span>Generation aleatoir selon la configuration</span>
-                    <input type="checkbox" style="width:auto" id="processes_checkbox" onchange="show_hide_processes_menu()">
-                </div>
-            </div>
+            <label class="container_checkbox">Génération aléatoires
+              <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
+              <span class="checkmark"></span>
+            </label>
             <hr>
             <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
                 <table id="table">
@@ -50,7 +48,7 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" class="suivant_retour_button suivant_button" onclick="ajouter_processus()"> Ajouter les processus </button>
+            <button class="suivant_button" onclick="ajouter_processus()" style="vertical-align:middle"> <span>Ajouter </span> </button>
 
         </div>
         <div class="container" id="container1" style="display:none;">
@@ -130,8 +128,8 @@
                             <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
                         </div>
                     </div>
-                    <button type="button" class="suivant_retour_button suivant_button" onclick="slide2()"> Suivant </button>
                 </div>
+                <button class="suivant_button config_suiv" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
             </form>
         </div>
         <div name="interuptions_hidden_divs" id="stock"></div>
@@ -147,10 +145,7 @@
           <i class="fas fa-bars"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <img src="../assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
-        <img src="../assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark">
-      </li>
+        <a href="#" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
     </ul>
     <!-- end nav left -->
 
@@ -756,7 +751,6 @@
 
   function slide2(){
     document.getElementById("container1").style.display = "none";
-    document.getElementById("container2").style.display = "block";
   }
 
   function add_nb(id){
