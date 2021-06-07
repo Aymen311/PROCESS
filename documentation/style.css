@@ -1,0 +1,299 @@
+@charset "UTF-8";
+/* Color Palette ------
+-------------------- */
+/* Layout Colors ------------ */
+/* Typography Colors ------- */
+/* Accent Colors ------- */
+/* Font Stacks ------- */
+/* Font Sizes ------- */
+/* Line Heights ------- */
+/* Type Scale ------- */
+h1 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 41px;
+  line-height: 62px;
+  color: #1C1D1E; }
+
+h2 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 90px;
+  line-height: 41px;
+  color: #1C1D1E;
+  letter-spacing: 0.2px;
+  word-spacing: rem(2px); }
+
+h3 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 23px;
+  line-height: 35px;
+  color: #1C1D1E; }
+
+.nav-container h2 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 35px;
+  line-height: 31px;
+  color: #E9EEFC; }
+
+.nav-link {
+  font-family: "Proxima-Sans-Regular", "Calibri", Trebuchet, sans-serif;
+  font-size: 16px;
+  line-height: 27px;
+  color: #D2D9E9;
+  text-decoration: none; }
+
+.main-section li {
+  font-family: "Proxima-Sans-Regular", "Calibri", Trebuchet, sans-serif;
+  font-size: 18px;
+  line-height: 41px;
+  color: #1C1D1E;
+  list-style-type: disc;
+  /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type     */
+  list-style-position: inside; }
+
+/* Link Transtion Style ------- */
+.social-icons img:hover, .nav-link:hover, footer a:hover {
+  transition: all 0.4s; }
+
+@font-face {
+  font-family: 'Neufile-Grotesk-Medium';
+  src: url("fonts/Neufile-Grotesk-Medium.woff") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'Proxima-Sans-Regular';
+  src: url("fonts/Proxima-Sans-Regular.woff") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+@font-face {
+  font-family: 'Roboto-Mono-Medium';
+  src: url("fonts/Roboto-Mono-Medium.woff") format("truetype");
+  font-weight: normal;
+  font-style: normal; }
+/* Font Stacks ------- */
+/* Font Sizes ------- */
+/* Line Heights ------- */
+/* Type Scale ------- */
+h1 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 41px;
+  line-height: 62px;
+  color: #1C1D1E; }
+
+h2 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 40px;
+  line-height: 41px;
+  color: #1C1D1E;
+  letter-spacing: 0.2px;
+  word-spacing: 0.111rem; }
+
+h3 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 23px;
+  line-height: 35px;
+  color: #1C1D1E; }
+
+.nav-container h2 {
+  font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
+  font-size: 32px;
+  line-height: 31px;
+  color: #E9EEFC; }
+
+.nav-link {
+  font-family: "Proxima-Sans-Regular", "Calibri", Trebuchet, sans-serif;
+  font-size: 16px;
+  line-height: 27px;
+  color: #D2D9E9;
+  text-decoration: none; }
+
+.main-section li {
+  font-family: "Proxima-Sans-Regular", "Calibri", Trebuchet, sans-serif;
+  font-size: 18px;
+  line-height: 41px;
+  color: #1C1D1E;
+  list-style-type: disc;
+  /* See https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type     */
+  list-style-position: inside; }
+
+/* Link Transtion Style ------- */
+.social-icons img:hover, .nav-link:hover, footer a:hover {
+  transition: all 0.4s; }
+
+/*
+When adding it to classes and elements in style.scss, use: 
+
+  @include breakpoint(md) { 
+  }
+
+  @include breakpoint(lg) { 
+  }
+
+  Article: https://medium.com/developing-with-sass/creating-a-dead-simple-sass-mixin-to-handle-responsive-breakpoints-889927b37740
+
+*/
+/* Global Styles ---------*/
+* {
+  box-sizing: border-box; }
+
+a {
+  text-decoration: none; }
+
+body {
+  font-family: "Proxima-Sans-Regular", "Calibri", Trebuchet, sans-serif;
+  font-size: 18px;
+  line-height: 27px;
+  color: #1C1D1E;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex; }
+
+.body-container {
+  margin: auto; }
+
+/* Main Layout ---------*/
+.section-container {
+  padding-left: 0.222rem; }
+
+.nav-container {
+  width: 20.9vw;
+  background: #2b1055;
+  display: flex;
+  justify-content: flex-end; }
+  @media (max-width: 1000px) {
+    .nav-container {
+      display: none; } }
+
+.nav-inner-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3.6vw;
+  padding-right: 1.556rem;
+  padding-top: 1.667rem;
+  position: fixed; }
+  .nav-inner-container header {
+    max-width: 68%; }
+  .nav-inner-container .menu-link-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4.722rem; }
+    .nav-inner-container .menu-link-container a {
+      margin-bottom: 0.722rem; }
+
+.main-container {
+  max-width: 65vw;
+  margin-left: 9%;
+  margin-top: 2.5rem;
+  margin-bottom: 2.167rem; }
+  @media (max-width: 1000px) {
+    .main-container {
+      max-width: 68vw;
+      margin: 0 auto 2.167rem auto; } }
+  .main-container .final-section-marker {
+    width: 0.611rem;
+    height: 0.611rem;
+    background: #E9EEFC;
+    opacity: 0.8;
+    margin-top: 0.333rem;
+    border-radius: 0.056rem; }
+  .main-container footer {
+    min-height: 2.667rem;
+    margin-top: 9.111rem;
+    padding: 0.5rem 0.833rem;
+    background: rgba(243, 246, 253, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    @media (max-width: 1000px) {
+      .main-container footer {
+        margin-top: 6rem; } }
+
+/* Social Icons ---------*/
+@media (max-width: 1400px) {
+  .social-icons-tablet {
+    display: none; } }
+@media (max-width: 1000px) {
+  .social-icons-tablet {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2.222rem;
+    transform: scale(0.9); }
+    .social-icons-tablet img:hover {
+      filter: contrast(220%); }
+    .social-icons-tablet img:active {
+      filter: sepia(160%); }
+    .social-icons-tablet__github {
+      margin-right: 1.667rem; }
+    
+ }
+
+.social-icons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2.222rem;
+  position: relative;
+  right: 3.278rem; }
+  @media (max-width: 1000px) {
+    .social-icons {
+      display: none; } }
+  .social-icons img:hover {
+    filter: contrast(220%); }
+  .social-icons img:active {
+    filter: sepia(160%); }
+  .social-icons__github {
+    width: 1.222rem;
+    height: 1.222rem;
+    margin-right: 1.5rem; }
+
+/* Typography Styles ---------*/
+.nav-container .logo-decorative-square {
+  width: 0.444rem;
+  height: 0.444rem;
+  background: #2861ca;
+  float: right;
+  transform: translateY(10px) translateX(45px); }
+
+.nav-link:hover {
+  color: #ffffff; }
+.nav-link:active {
+  color: #5b458f; }
+
+.main-section h2 {
+  margin-top: 3.389rem; }
+.main-section p:first-of-type, .main-section ul {
+  margin-top: 0.944rem; }
+.main-section p {
+  margin-top: 1.222rem; }
+.main-section .highlight-text {
+  background: rgba(243, 246, 253, 0.2);
+  color: #302f97;
+  line-height: 18px;
+  padding: 0.222rem 0.444rem;
+  margin: 0 3px;
+  border-radius: 3px;
+  border: 1px solid #E9EEFC; }
+
+h3 {
+  margin-top: 2.056rem; }
+
+h3::before {
+  content: url(icons/decorative-line-before-h3-element.svg);
+  display: inline-block;
+  text-indent: -2.444rem;
+  background : #2861ca;
+  transform: translateY(-6px); }
+.main-section ul {
+  white-space:normal; }
+.main-section li:before {
+  content: " • ";
+  position: relative;
+  right: 0.722rem;
+  color: #2861ca; }
+footer a {
+  display: inline-block;
+  color: #24105a; }
+  footer a:hover {
+    color: #2861ca; }
+  footer a:active {
+    color: #1C1D1E; }
+
+/*# sourceMappingURL=style.css.map */

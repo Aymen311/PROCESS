@@ -59,7 +59,6 @@ function randint(min,max){
 
 
 function end_comparaison(){
-        console.log("[ALERT]    END OF COMP");
         document.getElementById("bodypopup").style.display = "none"
         afficher_criteres(all_histories)
         main()
@@ -840,7 +839,7 @@ function MULTI_NV_init( list_processes, TIME_UNIT, SPEED, QUANTUMS, draw=false){
               for ( var i = 0; i < list_processes.length; i++){
                   Hist.push(ALLL[i].history)
               }
-              all_histories["MULTI_NV"] = Hist  ;
+              all_histories["MULTI+REC"] = Hist  ;
               nb_finished_algo++;
               if (nb_finished_algo == nb_alogs_comparaison){
                 end_comparaison()
@@ -997,7 +996,7 @@ function MULTI_NV_PRIO_init( list_processes, TIME_UNIT, SPEED, QUANTUMS, draw=fa
           for ( var i = 0; i < list_processes.length; i++){
               Hist.push(ALLL[i].history)
           }
-          all_histories["MULTI_NV_PRIO"] = Hist
+          all_histories["MULTI+PRIO"] = Hist
           nb_finished_algo++;
           if (nb_finished_algo == nb_alogs_comparaison){
             end_comparaison()
@@ -1878,8 +1877,8 @@ charts.push(RadarChart)
 
 function bar_chart(Data,elem,title,crit){
 var ctx = document.getElementById(elem);
-ctx.height =50
-ctx.width = 100
+ctx.height =400
+ctx.width = 500
 
 let data = []
 for (let i = 0 ; i<Data.length ; i++){
@@ -1887,6 +1886,7 @@ for (let i = 0 ; i<Data.length ; i++){
       label: Data[i][1],
       data: [all_crts[Data[i][1]][crit]],
       borderWidth: 1,
+      barThickness: 50,
       backgroundColor : backgroundColor[i],
       borderColor : borderColor [i],
     }
@@ -1899,13 +1899,7 @@ var barChart = new Chart(ctx, {
     datasets: data,
   },
   options: {
-    plugins: {
-            title: {
-                display: true,
-                text: title,
-            },
-        },
-    responsive: true,
+    responsive: false,
     scales: {
       yAxes: [{
         ticks: {
@@ -2090,44 +2084,36 @@ charts.push(groupchart)
 //linechart([1,0,3,0,1,2],'myChart1',[8,16,24,32],"Nb Proc")
 
 function CPU_Usage(){
-    clean()
+    //clean()
     let arr = get_algorithmes()
     let data = []
-    set_chart1()
-    bar_chart(arr,"myChart1","Cpu Usage","cpu_usage")
+    bar_chart(arr,"myChart5","","cpu_usage")
     let crits = []
     for (let i =0 ; i< arr.length ; i++){
         crits.push(arr[i][1])
         data.push(all_crts[arr[i][1]].cpu_usage)
     }
-    set_chart2()
-    radar(data,"myChart2","Cpu Usage",crits,0,100)
+    ranking(sortObj(make_obj(get_algorithmes(),"cpu_usage")),"finish_time",'part6')
 
 }
 
 function temps_perdu(){
-	clean()
 	let arr = get_algorithmes()
-    set_chart1()
-    bar_chart(arr,"myChart1","Temps Perdu(Processeur en repos)","unused_time")
-    ranking(sortObjectByKeys(make_obj(get_algorithmes(),"unused_time")),"unused_time")
+    bar_chart(arr,"myChart3","","unused_time")
+    ranking(sortObj(make_obj(get_algorithmes(),"unused_time")),"unused_time","part4")
 
 }	
 
 function temps_fin(){
-	clean()
 	let arr = get_algorithmes()
-    set_chart1()
-    horizontalBarchart(arr,"myChart1","Temp de Fin","finish_time")
-    ranking(sortObjectByKeys(make_obj(get_algorithmes(),"finish_time")),"finish_time")
+    horizontalBarchart(arr,"myChart7","Temp de Fin","finish_time")
+    ranking(sortObj(make_obj(get_algorithmes(),"finish_time")),"finish_time",'part8')
 } 
 
 function attente_temps(){
-	clean()
 	let arr = get_algorithmes()
-    set_chart1()
-    bar_chart(arr,"myChart1","Temps d'attente","mean_waiting_time")
-    ranking(sortObjectByKeys(make_obj(get_algorithmes(),"mean_waiting_time")),"mean_waiting_time")
+    bar_chart(arr,"myChart9","Temps d'attente","mean_waiting_time")
+    ranking(sortObj(make_obj(get_algorithmes(),"mean_waiting_time")),"mean_waiting_time","part10")
 
 }
 
@@ -2136,7 +2122,7 @@ function get_respond_time(){
 	let arr = get_algorithmes()
     set_chart1()
     horizontalBarchart(arr,"myChart1","Temp de reponse","mean_respond_time")
-    ranking(sortObjectByKeys(make_obj(get_algorithmes(),"mean_respond_time")),"mean_respond_time")
+    ranking(sortObj(make_obj(get_algorithmes(),"mean_respond_time")),"mean_respond_time")
 
 } 
 
@@ -2145,13 +2131,13 @@ function avrg_charge(){
 	let arr = get_algorithmes()
     set_chart1()
     horizontalBarchart(arr,"myChart1","Chargement Moyen","load_average")
-    ranking(sortObjectByKeys(make_obj(get_algorithmes(),"load_average")),"load_average")
+    ranking(sortObj(make_obj(get_algorithmes(),"load_average")),"load_average")
     
 }
 
 function get_bestresult(){
-	let keys = ["cpu_usage","finish_time","mean_waiting_time","mean_respond_time","unused_time"]
-	let values = ["Cpu Usage","Finish Time","Waiting Time","Responce Time","Wasted Time"]
+	let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
+	let values = ["Cpu Usage","Finish Time","Waiting Time","Wasted Time"]
 	let algos = get_algorithmes()
     let algo_list = []
     let html = ""
@@ -2168,13 +2154,19 @@ function get_bestresult(){
     for (let i = 0 ; i<values.length ; i++){
         html+='<tr>'
           html+='<th scope="row">'+(values[i])+'</th>'
-          winner = algo_list.indexOf(Object.keys(sortObjectByKeys(make_obj(get_algorithmes(),keys[i])))[0])
+          let o = make_obj(get_algorithmes(),keys[i])
+          let new_o = {...o};
+          if (keys[i] == "cpu_usage"){
+            winner = algo_list.indexOf(Object.keys(sortObj(o,true))[0])
+          }else{
+            winner = algo_list.indexOf(Object.keys(sortObj(o))[0])
+          }
           for (let j = 0 ; j < algo_list.length ; j++){
-              if (j == winner){
+              if ((j == winner)||(new_o[algo_list[j]] == new_o[algo_list[winner]])){
                 html+='<td>✅</td>'
               }
               else{
-                html+='<td>❌</td>'
+                html+='<td></td>'
             }
             }
         html+='</tr>'
@@ -2182,21 +2174,17 @@ function get_bestresult(){
     html+='</tr>'
     html+='</thead>'
     html+='<tbody>'
-
-/*	for (let i = 0 ; i < keys.length ; i++){
-		html+="Best "+values[i]+" : "
-		html+=Object.keys(sortObjectByKeys(make_obj(get_algorithmes(),keys[i])))[0]
-		html+="<br>"
-	}*/
-
 	elem = document.getElementById("part1")
 	elem.innerHTML = html
 }
 
 function main(){
-	clean()
 	get_bestresult()
-    main_ranking(get_algorithmes())
+    main_ranking()
+    temps_perdu()
+    temps_fin()
+    attente_temps()
+    CPU_Usage()
     
 }
 
@@ -2208,7 +2196,7 @@ function clean(){
     charts = []
 }
 
-function ranking(algos,crit){
+function ranking(algos,crit,elem){
 
 	html='<table class="table">'
     html+='<thead>'
@@ -2231,41 +2219,43 @@ function ranking(algos,crit){
     html+='</tbody>'
 	html+='</table>'
 
-	elem = document.getElementById("part2")
+	elem = document.getElementById(elem)
 	elem.innerHTML = html
 }
 
 
-function main_ranking(algos){
+function main_ranking(){
 
-	html='<table class="table">'
+    let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
+    let values = ["Cpu Usage","Finish Time","Waiting Time","Wasted Time"]
+    let algos = get_algorithmes()
+    let algo_list = []
+    let html = ""
+    
+    html='<table class="table">'
     html+='<thead>'
     html+='<tr>'
-    html+='<th scope="col">#</th>'
-    html+='<th scope="col">Algorithme</th>'
-    html+='<th scope="col">CPU Usage</th>'
-    html+='<th scope="col">Finish T</th>'
-    html+='<th scope="col">Waiting T</th>'
-    html+='<th scope="col">Resp T </th>'
-    html+='<th scope="col">Wasted T</th>'
+    html+='<th scope="col">Critères\\Algorithmes</th>'
+    for (let i = 0 ; i<algos.length ; i++){
+        html+='<th scope="col">'+algos[i][1]+'</th>'
+        algo_list.push(algos[i][1])
+    }   
 
+    for (let i = 0 ; i<values.length ; i++){
+        let key = ""
+        if (i==0){
+            key=" %"
+        }
+        html+='<tr>'
+          html+='<th scope="row">'+(values[i])+'</th>'
+          for (let j = 0 ; j < algo_list.length ; j++){
+            html+='<td>'+(all_crts[algo_list[j]][keys[i]])+key+'</td>'
+            }
+        html+='</tr>'
+    }
     html+='</tr>'
     html+='</thead>'
     html+='<tbody>'
-    for (let index = 0 ; index < algos.length ; index++){
-    	  algo = algos[index][1]
-	      html+='<tr>'
-	      html+='<th scope="row">'+(index+1)+'</th>'
-	      html+='<td>'+algo+'</td>'
-	      html+='<td>'+all_crts[algo].cpu_usage+' %</td>'
-	      html+='<td>'+all_crts[algo].finish_time+'</td>'
-	      html+='<td>'+all_crts[algo].mean_waiting_time+'</td>'
-	      html+='<td>'+all_crts[algo].mean_respond_time+'</td>'
-	      html+='<td>'+all_crts[algo].unused_time+'</td>'
-	    html+='</tr>'
-	}
-    html+='</tbody>'
-	html+='</table>'
 
 	elem = document.getElementById("part2")
 	elem.innerHTML = html
@@ -2289,8 +2279,48 @@ function make_obj(algos,crit){
 	return obj
 }
 
-function sortObjectByKeys(o) {
-    return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+function sortObj(o,reverse=false){
+    let passed = false ;
+    let algos = []
+    for (let algo in o){
+        algos.push(algo)
+    }
+
+    while (!passed){
+        passed = true
+        let i = 0 
+        for (let algo in o ){
+            let j = 0 
+            for (let alg in o){
+                if ((algo != alg) && (i>j) && (o[algo] < o[alg])){
+                    let tmp = o[algo]
+                    o[algo] = o[alg]
+                    o[alg] = tmp
+                    let first = algos.indexOf(algo)
+                    let second = algos.indexOf(alg)
+                    algos[first] = alg
+                    algos[second] = algo
+                    passed = false
+                    break
+                }
+            j++
+            }
+        i++
+        }
+    }
+    let new_o = {}
+    if (!reverse){
+    let ind = 0 
+        for (let algo in o){
+            new_o[algos[ind]] = o[algo]
+            ind++
+        }
+    }else{
+        let ind = algos.length -1
+        for (let algo in o){
+            new_o[algos[ind]] = o[algo]
+            ind--
+        }
+    }
+    return new_o
 }
-
-

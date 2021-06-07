@@ -9,18 +9,16 @@
 	<!-- Import lib -->
 	<link rel="stylesheet" type="text/css" href="fontawesome-free/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="comp1.css">
-    <link rel="stylesheet" href="button.css">
 	<!-- End import lib -->
 
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="overlay-scrollbar">
 	<!-- POP UP DIV !-->
 	<bodypopup id="bodypopup" style="display:flex">
         <div class="container" id="container1" style="display:block;">
-            <div class="progress_bar">
+        	<div class="progress_bar">
                 <span class="steps step_1">Configuration</span>
                 <span class="steps step_2">Processus</span>
                 <span class="steps step_3">Algorithmes</span>
@@ -99,17 +97,20 @@
                             <div class="number_controller minus" id="7" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
                         </div>
                     </div>
-                    <div class="input_box" style="font-size:18px">
-                        <span>Par defaut</span>
-                        <input type="checkbox" id="default_checkbox" style="width:auto; bottom: 0px;">
+                    <div class="input_box">
+                        <span>Unite de temps en mili-seconde</span>
+                        <div class="button_">
+                            <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
+                            <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
+                            <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
+                        </div>
                     </div>
                     <button type="button" class="suivant_retour_button suivant_button" onclick="slide2()"> Suivant </button>
-                    <button type="button" class="suivant_retour_button retour_button"  onclick="slide1()"> Retour </button>
                 </div>
             </form>
         </div>
         <div class="container" id="container2" style="display:none;">
-            <div class="progress_bar">
+        	     <div class="progress_bar">
                 <span class="steps step_1">Configuration</span>
                 <span class="steps step_2">Processus</span>
                 <span class="steps step_3">Algorithmes</span>
@@ -135,7 +136,7 @@
             <div class="configuration">
                 <div class="input_box" style="width:100%">
                     <span>Generation aleatoir selon la configuration</span>
-                    <input type="checkbox" style="width:auto" id="processes_checkbox">
+                    <input type="checkbox" style="width:auto" id="processes_checkbox" onchange="show_hide_processes_menu()">
                 </div>
             </div>
             <hr>
@@ -146,12 +147,11 @@
                     </tbody>
                 </table>
             </div>
-            <button type="button" class="suivant_retour_button suivant_button" onclick="slide3()"> Suivant </button>
+			<button type="button" class="suivant_retour_button suivant_button" onclick="slide3()"> Suivant </button>
             <button type="button" class="suivant_retour_button retour_button"  onclick="slide1()"> Retour </button>
-
         </div>
         <div class="container" id="container3" style="display:none;">
-            <div class="progress_bar">
+        	        	     <div class="progress_bar">
                 <span class="steps step_1">Configuration</span>
                 <span class="steps step_2">Processus</span>
                 <span class="steps step_3">Algorithmes</span>
@@ -173,11 +173,16 @@
                 </table>
             </div>
             <div class="configuration">
-                <button type="button" class="suivant_retour_button suivant_button" onclick="comparaison()"> Generation de processus </button>
+                <button type="button" class="suivant_retour_button suivant_button" onclick="comparaison()"> Commencer la comparaison </button>
                 <button type="button" class="suivant_retour_button retour_button"  onclick="slide2()"> Retour </button>
             </div>
         </div>
-
+        <div class="container_min" id="container4" style="display:none;" >
+ 	       <div class="loader"></div>
+ 	       <br>
+ 	       <br>
+ 			<div class="center"><br><br>Comparaison En cours ... </div>
+        </div>
         <div name="interuptions_hidden_divs" id="stock"></div>
         <div name="algo_infos_hidden_divs" id="stock_algo"></div>
     </bodypopup>
@@ -195,9 +200,11 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
-				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark">
-			</li>§
+        <a href="../index.html" class="logo" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
+
+	<!-- 			<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
+				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark"> -->
+			</li>
 		</ul>
 		<!-- end nav left -->
 
@@ -234,61 +241,12 @@
 					<div>
 						<i class="fas fa-newspaper"></i>
 					</div>
-					<span>General</span>
-				</a>
-			</li>
-
-			<li class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="CPU_Usage()">
-					<div>
-						<i class="fas fa-percentage"></i>
-					</div>
-					<span>CPU usage</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="temps_perdu()">
-					<div>
-						<i class="fas fa-sync-alt"></i>
-					</div>
-					<span>Temps Perdu</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="attente_temps()">
-					<div>
-						<i class="far fa-pause-circle"></i>
-					</div>
-					<span>Temps d'attente</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="temps_fin()">
-					<div>
-						<i class="fas fa-stream"></i>
-					</div>
-					<span>Temps de fin</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="avrg_charge()">
-					<div>
-						<i class="fas fa-spinner"></i>
-					</div>
-					<span>Moyenne de chargement</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link" onclick="get_respond_time()">
-					<div>
-						<i class="fas fa-reply-all"></i>
-					</div>
-					<span>Temps de réponse</span>
+					<span>Resultats</span>
 				</a>
 			</li>
 			-------
-			<li  class="sidebar-nav-item" onclick="window.location.href='../algos/algo1/algo1.html'">
-				<a href="#" class="sidebar-nav-link">
+			<li  class="sidebar-nav-item" o>
+				<a href="../algos/algo1/algo1.html" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
@@ -296,7 +254,7 @@
 				</a>
 			</li>
 			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+				<a href="../documentation/documentation.html" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-book-open"></i>
 					</div>
@@ -304,7 +262,7 @@
 				</a>
 			</li>
 			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+				<a href="https://github.com/Aymen311/App-2CP" target="_blank" class="sidebar-nav-link">
 					<div>
 						<i class="fab fa-github"></i>
 					</div>
@@ -323,24 +281,133 @@
 	</div>
 	<!-- end sidebar -->
 	<!-- main content -->
-	<div class="wrapper">
-		<div class="row">
-			<div class="col-6 col-m-6 col-sm-6">
-				<div class="card">
-					<div class="card-content" id="part1">
-						<canvas id="myChart1"></canvas>
-					</div>
-				</div>
-			</div>
-			<div class="col-6 col-m-6 col-sm-6">
-				<div class="card">
-					<div class="card-content" id="part2">
-							<canvas id="myChart2"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="wrapper">
+        <div class="row">
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                    <div class="card-content" id="part1">
+                        <canvas id="myChart1"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                    <div class="card-content" id="part2">
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                	<h2 class="card-header">Temps Perudu</h2>
+                    <div class="card-content" id="part3">
+                        <canvas id="myChart3"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card full">
+                    <div class="card-content" id="part4">
+                            <canvas id="myChart4"></canvas>
+                        </div>
+								<br>
+								<br>
+
+								<h3 class="card-header">
+									💡 Temps Perdu
+								</h3>
+							<div class="description">
+                        		         Temps Perdu represente le temps ou le processor etait en etat de repos pendant la simulation .Plus de temps perdu
+                        		veut dire mois de cpu usage.Le but est d'essayer de maximiser ce temps ce qu implique utilisation 100% de resources pour
+                        		le meilleurs performance.
+                        	</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                    <div class="card-content" id="part5">
+                    	<h2 class="card-header">Cpu Usage</h2>
+                        <canvas id="myChart5"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card full">
+                    <div class="card-content" id="part6">
+                            <canvas id="myChart6"></canvas>
+                        </div>
+								<br>
+								<br>
+
+								<h3 class="card-header">
+									💡 Cpu Usage
+								</h3>
+                        				<div class="description">
+                        		         Le taux d'utilastion du processeur est un critere tres important qui represent au quel point l'algorithme a reussit a bien utiliser les ressources discponible , Un taux qui converge a 100% est favorable.
+                        	</div>
+                    </div>
+                </div>
+            </div>
+                        <div class="row">
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                	<h2 class="card-header">Temps De Fin</h2>
+
+                    <div class="card-content" id="part7">
+ 
+                        <canvas id="myChart7"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card full">
+                    <div class="card-content" id="part8">
+                            <canvas id="myChart8"></canvas>
+                        </div>
+								<br>
+								<br>
+
+								<h3 class="card-header">
+									💡 Temps De Fin
+								</h3>
+                        				<div class="description">
+                        		         Temps  de fin represente le temps pris par l'algorithme afin de traiter tous le processus.Un bon algorithme est l'algorithme qui pris le moinde de temps possible.
+                        	</div>
+                    </div>
+                </div>
+            </div>
+                        <div class="row">
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card">
+                	<h2 class="card-header">Temps D'attente</h2>
+
+                    <div class="card-content" id="part9">
+                        <canvas id="myChart9"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-m-6 col-sm-6">
+                <div class="card full">
+                    <div class="card-content" id="part10">
+                            <canvas id="myChart10"></canvas>
+                        </div>
+								<br>
+                                <br>
+								<h3 class="card-header">
+									💡 Temps D'attente
+								</h3>
+                        				<div class="description">
+                        		         Le temps d'attente est la moyenne de temps d'attente de chauque processus i.e le temps ou le processus etait pret en attendat d'etre traiter .Un bon algorithme essaye a minimiser le temps d'attente pour eviter la famine.
+                        	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 	
 	<!-- end main content -->
 	<!-- import script -->
@@ -351,22 +418,63 @@
 <script src="index.js"></script>
 <!-- SCRIPT FOR GENERAL CONTROLS !-->
 <script>
+	  document.getElementById("number_0").value = 5
+  document.getElementById("number_1").value = 15
+  document.getElementById("number_3").value = 0
+  document.getElementById("number_2").value = 3
+  document.getElementById("number_4").value = 3
+  document.getElementById("number_5").value = 7
+  document.getElementById("number_6").value = 3
+  document.getElementById("number_7").value = 10
+  document.getElementById("number_TU").value = 1000
+  
+  function show_hide_processes_menu(){
+      if (document.getElementById("processes_checkbox").checked){
+          document.getElementById("table").style.display = "none"
+      }
+      else{
+          document.getElementById("table").style.display = "block"
+      }
+  }
 	function slide1(){
 		document.getElementById("container1").style.display = "block";
 		document.getElementById("container2").style.display = "none";
 		document.getElementById("container3").style.display = "none";
+		document.getElementById("container4").style.display = "none";
+	
 	}
 	function slide2(){
 		document.getElementById("container1").style.display = "none";
 		document.getElementById("container2").style.display = "block";
 		document.getElementById("container3").style.display = "none";
+		document.getElementById("container4").style.display = "none";
+
 	}
 	function slide3(){
 		document.getElementById("container1").style.display = "none";
 		document.getElementById("container2").style.display = "none";
 		document.getElementById("container3").style.display = "block";
+		document.getElementById("container4").style.display = "none";
 	}
+	
+	function slide4(){
+		document.getElementById("container1").style.display = "none";
+		document.getElementById("container2").style.display = "none";
+		document.getElementById("container3").style.display = "none";
+		document.getElementById("container4").style.display = "block";
+/*		elem.innerHTML = "";
+		let html = "";
+		let algos = get_algorithmes()
+		for (let i = 0 ; i < algos.length ; i++){
+				html+='<span id="'+(algos[i][1])+'_charg" class="charg_elem">'
 
+        	 	html+=algos[i][1]
+        		html+='</span>'
+		        html+='<div class="loader_min"></div>'
+        	}
+        html+='<div class="loader"></div>'
+        elem.innerHTML = html*/
+	}
 	function add_nb(id){
 		x = document.getElementById("number_"+id)
 		if (x.value == ""){x.value = 0}
@@ -424,7 +532,7 @@
 									<td>
 										<div class="button_">
 											<div class="number_controller plus" id="execution${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
-											<input id="number_execution${processes_index}" type="text" name="" value="0" maxlength="2">
+											<input id="number_execution${processes_index}" type="text" name="" value="1" maxlength="2">
 											<div class="number_controller minus" id="execution${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
 										</div>
 									</td>
@@ -696,7 +804,17 @@
 		}
 
 	}
-
+    function generate_quantums(){
+        i = get_config()["MIN_PROC_PRIORITY"]
+        text = ""
+        for (let j = 0 ; j < i ; j++){
+            text+=(j+1)
+            if ((j+1) <i){
+                text+=","
+            }
+        }
+        return text
+    }
 	function create_algo_info_div(id){
 		algo = document.getElementById(id).parentElement.parentElement.children[1].children[0].value
 		algo_id = document.getElementById(id).parentElement.parentElement.children[0].innerHTML.slice(11)
@@ -742,7 +860,7 @@
 								<span>Liste de Quantums par niveaux:</span>
 								<span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
 								<div class="button_">
-									<input id="quantums_list_${id}" type="text" name="" value="1,2,3,4">
+									<input id="quantums_list_${id}" type="text" name="" value="`+generate_quantums()+`">
 								</div>
 							</div>`
 
@@ -758,7 +876,7 @@
 								<span>Liste de Quantums par priorité (Par niveaux):</span>
 								<span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
 								<div class="button_">
-									<input id="number_quantum_${id}" type="text" name="" value="1,2,3,4">
+									<input id="number_quantum_${id}" type="text" name="" value="`+generate_quantums`">
 								</div>
 							</div>`
 
@@ -778,23 +896,6 @@
 <!-- SCRIPT FOR DATA GATHERING !-->
 <script type="text/javascript">
 	function get_config(){
-		if (document.getElementById("default_checkbox").checked){
-			Config = {
-				"MIN_PROC_TIME":5,
-				"MAX_PROC_TIME":15, /**/
-				"MAX_PROC_PRIORITY":0, /**/
-				"MIN_PROC_PRIORITY":10, /**/
-				"MAX_PROC_INTRS":4, /**/
-				"MAX_PROC_DEGREE":3, /**/
-				"MAX_INTR_DURATION":10, /**/
-				"MIN_INTR_DURATION":5,
-				"allow_function_int": 0,
-				"UPDATE_TIME":20,
-				"MAX_ENTRANCE":7,
-				"MIN_ENTRANCE":5,
-			}
-		}
-		else{
 			Config = {
 				"MIN_PROC_TIME":parseInt(document.getElementById("number_0").value),
 				"MAX_PROC_TIME":parseInt(document.getElementById("number_1").value), /**/
@@ -808,7 +909,7 @@
 				"UPDATE_TIME":parseInt(document.getElementById("number_7").value),
 				"MAX_ENTRANCE":7,
 				"MIN_ENTRANCE":5,
-			}
+			
 		}
 		return Config
 	}
@@ -885,34 +986,41 @@
 	var nb_alogs_comparaison = 0;
 	function comparaison(){
 		config = get_config();
-		processes = get_processes_interuptions();
-		algos = get_algorithmes()
-		nb_finished_algo = 0;
-		nb_alogs_comparaison = algos.length;
-		for ( var i = 0; i < nb_algos; i++){
-			if (algos[i][1] == "FCFS"){
-				FCFS_init(processes, 0, 0)
-			}
-			else if (algos[i][1] == "SJF"){
-				SJF_init(processes, 50, 0)
-			}
-			else if (algos[i][1] == "SRJF"){
-				SRJF_init(processes, 50, 0)
-			}
-			else if (algos[i][1] == "RR"){
-				RR_init(processes, 50, 0, algos[i][2])
-			}
-			else if (algos[i][1] == "PS"){
-				PS_init(processes, 50, 0)
-			}
-			else if (algos[i][1] == "PD"){
-				PD_init(processes, 50, 0)
-			}
-			else if (algos[i][1] == "MULTI+REC"){
-				MULTI_NV_init(processes, 50, 0, algos[i][2])
-			}
-			else if (algos[i][1] == "MULTI+PRIO"){
-				MULTI_NV_PRIO_init(processes, 50, 0, algos[i][2])
+		console.log("len : " +get_algorithmes().len)
+		if (get_algorithmes().length < 2 ){
+			alert("Il faut au moins choisir deux Algorithmes");
+			slide3()
+		}else{
+			slide4();
+			processes = get_processes_interuptions();
+			algos = get_algorithmes()
+			nb_finished_algo = 0;
+			nb_alogs_comparaison = algos.length;
+			for ( var i = 0; i < nb_algos; i++){
+				if (algos[i][1] == "FCFS"){
+					FCFS_init(processes, 0, 0)
+				}
+				else if (algos[i][1] == "SJF"){
+					SJF_init(processes, 50, 0)
+				}
+				else if (algos[i][1] == "SRJF"){
+					SRJF_init(processes, 50, 0)
+				}
+				else if (algos[i][1] == "RR"){
+					RR_init(processes, 50, 0, algos[i][2])
+				}
+				else if (algos[i][1] == "PS"){
+					PS_init(processes, 50, 0)
+				}
+				else if (algos[i][1] == "PD"){
+					PD_init(processes, 50, 0)
+				}
+				else if (algos[i][1] == "MULTI+REC"){
+					MULTI_NV_init(processes, 50, 0, algos[i][2])
+				}
+				else if (algos[i][1] == "MULTI+PRIO"){
+					MULTI_NV_PRIO_init(processes, 50, 0, algos[i][2])
+				}
 			}
 		}
 	}
