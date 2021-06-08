@@ -991,7 +991,12 @@
 			alert("Il faut au moins choisir deux Algorithmes");
 			slide3()
 		}else{
-			slide4();
+            if (parseInt(document.getElementById("number_8").value) < 1 ){
+                alert("Il faut au moins ajouter une processus");
+                slide2()
+            }
+			else{
+                slide4();
 			processes = get_processes_interuptions();
 			algos = get_algorithmes()
 			nb_finished_algo = 0;
@@ -1022,6 +1027,7 @@
 					MULTI_NV_PRIO_init(processes, 50, 0, algos[i][2])
 				}
 			}
+            }
 		}
 	}
 
