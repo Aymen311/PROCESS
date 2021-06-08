@@ -71,22 +71,22 @@ function randint(min,max){
   return r
 }
 
-function rand_intrs(exec_time,deg){ //function that chooses a random intr from the list of intrs
+function rand_intrs(exec_time,deg, Config){ //function that chooses a random intr from the list of intrs
   var possible_ints = MIN_INT_TYPES
 
-  if (deg < MAX_PROC_DEGREE){
-    possible_ints = INT_TYPES
-  }
-  if (exec_time > 2){
-    var nb_intrs = randint(0,MAX_PROC_INTRS)
+          /*if (deg < Config["MAX_PROC_DEGREE"]){
+            possible_ints = INT_TYPES
+        }*/
+  if (exec_time > 2*Config["MAX_PROC_INTRS"]){
+    var nb_intrs = randint(0,Config["MAX_PROC_INTRS"])
     }else{
-      var nb_intrs = randint(0,2)
+      var nb_intrs = 1
     }
   intrs = []
   int_t = 0
   for (let i = 0 ; i < nb_intrs ; i++){
-    int_t = randint(int_t+1,exec_time)
-    intr = [int_t,randint(1,MAX_INTR_DURATION),randomChoice(possible_ints)]
+    int_t = randint(int_t+1,exec_time-1)
+    intr = [int_t,randint(Config["MIN_INTR_DURATION"],Config["MAX_INTR_DURATION"]),randomChoice(possible_ints)]
     intrs.push(intr)
     if (exec_time - int_t < 3 ){
       break
@@ -120,7 +120,7 @@ function add_process(pere,deg,entrance, Config){
   var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
   var prio  =  randint(Config["MAX_PROC_PRIORITY"],Config["MIN_PROC_PRIORITY"] + 1)
   id_proc++;
-  ints = rand_intrs(exec_t,deg)
+  ints = rand_intrs(exec_t,deg,Config)
   return [id_proc, entrance, exec_t, prio, ints.s, ints]
 }
 
@@ -1021,7 +1021,7 @@ function add_to_proc_info_menu(p, id){
     for (var i = 0; i < ints.length; i++){
         if (p.ints[i][2] != "function"){
             proc_html += `
-                <table>
+                <table class="info_process_table_new">
                     <tr style="background: #0000003d">
                         <th> Interuption: </th>
                         <th> ${i + 1} </th>
@@ -1063,7 +1063,7 @@ function add_to_proc_info_menu(p, id){
 
     if (ints.length == 0){
         proc_html += `
-            <table>
+            <table class="info_process_table_new">
                 <tr style="background: #0000003d">
                     <th> Pas d'interuption </th>
                 </tr>

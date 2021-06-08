@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+0<!DOCTYPE html>
 <html>
 <head>
   <title>PROCESS | Round Robin</title>
@@ -24,7 +24,28 @@
 <body class="overlay-scrollbar">
   <bodypopup id="bodypopup" style="display:none;">
         <div class="container" id="container2" style="display:none;">
-            <div class="title">Generation de processus</div>
+            <div class="title">Generation de processus    <div class="tooltip"><i class="far fa-question-circle"></i>
+              <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
+                  <strong>La generation du jeu d'entrée selon deux methode :</strong><br>
+                  <ul>
+                      <li><strong>Methode aleatoire:</strong>
+                          <ul>
+                              <li>Cochez la case "Generation aleatoir selon la configuration".</li>
+                              <li>Entrer le "Nombre de processus" voulu.</li>
+                              <li> clickez sur le bouton "Ajouter les processus", les processus seront generer de facon aleatoire selon la Configuration</li>
+                          </ul>
+                      </li><br>
+                      <li><strong>Methode personnalisé:</strong>
+                          <ul>
+                              <li>Ne cochez pas la case "Generation aleatoir selon la configuration".</li>
+                              <li>Entrer le "Nombre de processus" voulu.</li>
+                              <li>Un tableau sera generé, contenant tous les parametres/informations des processus pour les modifier selon votre besoin (Temps d'execution, interuptions, priorité, ...)</li>
+                              <li>clickez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </span>
+            </div></div>
             <div class="configuration">
                 <div class="input_box" style="width:100%">
                     <span>Nombre de processus</span>
@@ -52,12 +73,24 @@
 
         </div>
         <div class="container" id="container1" style="display:none;">
-            <div class="title">Configuration</div>
+            <div class="title">Configuration    <div class="tooltip"><i class="far fa-question-circle"></i>
+              <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
+                  C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
+                  <ul>
+                      <li>La generation aleatoir des processus va etre selon cette configuration (Temps d'éxecution minimum, Temps d'éxecution maximum ...)</li><br>
+                      <li>La simulation est de meme selon la cette configuration (Unite de temps en milli-secondes, ...)</li><br>
+                      <li>Devant chaque parametres vous trouverez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouver l'explication de ce parametre</li>
+                  </ul>
+              </span>
+            </div></div>
             <hr>
             <form class="">
                 <div class="configuration">
                     <div class="input_box">
                         <span>Temps d'éxecution minimum</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Temps d'éxecution minimum</h4>C'est le temps d'éxecution minimum éstimé que peut avoir un processus en unite de temps</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_0" type="text" name="" value="0" maxlength="2">
@@ -66,6 +99,9 @@
                     </div>
                     <div class="input_box">
                         <span>Temps d'éxecution maximum</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Temps d'éxecution maximum</h4>C'est le temps d'éxecution maximum éstimé que peut avoir un processus en unite de temps</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_1" type="text" name="" value="0" maxlength="2">
@@ -73,23 +109,10 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Priorite minimale</span>
-                        <div class="button_">
-                            <div class="number_controller plus" id="2" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_2" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="2" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Priorite maximale</span>
-                        <div class="button_">
-                            <div class="number_controller plus" id="3" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_3" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="3" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
                         <span>Nombre miximal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Nombre miximal d'interuption</h4>C'est le nombre maximum d'interuptions (memoire, E/S) que peut avoir un processus</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_4" type="text" name="" value="0" maxlength="2">
@@ -98,6 +121,9 @@
                     </div>
                     <div class="input_box">
                         <span>Temps miximal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Temps miximal d'interuption</h4>C'est la durée maximale que peut prendre une interuption en unité de temps TU</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_5" type="text" name="" value="0" maxlength="2">
@@ -106,6 +132,9 @@
                     </div>
                     <div class="input_box">
                         <span>Temps minimal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Temps minimal d'interuption</h4>C'est la durée minimal que peut prendre une interuption en unité de temps TU</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_6" type="text" name="" value="0" maxlength="2">
@@ -113,15 +142,10 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Temps de rafraichissement de priorite</span>
-                        <div class="button_">
-                            <div class="number_controller plus" id="7" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_7" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="7" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                        <span>Unite de temps</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Unite de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en mili-secondes</span>
                         </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Unite de temps en mili-seconde</span>
                         <div class="button_">
                             <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
                             <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
@@ -129,7 +153,10 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Quantum en UT</span>
+                        <span>Quantum</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Quantum</h4>C'est le quntum de temps mesurée en unité de temps TU</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="Quantum" onclick="add_nb(id)" onchange='QUANTUM = parseInt(document.getElementById("number_Quantum").value)'> <span>+</span></div>
                             <input id="number_Quantum" type="text" name="" value="1" maxlength="6" onchange='QUANTUM = parseInt(document.getElementById("number_Quantum").value)'>
@@ -137,7 +164,8 @@
                         </div>
                     </div>
                 </div>
-                <button class="suivant_button config_suiv" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
+                <button type="button" class="suivant_button " onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
+
             </form>
         </div>
         <div name="interuptions_hidden_divs" id="stock"></div>
@@ -153,7 +181,7 @@
           <i class="fas fa-bars"></i>
         </a>
       </li>
-      <a href="#" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
+      <a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
     </ul>
     <!-- end nav left -->
 
@@ -255,7 +283,7 @@
       </li>
       -------
       <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link">
+        <a href="../../comparaison/index.html" class="sidebar-nav-link">
           <div>
             <i class="fas fa-chart-pie"></i>
           </div>
@@ -263,7 +291,7 @@
         </a>
       </li>
       <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link">
+        <a href="../../bib/docu/documentation.html" class="sidebar-nav-link">
           <div>
             <i class="fas fa-book-open"></i>
           </div>
@@ -271,11 +299,19 @@
         </a>
       </li>
       <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link">
+        <a href="../../Quiz/game.html" class="sidebar-nav-link">
           <div>
             <i class="fas fa-question-circle"></i>
           </div>
           <span>Quizz</span>
+        </a>
+      </li>
+          <li  class="sidebar-nav-item">
+        <a href="https://github.com/Aymen311/App-2CP/" target="_blank" class="sidebar-nav-link">
+          <div>
+            <i class="fab fa-github"></i>
+          </div>
+          <span>Contribuer</span>
         </a>
       </li>
     </ul>
@@ -293,25 +329,27 @@
         <div class="icon_sim"><i class="fas fa-plus"></i></div>
         <span>Add process</span>
       </div>
-      
+
       <div class="button_sim" onclick="new_simulation()">
         <div class="icon_sim"><i class="fas fa-broom"></i></div>
         <span>Effacer</span>
       </div>
-    
+
       <div class="button_sim" onclick="configurer()">
         <div class="icon_sim"><i class="fas fa-cogs"></i></div>
         <span>Configurer</span>
       </div>
 
     </div>
-        
+
 		<div class="row">
 			<div class="col-m-12 col-sm-12">
 				<div class="card">
 					<div class="card-header">
 						<h3>
-							Round Robin
+							Round Robin<div class="tooltip"><i class="far fa-question-circle" style="left: 10px;top: -7px;"></i>
+                              <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">TEXT</span>
+                            </div>
 						</h3>
             <div  class="proc_info_menu">
               <h3> Simulation Logs : </h3>
@@ -383,7 +421,6 @@
 </body>
 <!-- SCRIPT FOR PROCESSES CONTROLS !-->
 
-
 <script src="../../bib/d3.js"></script>
 <script src="js/main.js"></script>
 
@@ -391,12 +428,10 @@
 
   document.getElementById("number_0").value = 5
   document.getElementById("number_1").value = 15
-  document.getElementById("number_3").value = 0
-  document.getElementById("number_2").value = 3
   document.getElementById("number_4").value = 3
   document.getElementById("number_5").value = 7
   document.getElementById("number_6").value = 3
-  document.getElementById("number_7").value = 10
+
   document.getElementById("number_TU").value = 100
   document.getElementById("number_Quantum").value = QUANTUM
 
@@ -417,7 +452,7 @@
   }
 
   function new_simulation(){
-    location.reload() ; 
+    location.reload() ;
    }
 
 
@@ -517,7 +552,7 @@
                   <td>
                     <div class="button_">
                       <div class="number_controller plus" id="execution${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
-                      <input id="number_execution${processes_index}" type="text" name="" value="0" maxlength="2">
+                      <input id="number_execution${processes_index}" type="text" name="" value="1" maxlength="2">
                       <div class="number_controller minus" id="execution${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
                     </div>
                   </td>
@@ -570,78 +605,80 @@
 
     }
     else{
-      var table = document.getElementById("table").children[0];
-      var stock = document.getElementById("stock");
+        var nb_processes = parseInt(document.getElementById("number_8").value);
+        if (nb_processes != 0){
+              var table = document.getElementById("table").children[0];
+              var stock = document.getElementById("stock");
 
-      table_innerHtml = `<tr>
-        <th>Processus</th>
-        <th style="width:130px">Temps d'entrée</th>
-        <th>Temps éstimé d'éxécution</th>
-        <th>Nombre d'interuptions</th>
-        <th>Suprimer</th>
-        <th>Modifier</th>
-        <th>Deplacer</th></tr>`;
-      stock_innerHtml = `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`;
+              table_innerHtml = `<tr>
+                <th>Processus</th>
+                <th style="width:130px">Temps d'entrée</th>
+                <th>Temps éstimé d'éxécution</th>
+                <th>Nombre d'interuptions</th>
+                <th>Suprimer</th>
+                <th>Modifier</th>
+                <th>Deplacer</th></tr>`;
+              stock_innerHtml = `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`;
 
-      var nb_processes = parseInt(document.getElementById("number_8").value);
 
-      for ( var i = 1; i <= nb_processes; i++){
-        table_innerHtml = table_innerHtml + `<tr>
-          <td>Proc ${i}</td>
-          <td>
-            <div class="button_">
-              <div class="number_controller plus" id="entrance${i}" onclick="add_nb(id)"> <span>+</span></div>
-              <input id="number_entrance${i}" type="text" name="" value="0" maxlength="2">
-              <div class="number_controller minus" id="entrance${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-            </div>
-          </td>
-          <td>
-            <div class="button_">
-              <div class="number_controller plus" id="execution${i}" onclick="add_nb(id)"> <span>+</span></div>
-              <input id="number_execution${i}" type="text" name="" value="0" maxlength="2">
-              <div class="number_controller minus" id="execution${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-            </div>
-          </td>
-          <td>
-            <div class="button_">
-              <div class="number_controller plus" id="interuption${i}" onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
-              <input id="number_interuption${i}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
-              <div class="number_controller minus" id="interuption${i}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
-            </div>
-          </td>
-          <td>
-            <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Suprimer</button>
-          </td>
-          <td>
-            <button class="button_modifier" id="modifier${i}" onclick="modify_row(id)">Modifier</button>
-          </td>
-          <td>
-            <div class="deplacer_buttons">
-              <button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${i}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
-              <button type="button" name="button" class="UpDownButton DownButton" id="upNdown${i}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
-            </div>
-          </td></tr>`
-        stock_innerHtml = stock_innerHtml +    `<div class="small_container" id="interuption_table_${i}" style="display:none">
-                            <div class="input_box">
-                              <span>Priorite</span>
-                              <div class="button_">
-                                <div class="number_controller plus" id="prio${i}" onclick="add_nb(id)"> <span>+</span></div>
-                                <input id="number_prio${i}" type="text" name="" value="0" maxlength="2">
-                                <div class="number_controller minus" id="prio${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                              </div>
-                            </div>
-                            <table id="table">
-                              <tr>
-                                <th style="width:100px">Interuption</th>
-                                <th>debut</th>
-                                <th>Duree</th>
-                                <th style="width:150px">Type</th>
-                              </tr>
-                            </table></div>`
-      }
-      processes_index = nb_processes + 1;
-      table.innerHTML = table_innerHtml
-      stock.innerHTML = stock_innerHtml
+              processes_index = processes_index - nb_processes - 1
+              for ( var i = processes_index ; i < processes_index + nb_processes; i++){
+                table_innerHtml = table_innerHtml + `<tr>
+                  <td>Proc ${i}</td>
+                  <td>
+                    <div class="button_">
+                      <div class="number_controller plus" id="entrance${i}" onclick="add_nb(id)"> <span>+</span></div>
+                      <input id="number_entrance${i}" type="text" name="" value="0" maxlength="2">
+                      <div class="number_controller minus" id="entrance${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="button_">
+                      <div class="number_controller plus" id="execution${i}" onclick="add_nb(id)"> <span>+</span></div>
+                      <input id="number_execution${i}" type="text" name="" value="0" maxlength="2">
+                      <div class="number_controller minus" id="execution${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="button_">
+                      <div class="number_controller plus" id="interuption${i}" onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
+                      <input id="number_interuption${i}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
+                      <div class="number_controller minus" id="interuption${i}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Suprimer</button>
+                  </td>
+                  <td>
+                    <button class="button_modifier" id="modifier${i}" onclick="modify_row(id)">Modifier</button>
+                  </td>
+                  <td>
+                    <div class="deplacer_buttons">
+                      <button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${i}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
+                      <button type="button" name="button" class="UpDownButton DownButton" id="upNdown${i}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
+                    </div>
+                  </td></tr>`
+                stock_innerHtml = stock_innerHtml +    `<div class="small_container" id="interuption_table_${i}" style="display:none">
+                                    <div class="input_box">
+                                      <span>Priorite</span>
+                                      <div class="button_">
+                                        <div class="number_controller plus" id="prio${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                        <input id="number_prio${i}" type="text" name="" value="0" maxlength="2">
+                                        <div class="number_controller minus" id="prio${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                                      </div>
+                                    </div>
+                                    <table id="table">
+                                      <tr>
+                                        <th style="width:100px">Interuption</th>
+                                        <th>debut</th>
+                                        <th>Duree</th>
+                                        <th style="width:150px">Type</th>
+                                      </tr>
+                                    </table></div>`
+              }
+              processes_index = processes_index + nb_processes;
+              table.innerHTML = table_innerHtml
+              stock.innerHTML = stock_innerHtml}
     }
 
     if (THEME == "dark"){
@@ -677,6 +714,7 @@
             }
         }
     }
+
   }
   function modify_interuptions(id){
     if (id.includes("number")){
@@ -756,13 +794,15 @@
 <script type="text/javascript"> //SCRIPT FOR CONTAINERS CONTROLS
 
   function slide2(){
+      console.log("444")
     document.getElementById("container1").style.display = "none";
+    document.getElementById("container2").style.display = "block";
   }
 
   function add_nb(id){
     x = document.getElementById("number_"+id)
     if (x.value == ""){x.value = 0}
-    if (x.value < 99){x.value = parseInt(x.value) + 1}
+    x.value = parseInt(x.value) + 1
   }
   function sub_nb(id){
     x = document.getElementById("number_"+id)
@@ -907,14 +947,14 @@
       Config = {
         "MIN_PROC_TIME":parseInt(document.getElementById("number_0").value),
         "MAX_PROC_TIME":parseInt(document.getElementById("number_1").value), /**/
-        "MAX_PROC_PRIORITY":parseInt(document.getElementById("number_3").value), /**/
-        "MIN_PROC_PRIORITY":parseInt(document.getElementById("number_2").value), /**/
+        "MAX_PROC_PRIORITY":3, /**/
+        "MIN_PROC_PRIORITY":3, /**/
         "MAX_PROC_INTRS":parseInt(document.getElementById("number_4").value), /**/
         "MAX_PROC_DEGREE":3, /**/
         "MAX_INTR_DURATION":parseInt(document.getElementById("number_5").value), /**/
         "MIN_INTR_DURATION":parseInt(document.getElementById("number_6").value),
         "allow_function_int": 0,
-        "UPDATE_TIME":parseInt(document.getElementById("number_7").value),
+        "UPDATE_TIME":-1,
         "MAX_ENTRANCE":7,
         "MIN_ENTRANCE":5,
       }
@@ -931,7 +971,7 @@
         id_ = parseInt(r.children[0].innerText.slice(5))
         nb_ints = parseInt(r.children[3].children[0].children[1].value)
         L_ = [
-          id_ - 1,
+          id_,
           parseInt(r.children[1].children[0].children[1].value),
           parseInt(r.children[2].children[0].children[1].value),
           parseInt(document.getElementById("number_prio"+id_).value),
@@ -941,9 +981,9 @@
 
         for ( var j = 0; j < nb_ints; j++){
           ints.push([
-            parseInt(document.getElementById(`number_start_time_${i}_${j}`).value),
-            parseInt(document.getElementById(`number_duration_${i}_${j}`).value),
-            document.getElementById(`int_type_${i}_${j}`).value,
+            parseInt(document.getElementById(`number_start_time_${id_}_${j}`).value),
+            parseInt(document.getElementById(`number_duration_${id_}_${j}`).value),
+            document.getElementById(`int_type_${id_}_${j}`).value,
           ])
         }
         L_.push(ints)
@@ -989,6 +1029,10 @@
   }
 
   function ajouter_processus(){
+      max_index = processes_index
+      if (document.getElementById("processes_checkbox").checked){
+          processes_index = processes_index - parseInt(document.getElementById("number_8").value) - 1;
+      }
       var processes_list = get_processes_interuptions();
       for ( var i = 0; i < processes_list.length; i++){
           p = processes_list[i];
@@ -1009,6 +1053,10 @@
                               <th>Modifier</th>
                               <th>Deplacer</th></tr>`;
       document.getElementById("number_8").value = 0;
+
+      if (document.getElementById("processes_checkbox").checked){
+          processes_index++;
+      }
   }
 
   function create_processes(nb_procs, Config) {

@@ -8,6 +8,23 @@
 /* Font Sizes ------- */
 /* Line Heights ------- */
 /* Type Scale ------- */
+:root {
+  --primary-color: #4834d4;
+  --success-color: #6ab04c;
+  --warning-color: #f0932b;
+  --danger-color: #2383D8;
+
+  --light-color: #212529;
+  --light-second-color: #727475;
+  --light-background: #ffffff;
+  --light-second-background: #f1f1f1;
+
+  --dark-color: #909090;
+  --dark-second-color: #f5f6fa;
+  --dark-background: #23242D;
+  --dark-second-background: #181818;
+}
+
 h1 {
   font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
   font-size: 41px;
@@ -297,3 +314,19 @@ footer a {
     color: #1C1D1E; }
 
 /*# sourceMappingURL=style.css.map */
+ .logo_prefix {
+    color: var(--danger-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 4%;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+   font-family: 'Poppins', 
+}

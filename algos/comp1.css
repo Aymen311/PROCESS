@@ -375,32 +375,31 @@ bodypopup table th {
     font-weight: bold;
     height: 52px;
     cursor: pointer;
-    background: #00ff003b;
+    background: #2383d8;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
 .ajouter_button:hover{
 
-    background: #00ff008c;
+    background: #2485DB;
     color: white;
 }
 .ajouter_button:active{
 
-    background: #00ff00d6;
+    background: #50A6F2;
     color: white;
 }
 
+.info_process_table_new {
+    width: calc(75%);
+    margin-left: 12.5%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 13.5px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+.int_class_header{
+    cursor: pointer;
+    padding-left: calc(50% - 146px);
+}

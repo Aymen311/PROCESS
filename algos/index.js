@@ -489,3 +489,264 @@ function plot_time_table(history, id )
 
 
 //plot_time_table(process_info_list, "tab");
+
+
+function modify_interuptions(id){
+  if (id.includes("number")){
+    nb = parseInt(document.getElementById(id).value);
+    id_ = parseInt(id.slice(18));
+  }
+  else{
+    nb = parseInt(document.getElementById("number_"+id).value);
+    id_ = parseInt(id.slice(11))
+  }
+  int_table = document.getElementById("interuption_table_"+id_);
+
+  if (THEME == "dark"){
+      button_theme = "button_input_dark"
+      th_theme = "bodypopup_table_th_dark"
+  }
+  else {
+      button_theme = "button_input_light"
+      th_theme = "bodypopup_table_th_light"
+  }
+  int_table_innerHtml = `<div class="input_box">
+                <span>Priorite</span>
+                <div class="button_">
+                  <div class="number_controller plus" id="prio${id_}" onclick="add_nb(id)"> <span>+</span></div>
+                  <input id="number_prio${id_}" type="text" name="" value="0" maxlength="2" class="${button_theme}">
+                  <div class="number_controller minus" id="prio${id_}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                </div>
+              </div>
+              <table id="table">
+              <tr>
+                <th style="width:100px" class="${th_theme}">Interuption</th>
+                <th class="${th_theme}">debut</th>
+                <th class="${th_theme}">Duree</th>
+                <th style="width:150px" class="${th_theme}">Type</th>
+              </tr>`
+  for (var i = 0; i < nb; i++){
+    int_table_innerHtml = int_table_innerHtml + `<tr>
+                            <td>Int ${i}</td>
+                            <td>
+                              <div class="button_">
+                                <div class="number_controller plus" id="start_time_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                <input id="number_start_time_${id_}_${i}" type="text" name="" value="0" maxlength="2" class="${button_theme}">
+                                <div class="number_controller minus" id="start_time_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="button_">
+                                <div class="number_controller plus" id="duration_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                <input id="number_duration_${id_}_${i}" type="text" name="" value="0" maxlength="2" class="${button_theme}">
+                                <div class="number_controller minus" id="duration_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                              </div>
+                            </td>
+                            <td>
+                              <select class="select" id="int_type_${id_}_${i}">
+                                <option value="input"> I/O </option>
+                                <option value="memory"> Memoire </option>
+                              </select>
+                            </td>
+
+                          </tr>`
+  }
+
+  int_table.innerHTML = int_table_innerHtml;
+
+  if (THEME == "dark"){
+      for (a of document.getElementsByClassName("number_controller")){a.classList.remove("number_controller_light"); a.classList.add("number_controller_dark")}
+  }
+  else{
+      for (a of document.getElementsByClassName("number_controller")){a.classList.remove("number_controller_dark"); a.classList.add("number_controller_light")}
+  }
+
+}
+
+
+max_index = 1
+function generate_processes_table(mode="-1"){
+  var rows = document.getElementById("table").rows;
+  if (mode == "add"){
+    // save the old values
+    var nb = parseInt(document.getElementById("number_8").value) ;
+    var table = document.getElementById("table").children[0];
+
+    new_row = document.createElement("TR")
+    new_row.innerHTML = `<td>Proc ${processes_index}</td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="entrance${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+                    <input id="number_entrance${processes_index}" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="entrance${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="execution${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+                    <input id="number_execution${processes_index}" type="text" name="" value="1" maxlength="2">
+                    <div class="number_controller minus" id="execution${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="interuption${processes_index}"  onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
+                    <input id="number_interuption${processes_index}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="interuption${processes_index}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="button_suprimer" id="suprimer${processes_index}" onclick="delete_row(id)">Suprimer</button>
+                </td>
+                <td>
+                  <button class="button_modifier" id="modifier${processes_index}"  onclick="modify_row(id)">Modifier</button>
+                </td>
+                <td>
+                  <div class="deplacer_buttons">
+                    <button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${processes_index}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
+                    <button type="button" name="button" class="UpDownButton DownButton" id="upNdown${processes_index}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
+                  </div>
+                </td>`
+    table.appendChild(new_row)
+
+    new_div = document.createElement("DIV")
+    new_div.className = "small_container"
+    new_div.id = "interuption_table_"+processes_index;
+    new_div.style.display = "none";
+    new_div.innerHTML = `
+                <div class="input_box">
+                  <span>Priorite</span>
+                  <div class="button_">
+                    <div
+                     class="number_controller plus" id="prio${processes_index}" onclick="add_nb(id)"> <span>+</span></div>
+                    <input id="number_prio${processes_index}" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="prio${processes_index}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </div>
+                <table id="table">
+                  <tr>
+                    <th style="width:100px">Interuption</th>
+                    <th>debut</th>
+                    <th>Duree</th>
+                    <th style="width:200px">Type</th>
+                  </tr>
+                </table>`
+    document.getElementById("stock").appendChild(new_div);
+
+    processes_index++;
+
+  }
+  else{
+      var nb_processes = parseInt(document.getElementById("number_8").value);
+      if (nb_processes != 0){
+            var table = document.getElementById("table").children[0];
+            var stock = document.getElementById("stock");
+
+            table_innerHtml = `<tr>
+              <th>Processus</th>
+              <th style="width:130px">Temps d'entrée</th>
+              <th>Temps éstimé d'éxécution</th>
+              <th>Nombre d'interuptions</th>
+              <th>Suprimer</th>
+              <th>Modifier</th>
+              <th>Deplacer</th></tr>`;
+            stock_innerHtml = `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`;
+
+
+
+            for ( var i = max_index ; i < max_index +  nb_processes; i++){
+              table_innerHtml = table_innerHtml + `<tr>
+                <td>Proc ${i}</td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="entrance${i}" onclick="add_nb(id)"> <span>+</span></div>
+                    <input id="number_entrance${i}" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="entrance${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="execution${i}" onclick="add_nb(id)"> <span>+</span></div>
+                    <input id="number_execution${i}" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="execution${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="button_">
+                    <div class="number_controller plus" id="interuption${i}" onclick="add_nb(id); modify_interuptions(id)"> <span>+</span></div>
+                    <input id="number_interuption${i}" onclick="modify_interuptions(id)" type="text" name="" value="0" maxlength="2">
+                    <div class="number_controller minus" id="interuption${i}" onclick="sub_nb(id); modify_interuptions(id)"><span id="minus_caracter">_</span></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Suprimer</button>
+                </td>
+                <td>
+                  <button class="button_modifier" id="modifier${i}" onclick="modify_row(id)">Modifier</button>
+                </td>
+                <td>
+                  <div class="deplacer_buttons">
+                    <button type="button" name="button" class="UpDownButton UpButton"   id="upNdown${i}" onclick="upNdown('up', id)">&ShortUpArrow;</button>
+                    <button type="button" name="button" class="UpDownButton DownButton" id="upNdown${i}" onclick="upNdown('down', id)">&ShortDownArrow;</button>
+                  </div>
+                </td></tr>`
+              stock_innerHtml = stock_innerHtml +    `<div class="small_container" id="interuption_table_${i}" style="display:none">
+                                  <div class="input_box">
+                                    <span>Priorite</span>
+                                    <div class="button_">
+                                      <div class="number_controller plus" id="prio${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                      <input id="number_prio${i}" type="text" name="" value="0" maxlength="2">
+                                      <div class="number_controller minus" id="prio${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                                    </div>
+                                  </div>
+                                  <table id="table">
+                                    <tr>
+                                      <th style="width:100px">Interuption</th>
+                                      <th>debut</th>
+                                      <th>Duree</th>
+                                      <th style="width:150px">Type</th>
+                                    </tr>
+                                  </table></div>`
+            }
+
+            table.innerHTML = table_innerHtml
+            stock.innerHTML = stock_innerHtml
+
+            processes_index = max_index +  nb_processes}
+  }
+
+  if (THEME == "dark"){
+      for (a of document.getElementsByClassName("button_")){
+        a.getElementsByTagName("input")[0].classList.remove("button_input_light")
+        a.getElementsByTagName("input")[0].classList.add("button_input_dark")
+      }
+      for (a of document.getElementsByClassName("small_container")){a.classList.remove("small_container_light"); a.classList.add("small_container_dark")}
+      for (a of document.getElementsByClassName("number_controller")){a.classList.remove("number_controller_light"); a.classList.add("number_controller_dark")}
+      for (a of document.getElementsByTagName("bodypopup")){
+          for (b of a.getElementsByTagName("table")){
+              for (c of a.getElementsByTagName("th")){
+                  c.classList.remove("bodypopup_table_th_light")
+                  c.classList.add("bodypopup_table_th_dark")
+              }
+          }
+      }
+
+  }
+  else{
+      for (a of document.getElementsByClassName("button_")){
+        a.getElementsByTagName("input")[0].classList.remove("button_input_dark")
+        a.getElementsByTagName("input")[0].classList.add("button_input_light")
+      }
+      for (a of document.getElementsByClassName("small_container")){a.classList.remove("small_container_dark"); a.classList.add("small_container_light")}
+      for (a of document.getElementsByClassName("number_controller")){a.classList.remove("number_controller_dark"); a.classList.add("number_controller_light")}
+      for (a of document.getElementsByTagName("bodypopup")){
+          for (b of a.getElementsByTagName("table")){
+              for (c of a.getElementsByTagName("th")){
+                  c.classList.remove("bodypopup_table_th_dark")
+                  c.classList.add("bodypopup_table_th_light")
+              }
+          }
+      }
+  }
+
+}
