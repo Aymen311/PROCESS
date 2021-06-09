@@ -649,22 +649,7 @@ body {
 	}
  }
 
- .logo_prefix {
-    color: var(--danger-color);
-    font-weight: 700;
-    text-decoration: none;
-    font-size: 2em;
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 4%;
-}
 
-#logo_suffix
-{
-   font-weight: 5; 
-   font-family: 'Poppins' ;*
-}
 
 .container_checkbox {
 	margin-top: 1%;
@@ -789,3 +774,61 @@ body {
   {
 	  margin-top: 1%;
   }
+
+  .logo_prefix {
+    color: var(--danger-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 4%;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+   font-family: 'Poppins' ;
+}
+
+.button_sim_speed {
+    height: 60px;
+    width: 60px;
+	float: right;
+	color: var(--danger-color);
+    margin: 0 5px;
+    border-radius: 50px;
+    cursor: pointer;
+	background : var(--main-bg-color) ; 
+    box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
+	transition: all 0.3s ease-out;
+}
+
+.button_sim_speed:hover
+{
+	color: #fff;
+	background: #2383D8;
+
+}
+
+
+
+.icon_sim {
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    border-radius: 50px;
+    box-sizing: border-box;
+    line-height: 60px;
+}
+
+.icon_sim i {
+    font-size: 25px;
+    line-height: 60px;
+}
+
+.button_sim_speed.space {
+    margin-left: 200px;
+}
