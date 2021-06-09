@@ -25,9 +25,8 @@
 					<i class="fas fa-bars" onclick="collapseSidebar()"></i>
 				</a>
 			</li>
-			<li class="nav-item">
-				<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
-				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark">
+			<li class="nav-item" style="margin: auto;">
+	        	<a href="../index.html" class="logo_prefix" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
 			</li>
 		</ul>
 		<!-- end nav left -->
@@ -52,8 +51,18 @@
 	<!-- sidebar -->
 	<div class="sidebar">
 		<ul class="sidebar-nav">
+
 			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+				<a href="#" class="sidebar-nav-link active" style="pointer-events: none;">
+					<div>
+						<i class="fas fa-question-circle"></i>
+					</div>
+					<span>Quizz</span>
+				</a>
+			</li>
+
+			<li  class="sidebar-nav-item">
+				<a href="../algos/algo1/algo1.html" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
@@ -61,35 +70,27 @@
 				</a>
 			</li>
             <li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+				<a href="../comparaison/index.html" class="sidebar-nav-link">
 					<div>
-						<i class="fas fa-tachometer-alt"></i>
+						<i class="fas fa-chart-pie"></i>
 					</div>
 					<span>Comparaison</span>
 				</a>
 			</li>
 			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+				<a href="../documentation/documentation.html" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-book-open"></i>
 					</div>
 					<span>Documentation</span>
 				</a>
 			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
+		<li  class="sidebar-nav-item">
+				<a href="https://github.com/Aymen311/App-2CP/" target="_blank" class="sidebar-nav-link">
 					<div>
 						<i class="fab fa-github"></i>
 					</div>
 					<span>Contribuer</span>
-				</a>
-			</li>
-			<li  class="sidebar-nav-item">
-				<a href="#" class="sidebar-nav-link">
-					<div>
-						<i class="fas fa-exclamation-circle"></i>
-					</div>
-					<span>About</span>
 				</a>
 			</li>
 		</ul>
@@ -112,7 +113,7 @@
 							</div>
 
                             <a href="game.html" class="btn">Try again</a>
-                            <a href="#" class="btn">Go Home
+                            <a href="../index.html" class="btn">Go Home
                                 <i class="fas fa-home"></i>
                             </a>
                         </div>

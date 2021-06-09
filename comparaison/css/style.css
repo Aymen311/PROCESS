@@ -1107,3 +1107,20 @@ a.more-link { color: white; font-weight: bold; font-size: 14px; font-family: Ari
 
 a.more-link:hover { text-decoration: none; background-color: #666; border-radius: 0px; }
 
+
+ .logo_prefix {
+    color: var(--danger-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 4%;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+   font-family: 'Poppins', 
+}

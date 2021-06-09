@@ -2,7 +2,7 @@
 	--primary-color: #4834d4;
 	--success-color: #6ab04c;
 	--warning-color: #f0932b;
-	--danger-color: #eb4d4b;
+	--danger-color: #2383D8;
 
 	--light-color: #212529;
 	--light-second-color: #727475;
@@ -632,3 +632,20 @@ table th {
 }
 
 
+
+.logo_prefix {
+	height: auto;
+    color: var(--danger-color);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 2em;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 4%;
+}
+
+#logo_suffix
+{
+   font-weight: 5; 
+}
