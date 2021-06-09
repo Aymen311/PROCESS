@@ -153,11 +153,11 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="suivant_button" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
+                <button type="button" class="suivant_button config_suiv" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
             </form>
         </div>
         <div class="container" id="container3" style="display:none;">
-            <div class="title">Choix des Algorithmes<div class="tooltip"><i class="far fa-question-circle"></i>
+            <div class="title">Choix des Algorithmes  <div class="tooltip"><i class="far fa-question-circle"></i>
               <span class="tooltiptext" style="font-size:16px; width:386px">
                   Dans cet algorithme, on peu avoir au maximum 5 niveaux, chacun avec son propre algorithme. Cliquez sur "Ajouter un algorithme" pour en ajouter un, avec la possibililté de modifier ses parametres.
               </span>
@@ -171,9 +171,7 @@
 
                 </table>
             </div>
-            <div class="configuration">
-                <button type="button" class="suivant_retour_button suivant_button" onclick="reset_parameters_FIFO(); close_popup()"> Generation des algorithmes </button>
-            </div>
+            <button class="suivant_button config_suiv2" onclick="reset_parameters_FIFO(); close_popup()" style="vertical-align:middle"> <span>Ajouter </span> </button>
         </div>
         <div name="interuptions_hidden_divs" id="stock"></div>
         <div name="algo_infos_hidden_divs" id="stock_algo"></div>

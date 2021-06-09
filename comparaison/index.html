@@ -105,8 +105,8 @@
                             <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
                         </div>
                     </div>
-                    <button type="button" class="suivant_retour_button suivant_button" onclick="slide2()"> Suivant </button>
                 </div>
+				<button type="button" class="suivant_button config_suiv3" onclick="slide2()" style="vertical-align:middle"><span>Suivant </span> </button>
             </form>
         </div>
         <div class="container" id="container2" style="display:none;">
@@ -120,7 +120,7 @@
                 <div class="link link_2"></div>
                 <div class="circle circle_3" id="circle_3" ><span>3</span></div>
             </div>
-            <br><br>
+            <br>
             <div class="title">Generation de processus</div>
             <div class="configuration">
                 <div class="input_box" style="width:100%">
@@ -133,12 +133,10 @@
                 </div>
             </div>
             <hr>
-            <div class="configuration">
-                <div class="input_box" style="width:100%">
-                    <span>Generation aleatoir selon la configuration</span>
-                    <input type="checkbox" style="width:auto" id="processes_checkbox" onchange="show_hide_processes_menu()">
-                </div>
-            </div>
+			<label class="container_checkbox">Génération aléatoires
+				<input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
+				<span class="checkmark"></span>
+			  </label>
             <hr>
             <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
                 <table id="table">
@@ -147,8 +145,9 @@
                     </tbody>
                 </table>
             </div>
-			<button type="button" class="suivant_retour_button suivant_button" onclick="slide3()"> Suivant </button>
-            <button type="button" class="suivant_retour_button retour_button"  onclick="slide1()"> Retour </button>
+			<button type="button" class="suivant_button config_suiv4" onclick="slide3()" style="vertical-align:middle"> <span>Suivant </span> </button>
+
+            <button type="button" class="retour_button"  onclick="slide1()" style="vertical-align:middle">  <span> Retour</span></button>
         </div>
         <div class="container" id="container3" style="display:none;">
         	        	     <div class="progress_bar">
@@ -161,20 +160,20 @@
                 <div class="link link_2"></div>
                 <div class="circle circle_3" id="circle_3" ><span>3</span></div>
             </div>
-            <br><br>
+            <br>
             <div class="title">Choix des Algorithmes</div>
-            <hr><br><br>
+            <hr>
             <button type="button" name="button" class="ajouter_button" onclick="add_algorithme()">Ajouter Un Algorithme</button>
 
 
-            <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
+            <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 290px; display: block;">
                 <table id="table_2">
 
                 </table>
             </div>
             <div class="configuration">
-                <button type="button" class="suivant_retour_button suivant_button" onclick="comparaison()"> Commencer la comparaison </button>
-                <button type="button" class="suivant_retour_button retour_button"  onclick="slide2()"> Retour </button>
+                <button type="button" class="suivant_button config_suiv2" onclick="comparaison()" style="vertical-align:middle"><span>Comparer </span> </button>
+                <button type="button" class="retour_button config_suiv2" onclick="slide2()" style="vertical-align:middle"><span> Retour</span> </button>
             </div>
         </div>
         <div class="container_min" id="container4" style="display:none;" >
@@ -192,21 +191,17 @@
 
 	<!-- navbar -->
 	<div class="navbar">
-		<!-- nav left -->
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link">
-					<i class="fas fa-bars" onclick="collapseSidebar()"></i>
-				</a>
-			</li>
-			<li class="nav-item" style="margin: auto;">
-        <a href="../index.html" class="logo_prefix" data-content="Pro">Pro<span id="logo_suffix">cess</span></a>
-
-	<!-- 			<img src="assets/PROCESS-black.png" alt="ATPro logo" class="logo logo-light">
-				<img src="assets/PROCESS-white.png" alt="ATPro logo" class="logo logo-dark"> -->
-			</li>
-		</ul>
-		<!-- end nav left -->
+    <!-- nav left -->
+    <ul class="navbar-nav">
+		<li class="nav-item">
+		  <a class="nav-link" onclick="collapseSidebar()">
+			<i class="fas fa-bars"></i>
+		  </a>
+		</li>
+		<a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
+	  </ul>
+	  <!-- end nav left -->
+  
 
 		<!-- nav right -->
 		<ul class="navbar-nav nav-right">
