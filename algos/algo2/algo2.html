@@ -161,7 +161,7 @@
         <div class="small_container_blur_background" id="blur_background_2"  style="display:none; z-index:2" onclick="close_popup_2()"></div>
     </bodypopup>
 
-  <div class="navbar">
+  <div class="navbar" id="navbar_id">
     <!-- nav left -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -175,6 +175,9 @@
 
     <!-- nav right -->
     <ul class="navbar-nav nav-right">
+      <li class="nav-item config">
+              <button id="button_aide" onclick="initialization(0)">AIDE</button>
+      </li>
       <li class="nav-item config">
         <a class="nav-link" href="#" onclick="switchScreen()">
           <i class="fas fa-expand"></i>
@@ -191,7 +194,7 @@
   </div>
 
 
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar_id">
     <ul class="sidebar-nav">
       <li class="sidebar-nav-item">
         <a href="../algo1/algo1.html" class="sidebar-nav-link">
@@ -309,45 +312,85 @@
 
   <div class="wrapper">
 
-    <div class="wrapper_sim">
-      <div class="button_sim" onclick="simuler()">
-        <div class="icon_sim"><i class="fas fa-play" ></i></div>
-        <span>Simuler</span>
-      </div>
+    <div class="wrapper_sim" style="position: relative;">
+            <div class="button_sim" onclick="simuler()" id="button_simulation">
+                <div class="icon_sim"><i class="fas fa-play"></i></div>
+                <span>Simuler</span>
+            </div>
+            <div class="button_sim" onclick="ajouter()" id="button_ajouter">
+                <div class="icon_sim"><i class="fas fa-plus"></i></div>
+                <span>Add process</span>
+            </div>
+            <div class="button_sim" onclick="new_simulation()" id="button_new_simulation">
+                <div class="icon_sim"><i class="fas fa-broom"></i></div>
+                <span>Effacer</span>
+            </div>
+            <div class="button_sim" onclick="configurer()" id="button_configurer">
+                <div class="icon_sim"><i class="fas fa-cogs"></i></div>
+                <span>Configurer</span>
+            </div>
+            <div style="display: inline-block;" id="button_speed">
+                <div class="button_sim_speed" onclick="">
+                    <div class="icon_sim"><i>x3</i></div>
+                </div>
+                <div class="button_sim_speed" onclick="">
+                    <div class="icon_sim"><i>x2</i></div>
+                </div>
+                <div class="button_sim_speed space" onclick="">
+                    <div class="icon_sim"><i>x1</i></div>
+                </div>
+            </div>
 
-      <div class="button_sim" onclick="ajouter()">
-        <div class="icon_sim"><i class="fas fa-plus"></i></div>
-        <span>Add process</span>
-      </div>
-
-      <div class="button_sim" onclick="new_simulation()">
-        <div class="icon_sim"><i class="fas fa-broom"></i></div>
-        <span>Effacer</span>
-      </div>
-
-
-
-      <div class="button_sim" onclick="configurer()">
-        <div class="icon_sim"><i class="fas fa-cogs"></i></div>
-        <span>Configurer</span>
-      </div>
-
-      <div class="button_sim_speed" onclick="">
-        <div class="icon_sim"><i>x3</i></div>
-      </div>
-
-      <div class="button_sim_speed" onclick="">
-        <div class="icon_sim"><i>x2</i></div>
-      </div>
-
-      <div class="button_sim_speed space" onclick="">
-        <div class="icon_sim"><i>x1</i></div>
-      </div>
-    </div>
+            <!--popup first button-->
+            <div id="popup1">
+                <div>
+                    <h3>popup button simulation</h3>
+                    <p>Hello in the guide</p>
+                    <button class="button_st" onclick="continue_pop(2)">continue</button>
+                    <button class="button_st" onclick="skip(1,'button_simulation')">skip</button>
+                </div>
+            </div>
+            <!--popup button2-->
+            <div id="popup2">
+                <div>
+                    <h3>popup button ajouter</h3>
+                    <p>Hello in the guide</p>
+                    <button class="button_st" onclick="continue_pop(3)">continue</button>
+                    <button class="button_st" onclick="skip(2,'button_ajouter')">skip</button>
+                </div>
+            </div>
+            <!--popup button3-->
+            <div id="popup3">
+                <div>
+                    <h3>popup button new simulation</h3>
+                    <p>Hello in the guide</p>
+                    <button class="button_st" onclick="continue_pop(4)">continue</button>
+                    <button class="button_st" onclick="skip(3,'button_new_simulation')">skip</button>
+                </div>
+            </div>
+            <!--popup button4-->
+            <div id="popup4">
+                <div>
+                    <h3>popup button configuration</h3>
+                    <p>Hello in the guide</p>
+                    <button class="button_st" onclick="continue_pop(5)">continue</button>
+                    <button class="button_st" onclick="skip(4,'button_configurer')">skip</button>
+                </div>
+            </div>
+            <!--popup button5-->
+            <div id="popup5">
+                <div>
+                    <h3>popup button speed</h3>
+                    <p>Hello in the guide</p>
+                    <button class="button_st" onclick="continue_pop(6)">continue</button>
+                    <button class="button_st" onclick="skip(5,null)">skip</button>
+                </div>
+            </div>
+        </div>
 
 
        <div class="row">
-           <div class="col-m-12 col-sm-12">
+           <div class="col-m-12 col-sm-12"  id="row_simulation">
                <div class="card">
                    <div class="card-header">
                        <h3>
@@ -369,9 +412,18 @@
                        <div class="main_svg"> <main_svg > </main_svg> </div>
                    </div>
                </div>
+               <!--popup button6-->
+                <div id="popup6">
+                    <div>
+                        <h3>popup button row simulation</h3>
+                        <p>Hello in the guide</p>
+                        <button class="button_st" onclick="continue_pop(7)">continue</button>
+                        <button class="button_st" onclick="skip(6,'row_simulation')">skip</button>
+                    </div>
+                </div>
            </div>
 
-           <div class="col-m-12 col-sm-12">
+           <div class="col-m-12 col-sm-12" id="detail">
             <div class="card">
               <div class="card-header">
                 <h3>
@@ -385,6 +437,14 @@
                 </div>
               </div>
             </div>
+            <div id="popup7">
+                    <div>
+                        <h3>GUIDE</h3>
+                        <p>Hello in the guide</p>
+                        <button class="button_st" onclick="continue_pop(8)">continue</button>
+                        <button class="button_st" onclick="skip(7)">skip</button>
+                    </div>
+                </div>
           </div>
 
           <div class="col-m-12 col-sm-12">
@@ -425,10 +485,163 @@
        </div>
    </div>
 
+   <div id="popup0">
+            <div>
+                <h3>GUIDE</h3>
+                <p>Hello in the guide</p>
+                <button class="button_st" onclick="continue_pop(1)">continue</button>
+                <button class="button_st" onclick="skip(0,null)">skip</button>
+            </div>
+        </div>
+        <div id="popup8">
+            <div>
+                <h3>popup sidebar</h3>
+                <p>Hello sidebar</p>
+                <button class="button_st" onclick="finish(8)">finish</button>
+            </div>
+        </div>
 
 </body>
 <!-- SCRIPT FOR PROCESSES CONTROLS !-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+       inblur_background();
+});
 
+/*script for popups*/
+//use jquery to popup when reload
+function blur_elem(id) {
+    document.getElementById(id).style.filter = "blur(7px)";
+}
+
+function inblur_elem(id) {
+    document.getElementById(id).style.filter = "blur(0px)";
+}
+
+function blur_background() {
+  var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
+  for (var i in table) {
+   blur_elem(table[i]); 
+  }
+}
+
+function inblur_background() {
+  var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
+  for (var i in table) {
+    inblur_elem(table[i]);
+  } 
+}
+//function to make the blur ad show the popup
+function initialization(p) {
+  window.scroll({
+    top: 0,
+    left: 0,
+    behavior: 'smooth'
+  });
+    blur_background();
+    document.getElementById("popup" + String(p)).classList.toggle('active');
+}
+
+function skip(p, id) {
+    document.getElementById("popup" + String(p)).classList.toggle('active');
+    inblur_background();
+    if (id != null) {
+        if (id == 'row_simulation') document.getElementById("row_simulation").style.zIndex = "";
+        else document.getElementById(id).style.width = "";
+    }
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+}
+
+function finish(p) {
+    document.getElementById("popup" + String(p)).classList.toggle('active');
+    inblur_background();
+    document.getElementById("sidebar_id").style.width = "";
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+}
+
+var r = document.querySelector(':root');
+
+function set_top_left(top,left,top_after,left_after,top_after_color,bottm_after_color,left_after_color,right_after_color){
+  r.style.setProperty('--my_top',top);
+  r.style.setProperty('--my_left',left);
+  r.style.setProperty('--top_after',top_after);
+  r.style.setProperty('--left_after',left_after);
+  r.style.setProperty('--top_after_color',top_after_color);
+  r.style.setProperty('--bottm_after_color',bottm_after_color);
+  r.style.setProperty('--left_after_color',left_after_color);
+  r.style.setProperty('--right_after_color',right_after_color);
+}
+
+function continue_pop(p) {
+    document.getElementById("popup" + String(p - 1)).classList.toggle('active');
+    if (p != 9) document.getElementById("popup" + String(p)).classList.toggle('active');
+    switch (p) {
+        case 1:
+            set_top_left('20%','-27.5%','1%','99%','transparent','transparent','white','transparent');
+            inblur_elem("button_simulation");
+            document.getElementById("button_simulation").style.width = "170px";
+            break;
+        case 2:
+          set_top_left('125%','7%','-19%','38%','transparent','white','transparent','transparent');
+            document.getElementById("button_simulation").style.width = "";
+            blur_elem("button_simulation");
+            inblur_elem("button_ajouter");
+            document.getElementById("button_ajouter").style.width = "170px";
+            break;
+        case 3:
+          set_top_left('125%','17%','-19%','38%','transparent','white','transparent','transparent');
+            document.getElementById("button_ajouter").style.width = "";
+            blur_elem("button_ajouter");
+            inblur_elem("button_new_simulation");
+            document.getElementById("button_new_simulation").style.width = "170px";
+            break;
+        case 4:
+          set_top_left('125%','27%','-19%','38%','transparent','white','transparent','transparent');
+            document.getElementById("button_new_simulation").style.width = "";
+            blur_elem("button_new_simulation");
+            inblur_elem("button_configurer");
+            document.getElementById("button_configurer").style.width = "170px";
+            break;
+        case 5:
+        set_top_left('125%','70.5%','-19%','38%','transparent','white','transparent','transparent');
+            document.getElementById("button_configurer").style.width = "";
+            blur_elem("button_configurer");
+            inblur_elem("button_speed");
+            break;
+        case 6:
+        set_top_left('-20%','82%','99%','38%','white','transparent','transparent','transparent');
+            blur_elem("button_speed");
+            document.getElementById("row_simulation").style.zIndex = "101";
+            inblur_elem("row_simulation");
+            break;
+        case 7:
+        set_top_left('-138%','82%','99%','38%','white','transparent','transparent','transparent');
+            document.getElementById("row_simulation").style.zIndex = "";
+            blur_elem("row_simulation");
+            document.getElementById("detail").scrollIntoView();
+            inblur_elem("detail");
+            break;
+        case 8:
+        set_top_left('300px','270px','38%','-18%','transparent','transparent','transparent','white');
+            blur_elem("detail");
+            inblur_elem("sidebar_id");
+            document.getElementById("sidebar_id").style.width = "250px";
+            break;
+
+        default:
+            break;
+    }
+}
+</script>
 
 <script src="../../bib/d3.js"></script>
 <script src="js/main.js"></script>
