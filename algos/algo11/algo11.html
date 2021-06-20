@@ -22,187 +22,189 @@
 
 </head>
 <body class="overlay-scrollbar">
-  <bodypopup id="bodypopup" style="display:none;">
-        <div class="container" id="container2" style="display:none;">
-            <div class="title">Generation de processus    <div class="tooltip"><i class="far fa-question-circle"></i>
-              <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
-                  <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
-                  <ul>
-                      <li><strong>Méthode aléatoire:</strong>
-                          <ul>
-                              <li>Cochez la case "Génération aléatoire selon la configuration".</li>
-                              <li>Entrez le "Nombre de processus" voulu.</li>
-                              <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
-                          </ul>
-                      </li><br>
-                      <li><strong>Méthode personnalisée:</strong>
-                          <ul>
-                              <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
-                              <li>Entrez le "Nombre de processus" voulu.</li>
-                              <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
-                              <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
-                          </ul>
-                      </li>
-                  </ul>
-              </span>
-          </div>
-      </div>
-      <div class="configuration">
-          <div class="input_box" style="width:100%">
-              <span>Nombre de processus</span>
-              <div class="button_">
-                  <div class="number_controller plus" id="8" onclick="add_nb(id); generate_processes_table('add')"> <span>+</span></div>
-                  <input id="number_8" type="text" name="" value="0" maxlength="2" onchange="generate_processes_table()">
-                  <div class="number_controller minus" id="8" onclick="sub_nb(id); generate_processes_table()"><span id="minus_caracter">_</span></div>
-              </div>
-          </div>
-      </div>
-      <hr>
-      <label class="container_checkbox">Génération aléatoire
-          <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
-          <span class="checkmark"></span>
-      </label>
-      <hr>
-      <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
-          <table id="table">
-              <tbody>
-              </tbody>
-          </table>
-      </div>
-      <button class="suivant_button" onclick="ajouter_processus()" style="vertical-align:middle"> <span>Ajouter </span> </button>
-  </div>
-  <div class="container" id="container1" style="display:none;">
-      <div class="title">Configuration <div class="tooltip"><i class="far fa-question-circle"></i>
-              <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
-                  C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
-                  <ul>
-                      <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li><br>
-                      <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li><br>
-                      <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
-                  </ul>
-              </span>
-          </div>
-      </div>
-      <hr>
-      <form class="">
-          <div class="configuration">
-              <div class="input_box">
-                  <span>Temps d'exécution minimal</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Temps d'exécution minimal</h4>C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
-                      </span>
-                  </div>
-                  <div class="button_">
-                      <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
-                      <input id="number_0" type="text" name="" value="0" maxlength="2">
-                      <div class="number_controller minus" id="0" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                  </div>
-              </div>
-              <div class="input_box">
-                  <span>Temps d'exécution maximal</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Temps d'exécution maximal</h4>C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps
-                      </span>
-                  </div>
-                  <div class="button_">
-                      <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
-                      <input id="number_1" type="text" name="" value="0" maxlength="2">
-                      <div class="number_controller minus" id="1" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                  </div>
-              </div>
-              <div class="input_box">
-                  <span>Nombre maximal d'interruptions</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Nombre maximal d'interruption</h4>C'est le nombre maximal d'interruptions (mémoire, E/S) que peut avoir un processus
-                      </span>
-                  </div>
-                  <div class="button_">
-                      <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
-                      <input id="number_4" type="text" name="" value="0" maxlength="2">
-                      <div class="number_controller minus" id="4" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                  </div>
-              </div>
-              <div class="input_box">
-                  <span>Temps maximal d'interruption</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Temps maximal d'interruption</h4>C'est la durée maximale que peut prendre une interruption en unité de temps TU</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_5" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="5" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
+    <bodypopup id="bodypopup" style="display:none;">
+          <div class="container" id="container2" style="display:none;">
+              <div class="title">Generation de processus    <div class="tooltip"><i class="far fa-question-circle"></i>
+                <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
+                    <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
+                    <ul>
+                        <li><strong>Méthode aléatoire:</strong>
+                            <ul>
+                                <li>Cochez la case "Génération aléatoire selon la configuration".</li>
+                                <li>Entrez le "Nombre de processus" voulu.</li>
+                                <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
+                            </ul>
+                        </li><br>
+                        <li><strong>Méthode personnalisée:</strong>
+                            <ul>
+                                <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
+                                <li>Entrez le "Nombre de processus" voulu.</li>
+                                <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
+                                <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+        <div class="configuration">
+            <div class="input_box" style="width:100%">
+                <span>Nombre de processus</span>
+                <div class="button_">
+                    <div class="number_controller plus" id="8" onclick="add_nb(id); generate_processes_table('add')"> <span>+</span></div>
+                    <input id="number_8" type="text" name="" value="0" maxlength="2" onchange="generate_processes_table()">
+                    <div class="number_controller minus" id="8" onclick="sub_nb(id); generate_processes_table()"><span id="minus_caracter">_</span></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <label class="container_checkbox">Génération aléatoire
+            <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
+            <span class="checkmark"></span>
+        </label>
+        <hr>
+        <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
+            <table id="table">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <button class="suivant_button" onclick="ajouter_processus()" style="vertical-align:middle"> <span>Ajouter </span> </button>
+    </div>
+    <div class="container" id="container1" style="display:none;">
+        <div class="title">Configuration <div class="tooltip"><i class="far fa-question-circle"></i>
+                <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
+                    C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
+                    <ul>
+                        <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li><br>
+                        <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li><br>
+                        <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
+                    </ul>
+                </span>
+            </div>
+        </div>
+        <hr>
+        <form class="">
+            <div class="configuration">
+                <div class="input_box">
+                    <span>Temps d'exécution minimal</span>
+                    <div class="tooltip"><i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                            <h4>Temps d'exécution minimal</h4>C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
+                        </span>
                     </div>
-                    <div class="input_box">
-                        <span>Temps minimal d'interruption</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                            <span class="tooltiptext">
-                                <h4>Temps minimal d'interruption</h4>C'est la durée minimale que peut prendre une interruption en unité de temps TU
-                            </span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_6" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="6" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Unité de temps</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                            <span class="tooltiptext">
-                                <h4>Unité de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en milli-secondes
-                            </span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
-                            <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
-                            <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
-                        </div>
+                    <div class="button_">
+                        <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_0" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="0" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
                     </div>
                 </div>
-                <button type="button" class="suivant_button config_suiv" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
-            </form>
-        </div>
-        <div name="interuptions_hidden_divs" id="stock"></div>
-        <div class="small_container_blur_background" id="blur_background"    style="display:none"  onclick="close_popup()"></div>
-        <div class="small_container_blur_background" id="blur_background_2"  style="display:none; z-index:2" onclick="close_popup_2()"></div>
-    </bodypopup>
+                <div class="input_box">
+                    <span>Temps d'exécution maximal</span>
+                    <div class="tooltip"><i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                            <h4>Temps d'exécution maximal</h4>C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps
+                        </span>
+                    </div>
+                    <div class="button_">
+                        <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_1" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="1" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                </div>
+                <div class="input_box">
+                    <span>Nombre maximal d'interruptions</span>
+                    <div class="tooltip"><i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                            <h4>Nombre maximal d'interruption</h4>C'est le nombre maximal d'interruptions (mémoire, E/S) que peut avoir un processus
+                        </span>
+                    </div>
+                    <div class="button_">
+                        <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_4" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="4" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                </div>
+                <div class="input_box">
+                    <span>Temps maximal d'interruption</span>
+                    <div class="tooltip"><i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                            <h4>Temps maximal d'interruption</h4>C'est la durée maximale que peut prendre une interruption en unité de temps TU</span>
+                          </div>
+                          <div class="button_">
+                              <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
+                              <input id="number_5" type="text" name="" value="0" maxlength="2">
+                              <div class="number_controller minus" id="5" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                          </div>
+                      </div>
+                      <div class="input_box">
+                          <span>Temps minimal d'interruption</span>
+                          <div class="tooltip"><i class="far fa-question-circle"></i>
+                              <span class="tooltiptext">
+                                  <h4>Temps minimal d'interruption</h4>C'est la durée minimale que peut prendre une interruption en unité de temps TU
+                              </span>
+                          </div>
+                          <div class="button_">
+                              <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
+                              <input id="number_6" type="text" name="" value="0" maxlength="2">
+                              <div class="number_controller minus" id="6" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                          </div>
+                      </div>
+                      <div class="input_box">
+                          <span>Unité de temps</span>
+                          <div class="tooltip"><i class="far fa-question-circle"></i>
+                              <span class="tooltiptext">
+                                  <h4>Unité de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en milli-secondes
+                              </span>
+                          </div>
+                          <div class="button_">
+                              <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
+                              <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
+                              <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
+                          </div>
+                      </div>
+                  </div>
+                  <button type="button" class="suivant_button config_suiv" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
+              </form>
+          </div>
+          <div name="interuptions_hidden_divs" id="stock"></div>
+          <div class="small_container_blur_background" id="blur_background"    style="display:none"  onclick="close_popup()"></div>
+          <div class="small_container_blur_background" id="blur_background_2"  style="display:none; z-index:2" onclick="close_popup_2()"></div>
+      </bodypopup>
 
-     <div class="navbar" id="navbar_id">
-        <!-- nav left -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" onclick="collapseSidebar()">
-                    <i class="fas fa-bars"></i>
-                </a>
-            </li>
-            <a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
-        </ul>
-        <!-- end nav left -->
-        <!-- nav right -->
-        <ul class="navbar-nav nav-right">
-            <li class="nav-item config">
-              <button id="button_aide" onclick="initialization(0)">AIDE</button>
-            </li>
+       <div class="navbar" id="navbar_id">
+          <!-- nav left -->
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link" onclick="collapseSidebar()">
+                      <i class="fas fa-bars"></i>
+                  </a>
+              </li>
+              <a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
+          </ul>
+          <!-- end nav left -->
+          <!-- nav right -->
+          <ul class="navbar-nav nav-right">
+              <li class="nav-item config">
+                <button id="button_aide" onclick="initialization(0)">AIDE</button>
+              </li>
 
-            <li class="nav-item config">
-                <a class="nav-link" href="#" onclick="switchScreen()">
-                    <i class="fas fa-expand"></i>
-                </a>
-            </li>
-            <li class="nav-item mode">
-                <a class="nav-link" href="#" onclick="switchTheme()">
-                    <i class="fas fa-moon dark-icon"></i>
-                    <i class="fas fa-sun light-icon"></i>
-                </a>
-            </li>
-        </ul>
-        <!-- end nav right -->
-    </div>
+              <li class="nav-item config">
+                  <a class="nav-link" href="#" onclick="switchScreen()">
+                      <i class="fas fa-expand"></i>
+                  </a>
+              </li>
+              <li class="nav-item mode">
+                  <a class="nav-link" href="#" onclick="switchTheme()">
+                      <i class="fas fa-moon dark-icon"></i>
+                      <i class="fas fa-sun light-icon"></i>
+                  </a>
+              </li>
+          </ul>
+          <!-- end nav right -->
+      </div>
+
+
 
   <div class="sidebar" id="sidebar_id" >
     <ul class="sidebar-nav">
@@ -226,15 +228,16 @@
       </li>
 
       <li class="sidebar-nav-item">
-        <a href="#" class="sidebar-nav-link active" style="pointer-events: none;">
+        <a href="#" class="sidebar-nav-link">
           <div>
             <i class="fas fa-sort-numeric-down"></i>
           </div>
           <span >SRJF</span>
         </a>
       </li>
+
       <li class="sidebar-nav-item">
-        <a href="../algo10/algo10.html" class="sidebar-nav-link">
+        <a href="../algo10/algo10.html" class="sidebar-nav-link" >
           <div>
             <i class="fas fa-sort-numeric-down"></i>
           </div>
@@ -243,13 +246,14 @@
       </li>
 
       <li class="sidebar-nav-item">
-        <a href="../algo11/algo11.html" class="sidebar-nav-link" >
+        <a href="../algo11/algo11.html" class="sidebar-nav-link active" style="pointer-events: none;">
           <div>
             <i class="fas fa-sort-numeric-down"></i>
           </div>
           <span>LRJF</span>
         </a>
       </li>
+
       <li class="sidebar-nav-item">
         <a href="../algo3/algo3.html" class="sidebar-nav-link">
           <div>
@@ -263,7 +267,7 @@
           <div>
             <i class="fas fa-icicles"></i>
           </div>
-          <span>Priorité statique</span>
+          <span>Priorité Statique</span>
         </a>
       </li>
       <li class="sidebar-nav-item">
@@ -309,7 +313,7 @@
         </a>
       </li>
       <li class="sidebar-nav-item">
-        <a href="../../documentation/documentation.html" class="sidebar-nav-link">
+        <a href="../../bib/docu/documentation.html" class="sidebar-nav-link">
           <div>
             <i class="fas fa-book-open"></i>
           </div>
@@ -351,7 +355,7 @@
             <div id="popup2">
                 <div>
                     <h3>popup button ajouter</h3>
-                    <p>Welcome to the guide</p>
+                    <p>Hello in the guide</p>
                     <button class="button_st" onclick="continue_pop(3)">continue</button>
                     <button class="button_st" onclick="skip(2,'button_ajouter')">skip</button>
                 </div>
@@ -364,7 +368,7 @@
             <div id="popup3">
                 <div>
                     <h3>popup button new simulation</h3>
-                    <p>Welcome to the guide</p>
+                    <p>Hello in the guide</p>
                     <button class="button_st" onclick="continue_pop(4)">continue</button>
                     <button class="button_st" onclick="skip(3,'button_new_simulation')">skip</button>
                 </div>
@@ -377,7 +381,7 @@
             <div id="popup4">
                 <div>
                     <h3>popup button configuration</h3>
-                    <p>Welcome to the guide</p>
+                    <p>Hello in the guide</p>
                     <button class="button_st" onclick="continue_pop(5)">continue</button>
                     <button class="button_st" onclick="skip(4,'button_configurer')">skip</button>
                 </div>
@@ -397,7 +401,7 @@
             <div id="popup5">
                 <div>
                     <h3>popup button speed</h3>
-                    <p>Welcome to the guide</p>
+                    <p>Hello in the guide</p>
                     <button class="button_st" onclick="continue_pop(6)">continue</button>
                     <button class="button_st" onclick="skip(5,null)">skip</button>
                 </div>
@@ -430,7 +434,7 @@
                 <div id="popup6">
                     <div>
                         <h3>popup button row simulation</h3>
-                        <p>Welcome to the guide</p>
+                        <p>Hello in the guide</p>
                         <button class="button_st" onclick="continue_pop(7)">continue</button>
                         <button class="button_st" onclick="skip(6,'row_simulation')">skip</button>
                     </div>
@@ -454,7 +458,7 @@
  <div id="popup7">
                     <div>
                         <h3>GUIDE</h3>
-                        <p>Welcome to the guide</p>
+                        <p>Hello in the guide</p>
                         <button class="button_st" onclick="continue_pop(8)">continue</button>
                         <button class="button_st" onclick="skip(7)">skip</button>
                     </div>
@@ -485,7 +489,7 @@
       <thead>
         <tr>
           <th>Processus</th>
-          <th>Temps estimé</th>
+          <th>temps estimé</th>
           <th>Temps de résidence</th>
           <th>Temps de bloquage</th>
           <th>Temps d'attente</th>
@@ -501,7 +505,7 @@
  <div id="popup0">
             <div>
                 <h3>GUIDE</h3>
-                <p>Welcome to the guide</p>
+                <p>Hello in the guide</p>
                 <button class="button_st" onclick="continue_pop(1)">continue</button>
                 <button class="button_st" onclick="skip(0,null)">skip</button>
             </div>
@@ -683,8 +687,8 @@ function continue_pop(p) {
 
   function simuler(){
       Config_ = get_config()
-      SRJF_init(all_processes_list, 50, 0, true)
-      SRJF()
+      LRJF_init(all_processes_list, 50, 0, true)
+      LRJF()
   }
 
   function ajouter(){
@@ -750,11 +754,11 @@ function continue_pop(p) {
   document.getElementById("table").innerHTML = `<tr>
                           <th>Processus</th>
                           <th style='width:130px'>Temps d'entrée</th>
-                          <th>Temps estimé d'exécution</th>
-                          <th>Nombre d'interruptions</th>
-                          <th>Supprimer</th>
+                          <th>Temps éstimé d'éxécution</th>
+                          <th>Nombre d'interuptions</th>
+                          <th>Suprimer</th>
                           <th>Modifier</th>
-                          <th>Déplacer</th></tr>`;
+                          <th>Deplacer</th></tr>`;
   document.getElementById("number_8").value = 0;
 
 
@@ -827,9 +831,9 @@ function continue_pop(p) {
                   </div>
                   <table id="table">
                     <tr>
-                      <th style="width:100px">Interruption</th>
-                      <th>Début</th>
-                      <th>Durée</th>
+                      <th style="width:100px">Interuption</th>
+                      <th>debut</th>
+                      <th>Duree</th>
                       <th style="width:200px">Type</th>
                     </tr>
                   </table>`
@@ -847,11 +851,11 @@ function continue_pop(p) {
               table_innerHtml = `<tr>
                 <th>Processus</th>
                 <th style="width:130px">Temps d'entrée</th>
-                          <th>Temps estimé d'exécution</th>
-                          <th>Nombre d'interruptions</th>
-                          <th>Supprimer</th>
-                          <th>Modifier</th>
-                          <th>Déplacer</th></tr>`;
+                <th>Temps éstimé d'éxécution</th>
+                <th>Nombre d'interuptions</th>
+                <th>Suprimer</th>
+                <th>Modifier</th>
+                <th>Deplacer</th></tr>`;
               stock_innerHtml = `<div class="small_container_blur_background" id="blur_background"  style="display:none" onclick="close_popup()"></div>`;
 
 
@@ -881,7 +885,7 @@ function continue_pop(p) {
                     </div>
                   </td>
                   <td>
-                    <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Supprimer</button>
+                    <button class="button_suprimer" id="suprimer${i}" onclick="delete_row(id)">Suprimer</button>
                   </td>
                   <td>
                     <button class="button_modifier" id="modifier${i}" onclick="modify_row(id)">Modifier</button>
@@ -1061,7 +1065,7 @@ function continue_pop(p) {
                 <td>
                   <select class="select" id="algo${nb_algos}" onchange="create_algo_info_div(id)">
                     <option value="FCFS"> FCFS </option>
-                    <option value="SJF"> Shortest Job First </option>
+                    <option value="SRJF"> Shortest Job First </option>
                     <option value="SRJF"> Shortest Remaining Job First</option>
                     <option value="RR">Round Robint</option>
                     <option value="PS">Static Priority</option>
@@ -1075,7 +1079,7 @@ function continue_pop(p) {
                   <button class="button_modifier" id="modifier${nb_algos}" onclick="modify_row2(id)">Modifier</button>
                 </td>
                 <td>
-                   <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Supprimer</button>
+                   <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Suprimer</button>
                 </td>
 
               </tr>`

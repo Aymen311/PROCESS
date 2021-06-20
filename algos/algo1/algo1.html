@@ -227,6 +227,23 @@
                 </a>
             </li>
             <li class="sidebar-nav-item">
+              <a href="../algo10/algo10.html" class="sidebar-nav-link">
+                <div>
+                  <i class="fas fa-sort-numeric-down"></i>
+                </div>
+                <span>LJF</span>
+              </a>
+            </li>
+
+            <li class="sidebar-nav-item">
+              <a href="../algo11/algo11.html" class="sidebar-nav-link" >
+                <div>
+                  <i class="fas fa-sort-numeric-down"></i>
+                </div>
+                <span>LRJF</span>
+              </a>
+            </li>
+            <li class="sidebar-nav-item">
                 <a href="../algo3/algo3.html" class="sidebar-nav-link">
                     <div>
                         <i class="fas fa-registered"></i>
@@ -299,14 +316,7 @@
                     <span>Quizz</span>
                 </a>
             </li>
-            <li class="sidebar-nav-item">
-                <a href="https://github.com/Aymen311/App-2CP/" target="_blank" class="sidebar-nav-link">
-                    <div>
-                        <i class="fab fa-github"></i>
-                    </div>
-                    <span>Contribuer</span>
-                </a>
-            </li>
+
         </ul>
     </div>
     <div class="wrapper">
@@ -320,17 +330,17 @@
                 <div class="icon_sim"><i class="fas fa-plus"></i></div>
                 <span>Add process</span>
             </div>
-            
+
             <div class="button_sim" onclick="new_simulation()" id="button_new_simulation">
                 <div class="icon_sim"><i class="fas fa-broom"></i></div>
                 <span>Effacer</span>
             </div>
-            
+
             <div class="button_sim" onclick="configurer()" id="button_configurer">
                 <div class="icon_sim"><i class="fas fa-cogs"></i></div>
                 <span>Configurer</span>
             </div>
-            
+
             <div style="display: inline-block;" id="button_speed">
                 <div class="button_sim_speed" onclick="">
                     <div class="icon_sim"><i>x3</i></div>
@@ -528,7 +538,7 @@
             return false
         }
         else return true ;
-    } 
+    }
     else return false ;
   }
 
@@ -544,7 +554,7 @@ function inblur_elem(id) {
 function blur_background() {
   var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
   for (var i in table) {
-   blur_elem(table[i]); 
+   blur_elem(table[i]);
   }
 }
 
@@ -552,7 +562,7 @@ function inblur_background() {
   var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
   for (var i in table) {
     inblur_elem(table[i]);
-  } 
+  }
 }
 //function to make the blur ad show the popup
 function initialization(p) {

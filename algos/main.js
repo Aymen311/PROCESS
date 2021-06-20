@@ -19,7 +19,9 @@ var all_histories = {}
 
 var data_FCFS = []
 var data_SJF = []
+var data_LJF = []
 var data_SRJF = []
+var data_LRJF = []
 var data_RR = []
 var data_MULTI_NV = []
 var data_MULTI_NV_PRIO = []
@@ -28,7 +30,9 @@ var data_PD = []
 
 var drawn_FCFS = false
 var drawn_SJF = false
+var drawn_LJF = false
 var drawn_SRJF = false
+var drawn_LRJF = false
 var drawn_RR = false
 var drawn_MULTI_NV = false
 var drawn_MULTI_NV_PRIO = false
@@ -1020,6 +1024,130 @@ function SJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
     SJF();
 }
 
+function LJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
+
+    var ALLL_ = [];
+    var ALLL_id = [];
+
+    function treat_process(n) {
+        return pret.treat(n, processor)
+    }
+    function finish_process() {
+        processor.finish_process()
+    }
+    function block_process() {
+        processor.block_process(blocked)
+    }
+    function change_process() {
+        processor.block_process(pret)
+    }
+    function resume_process(elem) {
+        var i_elem = blocked.resume(elem, pret);
+    }
+
+
+    //FIFO, PROCESSOR INITS
+    var pret = new Fifo_(FIFO_CAPACITY)
+    var blocked = new Fifo_(FIFO_CAPACITY)
+    var processor = new Processor_();
+
+    function create_processes_objects(list_processes) {
+        for (let i = 0; i < list_processes.length; i++) {
+            var info = list_processes[i]
+            var p = new Process_(info[0],
+                                info[2],
+                                info[5],
+                                -1,
+                                0,
+                                info[3],
+                                0)
+            if (0 == 0){p.move2fifo(pret)}
+            else{waiting_procs.push(p)}
+            ALLL_id.push(p.id)
+            ALLL_.push(p)
+        }
+    }
+
+
+
+    function find_the_shortest(){
+      var i = 0 ;
+      for (let index = 1; index < pret.processors.length; index++) {
+        if (pret.processors[index].exe_time > pret.processors[i].exe_time) {
+          i = index ;
+        }
+      }
+      return i ;
+    }
+
+    function LJF(mode , proc){
+      if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+        if (processor.isready() && pret.processors.length != 0 ){
+          let elem = treat_process(find_the_shortest());
+          if (! elem.hasint()){
+            //current_time+=elem.left_time
+            if (elem.pere == -1 ){
+                sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                    ALLL_id.splice(ALLL_id.indexOf(elem.id), 1)
+                   push_history_inProcess_pret_(elem, elem.left_time, pret);finish_process();LJF()})
+            }else {
+                 // elem.pere.block_time +=current_time-elem.entrance
+                  sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                      ALLL_id.splice(ALLL_id.indexOf(elem.id), 1)
+                  push_history_inProcess_pret_(elem, elem.left_time, pret);finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {LJF()})})
+            }
+            }else{
+              //current_time+=elem.int_time()
+              if (elem.type_int() != "function"){
+                  sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {sleep(SPEED).then(() => {
+                      push_history_inProcess_pret_(elem, elem.int_time(), pret)
+                      block_process();LJF("block",elem)})})
+              }else{
+                  sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                      block_process();
+                      push_history_inProcess_pret_(elem, elem.int_time(), pret)
+                      add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {LJF()})})
+              }
+           }
+        }
+        if (mode == "block"){
+            push_history_blocked_(proc, proc.int_duration())
+            sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+                resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {LJF()})})
+        }
+
+      }
+      else {
+            if (ALLL_id.length == 0){
+                console.log("[FINISH]______ LJF");
+                clean_data(ALLL_);
+                data_LJF = history2ganttdata_(ALLL_, "execution_time");
+                var Hist = [];
+                for ( var i = 0; i < list_processes.length; i++){
+                    Hist.push(ALLL_[i].history)
+                }
+                all_histories["LJF"] = Hist
+                nb_finished_algo++;
+                if (nb_finished_algo == nb_alogs_comparaison){
+                  end_comparaison()
+                }
+            }
+
+      }
+    }
+
+    var waiting_procs = []
+    create_processes_objects(list_processes)
+    for (let i = 0; i < waiting_procs.length; i++){
+        sleep(waiting_procs[i].entrance * TIME_UNIT).then(() => {
+            waiting_procs[i].move2fifo(pret)
+            LJF()
+        })
+    }
+    LJF();
+}
+
+
 function SRJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
 
     var ALLL_ = [];
@@ -1142,6 +1270,130 @@ function SRJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
     }
     SRJF();
 }
+
+function LRJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
+
+    var ALLL_ = [];
+    var ALLL_id = [];
+
+    function treat_process(n) {
+        return pret.treat(n, processor)
+    }
+    function finish_process() {
+        processor.finish_process()
+    }
+    function block_process() {
+        processor.block_process(blocked)
+    }
+    function change_process() {
+        processor.block_process(pret)
+    }
+    function resume_process(elem) {
+        var i_elem = blocked.resume(elem, pret);
+    }
+
+
+    //FIFO, PROCESSOR INITS
+    var pret = new Fifo_(FIFO_CAPACITY)
+    var blocked = new Fifo_(FIFO_CAPACITY)
+    var processor = new Processor_();
+
+    function create_processes_objects(list_processes) {
+        for (let i = 0; i < list_processes.length; i++) {
+            var info = list_processes[i]
+            var p = new Process_(info[0],
+                                info[2],
+                                info[5],
+                                -1,
+                                0,
+                                info[3],
+                                0)
+            if (0 == 0){p.move2fifo(pret)}
+            else{waiting_procs.push(p)}
+            ALLL_id.push(p.id)
+            ALLL_.push(p)
+        }
+    }
+
+
+
+    function find_the_shortest(){
+        var i = 0 ;
+        for (let index = 1; index < pret.processors.length; index++) {
+            if (pret.processors[index].left_time > pret.processors[i].left_time) {
+                i = index ;
+            }
+        }
+        return i ;
+    }
+
+    function LRJF(mode , proc){
+      if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
+        if (processor.isready() && pret.processors.length != 0 ){
+          let elem = treat_process(find_the_shortest());
+          if (! elem.hasint()){
+            //current_time+=elem.left_time
+            if (elem.pere == -1 ){
+                sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                    ALLL_id.splice(ALLL_id.indexOf(elem.id), 1)
+                   push_history_inProcess_pret_(elem, elem.left_time, pret);finish_process();LRJF()})
+            }else {
+                 // elem.pere.block_time +=current_time-elem.entrance
+                  sleep(SPEED + elem.left_time * TIME_UNIT).then(() => {
+                      ALLL_id.splice(ALLL_id.indexOf(elem.id), 1)
+                  push_history_inProcess_pret_(elem, elem.left_time, pret);finish_process();elem.pere.treat_int();resume_process(elem.pere);sleep(SPEED).then(() => {LRJF()})})
+            }
+            }else{
+              //current_time+=elem.int_time()
+              if (elem.type_int() != "function"){
+                  sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {sleep(SPEED).then(() => {
+                      push_history_inProcess_pret_(elem, elem.int_time(), pret)
+                      block_process();LRJF("block",elem)})})
+              }else{
+                  sleep(SPEED + elem.int_time() * TIME_UNIT).then(() => {
+                      block_process();
+                      push_history_inProcess_pret_(elem, elem.int_time(), pret)
+                      add_process(elem,elem.deg+1,current_time);sleep(SPEED).then(() => {LRJF()})})
+              }
+           }
+        }
+        if (mode == "block"){
+            push_history_blocked_(proc, proc.int_duration())
+            sleep(SPEED + proc.int_duration() * TIME_UNIT ).then(() => {
+                resume_process(proc);proc.treat_int(); sleep(SPEED).then(() => {LRJF()})})
+        }
+
+      }
+      else {
+          if (ALLL_id.length == 0){
+            console.log("[FINISH]______ LRJF");
+            clean_data(ALLL_);
+            data_LRJF = history2ganttdata_(ALLL_, "execution_time");
+            var Hist = [];
+            for ( var i = 0; i < list_processes.length; i++){
+                Hist.push(ALLL_[i].history)
+            }
+            all_histories["LRJF"] = Hist
+            nb_finished_algo++;
+            if (nb_finished_algo == nb_alogs_comparaison){
+              end_comparaison()
+            }
+        }
+
+      }
+    }
+
+    var waiting_procs = []
+    create_processes_objects(list_processes)
+    for (let i = 0; i < waiting_procs.length; i++){
+        sleep(waiting_procs[i].entrance * TIME_UNIT).then(() => {
+            waiting_procs[i].move2fifo(pret)
+            LRJF()
+        })
+    }
+    LRJF();
+}
+
 
 function PS_init( list_processes, TIME_UNIT, SPEED, draw=false){
 
