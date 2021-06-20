@@ -26,21 +26,35 @@
         <div class="container" id="container2" style="display:none;">
             <div class="title">Generation de processus    <div class="tooltip"><i class="far fa-question-circle"></i>
               <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
-                  <strong>La generation du jeu d'entrée selon deux methode :</strong><br>
+                  <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
                   <ul>
-                      <li><strong>Methode aleatoire:</strong>
+                      <li><strong>Méthode aléatoire:</strong>
                           <ul>
-                              <li>Cochez la case "Generation aleatoir selon la configuration".</li>
-                              <li>Entrer le "Nombre de processus" voulu.</li>
-                              <li> clickez sur le bouton "Ajouter les processus", les processus seront generer de facon aleatoire selon la Configuration</li>
+                              <li>Cochez la case "Génération aléatoire selon la configuration".</li>
+                              <li>Entrez le "Nombre de processus" voulu.</li>
+                              <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
                           </ul>
                       </li><br>
-                      <li><strong>Methode personnalisé:</strong>
+                      <li><strong>Méthode personnalisée:</strong>
                           <ul>
-                              <li>Ne cochez pas la case "Generation aleatoir selon la configuration".</li>
-                              <li>Entrer le "Nombre de processus" voulu.</li>
-                              <li>Un tableau sera generé, contenant tous les parametres/informations des processus pour les modifier selon votre besoin (Temps d'execution, interuptions, priorité, ...)</li>
-                              <li>clickez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
+                              <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
+                              <li>Entrez le "Nombre de processus" voulu.</li>
+                              <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
+                              <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>La génération du jeu d'entrée selon deux méthodes :</strong><br>
+                        <ul>
+                            <li><strong>Méthode aléatoire:</strong>
+                                <ul>
+                                    <li>Cochez la case "Génération aléatoire selon la configuration".</li>
+                                    <li>Entrez le "Nombre de processus" voulu.</li>
+                                    <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
+                                </ul>
+                            </li><br>
+                            <li><strong>Méthode personnalisée:</strong>
+                                <ul>
+                                    <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
+                                    <li>Entrez le "Nombre de processus" voulu.</li>
+                                    <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
+                                    <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
                           </ul>
                       </li>
                   </ul>
@@ -57,7 +71,7 @@
                 </div>
             </div>
             <hr>
-            <label class="container_checkbox">Génération aléatoires
+            <label class="container_checkbox">Génération aléatoire
               <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
               <span class="checkmark"></span>
             </label>
@@ -75,11 +89,11 @@
         <div class="container" id="container1" style="display:none;">
             <div class="title">Configuration    <div class="tooltip"><i class="far fa-question-circle"></i>
               <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
-                  C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
-                  <ul>
-                      <li>La generation aleatoir des processus va etre selon cette configuration (Temps d'éxecution minimum, Temps d'éxecution maximum ...)</li><br>
-                      <li>La simulation est de meme selon la cette configuration (Unite de temps en milli-secondes, ...)</li><br>
-                      <li>Devant chaque parametres vous trouverez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouver l'explication de ce parametre</li>
+                C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
+                <ul>
+                    <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li><br>
+                    <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li><br>
+                    <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
                   </ul>
               </span>
             </div></div>
@@ -87,9 +101,11 @@
             <form class="">
                 <div class="configuration">
                     <div class="input_box">
-                        <span>Temps d'éxecution minimum</span>
+                        <span>Temps d'exécution minimal</span>
                         <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps d'éxecution minimum</h4>C'est le temps d'éxecution minimum éstimé que peut avoir un processus en unite de temps</span>
+                            <span class="tooltiptext">
+                                <h4>Temps d'exécution minimal</h4>C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
+                            </span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
@@ -98,9 +114,11 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Temps d'éxecution maximum</span>
+                        <span>Temps d'exécution maximal</span>
                         <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps d'éxecution maximum</h4>C'est le temps d'éxecution maximum éstimé que peut avoir un processus en unite de temps</span>
+                            <span class="tooltiptext">
+                                <h4>Temps d'exécution maximal</h4>C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps
+                              </span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
@@ -109,9 +127,10 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Nombre miximal d'interuption</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Nombre miximal d'interuption</h4>C'est le nombre maximum d'interuptions (memoire, E/S) que peut avoir un processus</span>
+                      <span>Nombre maximal d'interruptions</span>
+                      <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext">
+                              <h4>Nombre maximal d'interruption</h4>C'est le nombre maximal d'interruptions (mémoire, E/S) que peut avoir un processus</span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
@@ -120,9 +139,11 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Temps miximal d'interuption</span>
+                        <span>Temps maximal d'interruption</span>
                         <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps miximal d'interuption</h4>C'est la durée maximale que peut prendre une interuption en unité de temps TU</span>
+                            <span class="tooltiptext">
+                                <h4>Temps maximal d'interruption</h4>C'est la durée maximale que peut prendre une interruption en unité de temps TU
+                              </span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
@@ -131,9 +152,11 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Temps minimal d'interuption</span>
+                        <span>Temps minimal d'interruption</span>
                         <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps minimal d'interuption</h4>C'est la durée minimal que peut prendre une interuption en unité de temps TU</span>
+                            <span class="tooltiptext">
+                                <h4>Temps minimal d'interruption</h4>C'est la durée minimale que peut prendre une interruption en unité de temps TU
+                              </span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
@@ -142,9 +165,11 @@
                         </div>
                     </div>
                     <div class="input_box">
-                        <span>Unite de temps</span>
+                        <span>Unité de temps</span>
                         <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Unite de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en mili-secondes</span>
+                            <span class="tooltiptext">
+                                <h4>Unité de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en milli-secondes
+                              </span>
                         </div>
                         <div class="button_">
                             <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
@@ -345,7 +370,7 @@
             <div id="popup1">
                 <div>
                     <h3>popup button simulation</h3>
-                    <p>Hello in the guide</p>
+                    <p>Welcome to the guide</p>
                     <button class="button_st" onclick="continue_pop(2)">continue</button>
                     <button class="button_st" onclick="skip(1,'button_simulation')">skip</button>
                 </div>
@@ -354,7 +379,7 @@
             <div id="popup2">
                 <div>
                     <h3>popup button ajouter</h3>
-                    <p>Hello in the guide</p>
+                    <p>Welcome to the guide</p>
                     <button class="button_st" onclick="continue_pop(3)">continue</button>
                     <button class="button_st" onclick="skip(2,'button_ajouter')">skip</button>
                 </div>
@@ -363,7 +388,7 @@
             <div id="popup3">
                 <div>
                     <h3>popup button new simulation</h3>
-                    <p>Hello in the guide</p>
+                    <p>Welcome to the guide</p>
                     <button class="button_st" onclick="continue_pop(4)">continue</button>
                     <button class="button_st" onclick="skip(3,'button_new_simulation')">skip</button>
                 </div>
@@ -372,7 +397,7 @@
             <div id="popup4">
                 <div>
                     <h3>popup button configuration</h3>
-                    <p>Hello in the guide</p>
+                    <p>Welcome to the guide</p>
                     <button class="button_st" onclick="continue_pop(5)">continue</button>
                     <button class="button_st" onclick="skip(4,'button_configurer')">skip</button>
                 </div>
@@ -381,7 +406,7 @@
             <div id="popup5">
                 <div>
                     <h3>popup button speed</h3>
-                    <p>Hello in the guide</p>
+                    <p>Welcome to the guide</p>
                     <button class="button_st" onclick="continue_pop(6)">continue</button>
                     <button class="button_st" onclick="skip(5,null)">skip</button>
                 </div>
@@ -416,7 +441,7 @@
                 <div id="popup6">
                     <div>
                         <h3>popup button row simulation</h3>
-                        <p>Hello in the guide</p>
+                        <p>Welcome to the guide</p>
                         <button class="button_st" onclick="continue_pop(7)">continue</button>
                         <button class="button_st" onclick="skip(6,'row_simulation')">skip</button>
                     </div>
@@ -440,7 +465,7 @@
             <div id="popup7">
                     <div>
                         <h3>GUIDE</h3>
-                        <p>Hello in the guide</p>
+                        <p>Welcome to the guide</p>
                         <button class="button_st" onclick="continue_pop(8)">continue</button>
                         <button class="button_st" onclick="skip(7)">skip</button>
                     </div>
@@ -471,7 +496,7 @@
                   <thead>
                     <tr>
                       <th>Processus</th>
-                      <th>temps estimé</th>
+                      <th>Temps estimé</th>
                       <th>Temps de résidence</th>
                       <th>Temps de bloquage</th>
                       <th>Temps d'attente</th>
@@ -488,7 +513,7 @@
    <div id="popup0">
             <div>
                 <h3>GUIDE</h3>
-                <p>Hello in the guide</p>
+                <p>Welcome to the guide</p>
                 <button class="button_st" onclick="continue_pop(1)">continue</button>
                 <button class="button_st" onclick="skip(0,null)">skip</button>
             </div>
@@ -877,7 +902,7 @@ function continue_pop(p) {
                   <button class="button_modifier" id="modifier${nb_algos}" onclick="modify_row2(id)">Modifier</button>
                 </td>
                 <td>
-                   <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Suprimer</button>
+                   <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Supprimer</button>
                 </td>
 
               </tr>`
@@ -1081,11 +1106,11 @@ function continue_pop(p) {
       document.getElementById("table").innerHTML = `<tr>
                               <th>Processus</th>
                               <th style='width:130px'>Temps d'entrée</th>
-                              <th>Temps éstimé d'éxécution</th>
-                              <th>Nombre d'interuptions</th>
-                              <th>Suprimer</th>
-                              <th>Modifier</th>
-                              <th>Deplacer</th></tr>`;
+                              <th>Temps estimé d'exécution</th>
+                          <th>Nombre d'interruptions</th>
+                          <th>Supprimer</th>
+                          <th>Modifier</th>
+                          <th>Déplacer</th></tr>`;
       document.getElementById("number_8").value = 0;
 
       if (document.getElementById("processes_checkbox").checked){

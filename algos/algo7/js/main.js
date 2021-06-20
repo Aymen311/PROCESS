@@ -552,7 +552,7 @@ svg.append("text")
             .attr("x",PROCESSOR_X+250)
             .attr("y", PROCESSOR_Y-20+5)
             .attr("position", "fixed")
-            .text("Interuption Memoire/IO");
+            .text("Interruption Memoire/IO");
 
 var func = svg.append("circle")
             .attr("cx",PROCESSOR_X+200)
@@ -566,7 +566,7 @@ svg.append("text")
             .attr("x",PROCESSOR_X+250)
             .attr("y", PROCESSOR_Y+25)
             .attr("position", "fixed")
-            .text("Interuption function");
+            .text("Interruption fonction");
 
 function mem_intr(){
   mem.transition()
