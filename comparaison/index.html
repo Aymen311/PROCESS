@@ -17,13 +17,6 @@
     <!-- POP UP DIV !-->
     <bodypopup id="bodypopup" style="display:flex">
         <!--popup guide-->
-        <div id="popup1">
-            <div>
-                <h3>GUIDE</h3>
-                <h4>Hello to the guide</h4>
-                <button class="suivant_button button_st" onclick="skip('popup1')">skip</button>
-            </div>
-        </div>
         <div class="container" id="container1" style="display:block;">
             <div class="progress_bar">
                 <span class="steps step_1">Configuration</span>
@@ -36,12 +29,29 @@
                 <div class="circle circle_3" id="circle_3"><span>3</span></div>
             </div>
             <br><br>
-            <div class="title">Configuration</div>
+            <div class="title">Configuration
+                <div class="tooltip"><i class="far fa-question-circle"></i>
+                    <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
+                        C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
+                        <ul>
+                            <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li><br>
+                            <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li><br>
+                            <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
+                        </ul>
+                    </span>
+                  </div>
+            </div>
             <hr>
             <form class="">
                 <div class="configuration">
                     <div class="input_box">
                         <span>Temps d'éxecution minimum</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Temps d'exécution minimal</h4>C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
+                            </span>
+                        </div>
+
                         <div class="button_">
                             <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_0" type="text" name="" value="0" maxlength="2">
@@ -50,6 +60,11 @@
                     </div>
                     <div class="input_box">
                         <span>Temps d'éxecution maximum</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Temps d'exécution maximal</h4>C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps
+                            </span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_1" type="text" name="" value="0" maxlength="2">
@@ -58,6 +73,9 @@
                     </div>
                     <div class="input_box">
                         <span>Priorite minimale</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Priorite minimale</h4>C'est la priorité minimale que peut avoir un processus ( allant de 0 a 99 tel que 99 est la plus petite priorité)</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="2" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_2" type="text" name="" value="0" maxlength="2">
@@ -66,6 +84,9 @@
                     </div>
                     <div class="input_box">
                         <span>Priorite maximale</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext"><h4>Priorité maximale</h4>C'est la priorité maximale que peut avoir un processus ( allant de 0 a 99 tel que 0 est la plus grande priorité)</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="3" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_3" type="text" name="" value="0" maxlength="2">
@@ -74,6 +95,11 @@
                     </div>
                     <div class="input_box">
                         <span>Nombre miximal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Nombre maximal d'interruptions</h4>C'est le nombre maximal d'interruptions (mémoire, E/S) que peut avoir un processus
+                            </span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_4" type="text" name="" value="0" maxlength="2">
@@ -82,6 +108,11 @@
                     </div>
                     <div class="input_box">
                         <span>Temps miximal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Temps maximal d'interruption</h4>C'est la durée maximale que peut prendre une interruption en unité de temps TU
+                            </span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_5" type="text" name="" value="0" maxlength="2">
@@ -90,6 +121,11 @@
                     </div>
                     <div class="input_box">
                         <span>Temps minimal d'interuption</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Temps minimal d'interruption</h4>C'est la durée minimale que peut prendre une interruption en unité de temps TU
+                            </span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_6" type="text" name="" value="0" maxlength="2">
@@ -98,6 +134,9 @@
                     </div>
                     <div class="input_box">
                         <span>Temps de rafraichissement de priorite</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                          <span class="tooltiptext">Si un processus passe beaucoup de temps (temps de rafraichissement) dans l'état pret, sa priorité va augmenter pour augmenter la chance qu'il soit éllu </span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="7" onclick="add_nb(id)"> <span>+</span></div>
                             <input id="number_7" type="text" name="" value="0" maxlength="2">
@@ -106,6 +145,10 @@
                     </div>
                     <div class="input_box">
                         <span>Unite de temps en mili-seconde</span>
+                        <div class="tooltip"><i class="far fa-question-circle"></i>
+                            <span class="tooltiptext">
+                                <h4>Unité de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en milli-secondes</span>
+                        </div>
                         <div class="button_">
                             <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
                             <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
@@ -128,7 +171,30 @@
                 <div class="circle circle_3" id="circle_3"><span>3</span></div>
             </div>
             <br>
-            <div class="title">Generation de processus</div>
+            <div class="title">Generation de processus
+                <div class="tooltip"><i class="far fa-question-circle"></i>
+                  <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
+                      <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
+                      <ul>
+                          <li><strong>Méthode aléatoire:</strong>
+                              <ul>
+                                  <li>Cochez la case "Génération aléatoire selon la configuration".</li>
+                                  <li>Entrez le "Nombre de processus" voulu.</li>
+                                  <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
+                              </ul>
+                          </li><br>
+                          <li><strong>Méthode personnalisée:</strong>
+                              <ul>
+                                  <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
+                                  <li>Entrez le "Nombre de processus" voulu.</li>
+                                  <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
+                                  <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </span>
+              </div>
+            </div>
             <div class="configuration">
                 <div class="input_box" style="width:100%">
                     <span>Nombre de processus</span>
@@ -166,7 +232,14 @@
                 <div class="circle circle_3" id="circle_3"><span>3</span></div>
             </div>
             <br>
-            <div class="title">Choix des Algorithmes</div>
+            <div class="title">Choix des Algorithmes
+                <div class="tooltip"><i class="far fa-question-circle"></i>
+                  <span class="tooltiptext" style="font-size:16px; width:386px">
+                      Dans cet algorithme, on peut avoir au maximum 5 niveaux, chacun avec son propre algorithme. Cliquez sur "Ajouter un algorithme" pour en ajouter un, avec la possibililté de modifier ses paramètres.
+                  </span>
+                </div>
+
+            </div>
             <hr>
             <button type="button" name="button" class="ajouter_button" onclick="add_algorithme()">Ajouter Un Algorithme</button>
             <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 290px; display: block;">
@@ -196,7 +269,7 @@
                     <i class="fas fa-bars"></i>
                 </a>
             </li>
-            <a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
+            <a href="../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
         </ul>
         <!-- end nav left -->
         <!-- nav right -->
@@ -301,9 +374,10 @@
                         💡 Temps Perdu
                     </h3>
                     <div class="description">
-                        Temps Perdu represente le temps ou le processor etait en etat de repos pendant la simulation .Plus de temps perdu
-                        veut dire mois de cpu usage.Le but est d'essayer de maximiser ce temps ce qu implique utilisation 100% de resources pour
-                        le meilleurs performance.
+                        Le Temps Perdu représente le temps ou le processor était en
+                        état de repos pendant la simulation. Plus de temps perdu
+                        veut dire moins de cpu usage. Le but est d'essayer de minimiser
+                        ce temps ce qui implique l'utilisation de 100% des ressources pour les meilleures performances.
                     </div>
                 </div>
             </div>
@@ -328,7 +402,7 @@
                         💡 Cpu Usage
                     </h3>
                     <div class="description">
-                        Le taux d'utilastion du processeur est un critere tres important qui represent au quel point l'algorithme a reussit a bien utiliser les ressources discponible , Un taux qui converge a 100% est favorable.
+                        Le taux d'utilisation du processeur est un critère très important qui représente à quel point l'algorithme a réussi à bien utiliser les ressources disponibles, Un taux qui converge à 100% est favorable.
                     </div>
                 </div>
             </div>
@@ -353,7 +427,7 @@
                         💡 Temps De Fin
                     </h3>
                     <div class="description">
-                        Temps de fin represente le temps pris par l'algorithme afin de traiter tous le processus.Un bon algorithme est l'algorithme qui pris le moinde de temps possible.
+                        le Temps de fin représente le temps pris par l'algorithme afin de traiter tous le processus. Un bon algorithme est l'algorithme qui prend un minimum de temps possible.
                     </div>
                 </div>
             </div>
@@ -378,7 +452,9 @@
                         💡 Temps D'attente
                     </h3>
                     <div class="description">
-                        Le temps d'attente est la moyenne de temps d'attente de chauque processus i.e le temps ou le processus etait pret en attendat d'etre traiter .Un bon algorithme essaye a minimiser le temps d'attente pour eviter la famine.
+                        Le temps d'attente est la moyenne de temps d'attente de chauque
+                         processus. C'est a dire le temps ou le processus était en etat pret.
+                         Un bon algorithme essaye à minimiser le temps d'attente pour éviter ce qu'on appelle <strong> la famine </strong>.
                     </div>
                 </div>
             </div>
@@ -436,6 +512,12 @@ document.getElementById("number_5").value = 7
 document.getElementById("number_6").value = 3
 document.getElementById("number_7").value = 10
 document.getElementById("number_TU").value = 1000
+
+if (document.getElementById("processes_checkbox").checked) {
+    document.getElementById("table").style.display = "none"
+} else {
+    document.getElementById("table").style.display = "block"
+}
 
 function show_hide_processes_menu() {
     if (document.getElementById("processes_checkbox").checked) {
@@ -792,7 +874,7 @@ function add_algorithme() {
                                         <option value="SRJF"> Shortest Remaining Job First</option>
                                         <option value="LJF">Longest Job first</option>
                                         <option value="LRJF">Longest Remaining Job First</option>
-                                        <option value="RR">Round Robint</option>
+                                        <option value="RR">Round Robin</option>
                                         <option value="PS">Static Priority</option>
                                         <option value="PD">Dynamic Priority</option>
                                         <option value="MULTI+REC">Multi-level  Recycle</option>

@@ -2381,7 +2381,7 @@ function CPU_Usage(){
         crits.push(arr[i][1])
         data.push(all_crts[arr[i][1]].cpu_usage)
     }
-    ranking(sortObj(make_obj(get_algorithmes(),"cpu_usage")),"finish_time",'part6')
+    ranking(sortObj(make_obj(get_algorithmes(),"cpu_usage")),"finish_time",'part6'," %")
 
 }
 
@@ -2425,7 +2425,7 @@ function avrg_charge(){
 
 function get_bestresult(){
 	let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
-	let values = ["Cpu Usage","Finish Time","Waiting Time","Wasted Time"]
+    let values = ["Cpu Usage","Temp de fin","Temps d'attente","temps perdu"]
 	let algos = get_algorithmes()
     let algo_list = []
     let html = ""
@@ -2484,7 +2484,7 @@ function clean(){
     charts = []
 }
 
-function ranking(algos,crit,elem){
+function ranking(algos,crit,elem,suffix=""){
 
 	html='<table class="table">'
     html+='<thead>'
@@ -2500,7 +2500,7 @@ function ranking(algos,crit,elem){
 	      html+='<tr>'
 	      html+='<th scope="row">'+index+'</th>'
 	      html+='<td>'+algo+'</td>'
-	      html+='<td>'+algos[algo]+'</td>'
+	      html+='<td>'+algos[algo]+suffix+'</td>'
 	    html+='</tr>'
 		index++
 	}
@@ -2515,7 +2515,7 @@ function ranking(algos,crit,elem){
 function main_ranking(){
 
     let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
-    let values = ["Cpu Usage","Finish Time","Waiting Time","Wasted Time"]
+    let values = ["Cpu Usage","Temp de fin","Temps d'attente","temps perdu"]
     let algos = get_algorithmes()
     let algo_list = []
     let html = ""

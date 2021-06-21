@@ -789,7 +789,7 @@ body {
 
 
 
-@media screen and (min-width:940px) and (max-width:1300px) {
+/*@media screen and (min-width:940px) and (max-width:1300px) {
     html {
         zoom: 80%;
         -moz-transform: scale(.8);
@@ -815,7 +815,7 @@ body {
         zoom: 90%;
         -moz-transform: scale(.6);
     }
-}
+}*/
 
 
 
@@ -971,10 +971,16 @@ body {
 
 .button_sim_speed:hover {
     color: #fff;
-    background: #2383D8;
+    background: #2383A8;
 
 }
 
+.speed_select{
+    color: #fff;
+    background: #2383D8;
+
+}
+}
 
 
 .icon_sim {

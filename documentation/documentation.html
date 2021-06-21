@@ -21,6 +21,8 @@
                     <a href="#FIFO" class="nav-link"> FIFO </a>
                     <a href="#SJF" class="nav-link"> SJF</a>
                     <a href="#SRJF" class="nav-link"> SRJF </a>
+                    <a href="#LJF" class="nav-link"> LJF</a>
+                    <a href="#LRJF" class="nav-link"> LRJF</a>
                     <a href="#R-ROBIN" class="nav-link">Round Robin</a>
                     <a href="#priorite_stat" class="nav-link"> Priorité statique </a>
                     <a href="#priorite_dyn" class="nav-link"> Priorité dynamique </a>
@@ -70,6 +72,8 @@
                     <li>Si le système ne met pas en œuvre la réquisition, le processus élu relâche le processeur s’il se termine ou s’il demande une entrée sortie. Dans le cas contraire(avec réquisition), le processus élu perd le processeur également. Quand un processus ayant un cycle d’exécution inférieur au temps processeur restant du processus élu, vient d’entrer dans la file d’attente des prêts. Le processus élu dans ce cas sera mis dans la file d’attente des éligibles, et le processeur est alloué au processus qui vient d’entrer.</li>
                 </ul>
             </section>
+
+
             <section class="main-section" id="SRJF">
                 <header><h2>SRJF</h2></header>
                 <h3>Shortest remaining job first (plus court temps d'execution restant d'abord).
@@ -79,6 +83,30 @@
                 <ul>
                     <li> A chaque instant, le processeur vérifiera la tâche la plus courte</li>
                     <li>Le principe SJF est donc appliqué à chaque instant </li>
+                </ul>
+            </section>
+            <section class="main-section" id="LJF">
+                <header><h2>SJF</h2></header>
+                <h3>LJF(Longest Job First) 
+                </h3>
+                <p>L'algorithme plus long d’abord choisit de façon prioritaire les processus ayant le plus long temps d’exécution sans réellement tenir compte de leur date d’arrivée.</p>
+                <p>Les règles régissant cet ordonnancement sont :</p>
+                <ul>
+                    <li>Quand un processus est prêt à s’exécuter, il est inséré dans la file d’attente des processus prêts à sa position approprie.</li>
+                    <li>Quand le processeur devient libre, il est assigné au processus se trouvant en tête de la file d’attente des processus prêts (ce processus possède le plus petit cycle processeur.). Si deux processus ont la même longueur de cycle, on applique dans ce cas l’algorithme FIFO</li>
+                    <li>Si le système ne met pas en œuvre la réquisition, le processus élu relâche le processeur s’il se termine ou s’il demande une entrée sortie. Dans le cas contraire(avec réquisition), le processus élu perd le processeur également. Quand un processus ayant un cycle d’exécution inférieur au temps processeur restant du processus élu, vient d’entrer dans la file d’attente des prêts. Le processus élu dans ce cas sera mis dans la file d’attente des éligibles, et le processeur est alloué au processus qui vient d’entrer.</li>
+                </ul>
+            </section>
+
+            <section class="main-section" id="SRJF">
+                <header><h2>LRJF</h2></header>
+                <h3>Longest remaining job first (plus long temps d'execution restant d'abord).
+                </h3>
+                <p>Cet algorithme est également connu sous le nom de temps restant le plus long en premier, c'est-à-dire que nous planifions le processus en fonction du temps restant le plus long des processus.</p>
+                <p>Il s'agit de l'approche préventive de l'algorithme longest Job First:</p>
+                <ul>
+                    <li> A chaque instant, le processeur vérifiera la tâche la plus longue</li>
+                    <li>Le principe LJF est donc appliqué à chaque instant </li>
                 </ul>
             </section>
             <section class="main-section" id="R-ROBIN">
