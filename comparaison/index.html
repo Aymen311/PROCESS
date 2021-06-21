@@ -790,12 +790,12 @@ function add_algorithme() {
                                         <option value="FCFS"> FCFS </option>
                                         <option value="SJF"> Shortest Job First </option>
                                         <option value="SRJF"> Shortest Remaining Job First</option>
+                                        <option value="LJF">Longest Job first</option>
+                                        <option value="LRJF">Longest Remaining Job First</option>
                                         <option value="RR">Round Robint</option>
                                         <option value="PS">Static Priority</option>
                                         <option value="PD">Dynamic Priority</option>
-                                        <option value="MULTI+REC">Multi-level + Recycle</option>
-                                        <option value="MULTI+PRIO">Multi-level + Priority</option>
-                                        <option value="MULTI">Multi-level (The Beast)</option>
+                                        <option value="MULTI+REC">Multi-level  Recycle</option>
                                     </select>
                                 </td>
                                 <td>
@@ -1038,6 +1038,10 @@ function comparaison() {
                     MULTI_NV_init(processes, 50, 0, algos[i][2])
                 } else if (algos[i][1] == "MULTI+PRIO") {
                     MULTI_NV_PRIO_init(processes, 50, 0, algos[i][2])
+                }else if (algos[i][1] == "LJF") {
+                    LJF_init(processes, 50, 0, algos[i][2])
+                }else if (algos[i][1] == "LRJF") {
+                    LRJF_init(processes, 50, 0, algos[i][2])
                 }
             }
         }
