@@ -444,17 +444,29 @@ function resume_process(elem) {
 
 /****** SPEED - TU **********/
 
+function change_speed(x){
+    SPEED = 500*x
+    
+    elem3 = document.getElementById("speed1")  
+    elem2 = document.getElementById("speed2")
+    elem1 = document.getElementById("speed3")
 
-/*var speed_slider = document.getElementById("myspeed");
-//var TU_slider = document.getElementById("myTU")
+    if (x == 1){
+        elem1.className = "icon_sim speed_select"
+        elem2.className = "icon_sim "
+        elem3.className = "icon_sim "
 
-speed_slider.oninput = function() {
-  SPEED = parseInt(this.value)
-}
+    }else if (x == 2 ){
+        elem1.className = "icon_sim "
+        elem2.className = "icon_sim speed_select"
+        elem3.className = "icon_sim "
 
-/*
-TU_slider.oninput = function() {
-  TIME_UNIT = parseInt(this.value)
+    }else{
+        elem1.className = "icon_sim "
+        elem2.className = "icon_sim "
+        elem3.className = "icon_sim speed_select"
+
+    }
 }
 
 
