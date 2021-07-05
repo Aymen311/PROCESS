@@ -12,7 +12,7 @@ let STARTING_BLOCK_Y = 350;
 
 
 //PROCS COORDS
-let STARTING_PROC_X = 150;
+let STARTING_PROC_X = -50;
 let STARTING_PROC_Y = 150;
 let PROC_TEXT_SPACE = 20;
 
@@ -147,6 +147,7 @@ var svg = d3.select("main_svg")
 /**************************/
 
 /************************ CLASS *********************/
+var ALLL = []; var waiting_processes = []
 
 class Processor {
     constructor(id, x, y) {
@@ -171,8 +172,10 @@ class Processor {
             .attr("width", 20).attr("height", 20)
             .attr("opacity","0.95")
             .attr("position", "fixed")
-            .attr("fill", "white")
-    }
+            .attr("fill", "white")}
+
+
+
     block_process(fifo) {
         if (this.inProcess.length != 0) {
             var elem = this.inProcess.shift()
@@ -295,7 +298,8 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg,priority, color="-1") {
+    constructor(id, exe_time,ints,pere,deg,priority, color="-1", entrance) {
+        this.entrance = entrance
         this.level = priority;
         this.id = id
         this.exe_time = exe_time
@@ -518,8 +522,8 @@ function resume_process(elem,lvl) {
 
 function change_speed(x){
     SPEED = 500*x
-    
-    elem3 = document.getElementById("speed1")  
+
+    elem3 = document.getElementById("speed1")
     elem2 = document.getElementById("speed2")
     elem1 = document.getElementById("speed3")
 

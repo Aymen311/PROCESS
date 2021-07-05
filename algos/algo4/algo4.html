@@ -374,48 +374,48 @@
             </div>
 
             <!--popup first button-->
-            <div id="popup1">
+      <div id="popup1">
                 <div>
-                    <h3>popup button simulation</h3>
-                    <p>Welcome to the guide</p>
-                    <button class="button_st" onclick="continue_pop(2)">continue</button>
-                    <button class="button_st" onclick="skip(1,'button_simulation')">skip</button>
+                    <h3>Simuler</h3>
+                    <p>Cliquer pour commencer la simulation</p>
+                    <button class="button_st" onclick="continue_pop(2)">continuer</button>
+                    <button class="button_st" onclick="skip(1,'button_simulation')">passer</button>
                 </div>
             </div>
             <!--popup button2-->
             <div id="popup2">
                 <div>
-                    <h3>popup button ajouter</h3>
-                    <p>Welcome to the guide</p>
-                    <button class="button_st" onclick="continue_pop(3)">continue</button>
-                    <button class="button_st" onclick="skip(2,'button_ajouter')">skip</button>
+                    <h3>ajouter</h3>
+                    <p>ajouter un processus</p>
+                    <button class="button_st" onclick="continue_pop(3)">continuer</button>
+                    <button class="button_st" onclick="skip(2,'button_ajouter')">passer</button>
                 </div>
             </div>
             <!--popup button3-->
             <div id="popup3">
                 <div>
-                    <h3>popup button new simulation</h3>
-                    <p>Welcome to the guide</p>
-                    <button class="button_st" onclick="continue_pop(4)">continue</button>
-                    <button class="button_st" onclick="skip(3,'button_new_simulation')">skip</button>
+                    <h3>Effacer</h3>
+                    <p>cliquer pour réinitialiser</p>
+                    <button class="button_st" onclick="continue_pop(4)">continuer</button>
+                    <button class="button_st" onclick="skip(3,'button_new_simulation')">passer</button>
                 </div>
             </div>
             <!--popup button4-->
             <div id="popup4">
                 <div>
-                    <h3>popup button configuration</h3>
-                    <p>Welcome to the guide</p>
-                    <button class="button_st" onclick="continue_pop(5)">continue</button>
-                    <button class="button_st" onclick="skip(4,'button_configurer')">skip</button>
+                    <h3>configuration</h3>
+                    <p>modiffier la configuration</p>
+                    <button class="button_st" onclick="continue_pop(5)">continuer</button>
+                    <button class="button_st" onclick="skip(4,'button_configurer')">passer</button>
                 </div>
             </div>
             <!--popup button5-->
             <div id="popup5">
                 <div>
-                    <h3>popup button speed</h3>
-                    <p>Welcome to the guide</p>
-                    <button class="button_st" onclick="continue_pop(6)">continue</button>
-                    <button class="button_st" onclick="skip(5,null)">skip</button>
+                    <h3>vitesse</h3>
+                    <p>changer la vitesse du simulation</p>
+                    <button class="button_st" onclick="continue_pop(6)">continuer</button>
+                    <button class="button_st" onclick="skip(5,null)">passer</button>
                 </div>
             </div>
         </div>
@@ -444,13 +444,15 @@
         <!--popup button6-->
                 <div id="popup6">
                     <div>
-                        <h3>popup button row simulation</h3>
-                        <p>Welcome to the guide</p>
-                        <button class="button_st" onclick="continue_pop(7)">continue</button>
-                        <button class="button_st" onclick="skip(6,'row_simulation')">skip</button>
+                        <h3>Simulation</h3>
+                        <p></p>
+                        <button class="button_st" onclick="continue_pop(7)">continuer</button>
+                        <button class="button_st" onclick="skip(6,'row_simulation')">passer</button>
                     </div>
                 </div>
-			</div>
+            </div>
+
+
 
       <div class="col-m-12 col-sm-12" id="detail">
 				<div class="card">
@@ -466,15 +468,15 @@
             </div>
 					</div>
 				</div>
-        <div id="popup7">
+                <div id="popup7">
                     <div>
-                        <h3>GUIDE</h3>
-                        <p>Welcome to the guide</p>
-                        <button class="button_st" onclick="continue_pop(8)">continue</button>
-                        <button class="button_st" onclick="skip(7)">skip</button>
+                        <p>Details sur les processus</p>
+                        <button class="button_st" onclick="continue_pop(8)">continuer</button>
+                        <button class="button_st" onclick="skip(7)">passer</button>
                     </div>
                 </div>
-			</div>
+            </div>
+
 
 			<div class="col-m-12 col-sm-12">
 				<div class="card"  style="display: none;" id="gantt_div">
@@ -513,22 +515,21 @@
 			</div>
         </div>
 	</div>
-
-    <div id="popup0">
+        <div id="popup0">
             <div>
                 <h3>GUIDE</h3>
-                <p>Welcome to the guide</p>
-                <button class="button_st" onclick="continue_pop(1)">continue</button>
-                <button class="button_st" onclick="skip(0,null)">skip</button>
+                <button class="button_st" onclick="continue_pop(1)">continuer</button>
+                <button class="button_st" onclick="skip(0,null)">passer</button>
             </div>
         </div>
         <div id="popup8">
             <div>
-                <h3>popup sidebar</h3>
-                <p>Hello sidebar</p>
-                <button class="button_st" onclick="finish(8)">finish</button>
+                <h3>barre latérale</h3>
+                <p>choisir l'algorithme ou une page</p>
+                <button class="button_st" onclick="finish(8)">terminer</button>
             </div>
         </div>
+    </div>
 
 </body>
 <!-- SCRIPT FOR PROCESSES CONTROLS !-->
@@ -699,6 +700,12 @@ function continue_pop(p) {
   function simuler(){
       Config_ = get_config()
       PS_init(all_processes_list, 50, 0, true)
+      for (let i = 0; i < waiting_processes.length; i++){
+          sleep(waiting_processes[i].entrance * TIME_UNIT).then(() => {
+              waiting_processes[i].move2fifo(pret)
+              Priority_statique()
+          })
+      }
       Priority_statique()
   }
 
@@ -1020,8 +1027,8 @@ function continue_pop(p) {
         "MIN_INTR_DURATION":parseInt(document.getElementById("number_6").value),
         "allow_function_int": 0,
         "UPDATE_TIME":-1,
-        "MAX_ENTRANCE":7,
-        "MIN_ENTRANCE":5,
+        "MAX_ENTRANCE":0,
+        "MIN_ENTRANCE":0,
       }
     return Config
   }
@@ -1105,11 +1112,16 @@ function continue_pop(p) {
       for ( var i = 0; i < processes_list.length; i++){
           p = processes_list[i];
           all_processes_list.push(p)
-          var process = new Process(p[0], p[2], p[5], -1, 0, p[3], -1)
+          var process = new Process(p[0], p[2], p[5], -1, 0, p[3], -1, p[1])
           id_proc += 1
           ALLL.push(process)
           add_to_proc_info_menu(process, "proc_info_menu")
-          process.move2fifo(pret)
+          if (p[1] == 0){//entrance_time == 0
+              process.move2fifo(pret)
+          }
+          else{
+              waiting_processes.push(process)
+          }
       }
       close_popup()
       document.getElementById("table").innerHTML = `<tr>

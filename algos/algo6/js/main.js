@@ -12,7 +12,7 @@ let STARTING_BLOCK_Y = 350;
 
 
 //PROCS COORDS
-let STARTING_PROC_X = 150;
+let STARTING_PROC_X = -50;
 let STARTING_PROC_Y = 150;
 let PROC_TEXT_SPACE = 20;
 
@@ -43,7 +43,7 @@ var SPEED = 500;
 var TIME_UNIT = 100;
 
 var QUANTUMS = [1, 2, 3, 4];
-var ALLL = []
+var ALLL = []; var waiting_processes = []
                   /********************************************/
 
 
@@ -259,7 +259,8 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg, color="-1") {
+    constructor(id, exe_time,ints,pere,deg, color="-1", entrance) {
+        this.entrance = entrance
         this.level = 0;
         this.id = id
         this.exe_time = exe_time
@@ -299,7 +300,7 @@ class Process {
         this.x = 0;
         this.y = 0;
 
-        this.history = [[0, -1, "pret"]]
+        this.history = [[entrance, -1, "pret"]]
     }
     move2fifo(fifo) {
         var l = fifo.fifoAddProcess(this);
@@ -494,8 +495,8 @@ function resume_process(elem) {
 
 function change_speed(x){
     SPEED = 500*x
-    
-    elem3 = document.getElementById("speed1")  
+
+    elem3 = document.getElementById("speed1")
     elem2 = document.getElementById("speed2")
     elem1 = document.getElementById("speed3")
 
@@ -538,7 +539,7 @@ function push_history_inProcess_pret(proc, time){
     var l = proc.history.length
     var b = proc.history[l-1][0] + time
     proc.history[l-1][1] = b;
-    proc.history[l-1][2] = "In process"
+    proc.history[l-1][2] = "Traité"
     proc.history.push([b, -1, ""])
 
     for (var j = 0; j < list_fifos.length; j++){

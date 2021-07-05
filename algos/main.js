@@ -363,8 +363,8 @@ function FCFS_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -375,7 +375,6 @@ function FCFS_init( list_processes, TIME_UNIT, SPEED, draw=false){
     var first = true;
     ii = 0;
     function FCFS_(mode , proc){
-
       if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
         if (processor.isready() && pret.processors.length != 0 ){
           let elem = treat_process(0);
@@ -496,8 +495,8 @@ function RR_init( list_processes, TIME_UNIT, SPEED, quantum, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -653,8 +652,8 @@ function MULTI_NV_init( list_processes, TIME_UNIT, SPEED, QUANTUMS, draw=false){
                                 -1,
                                 0,
                                 0,
-                                0)
-            if (0 == 0){p.move2fifo(list_fifos[0])}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(list_fifos[0])}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -809,8 +808,8 @@ function MULTI_NV_PRIO_init( list_processes, TIME_UNIT, SPEED, QUANTUMS, draw=fa
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(list_fifos[info[3]])}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(list_fifos[info[3]])}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -937,8 +936,8 @@ function SJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -1015,6 +1014,7 @@ function SJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
 
     var waiting_procs = []
     create_processes_objects(list_processes)
+    console.log("waiting_procs.length", waiting_procs.length);
     for (let i = 0; i < waiting_procs.length; i++){
         sleep(waiting_procs[i].entrance * TIME_UNIT).then(() => {
             waiting_procs[i].move2fifo(pret)
@@ -1060,8 +1060,8 @@ function LJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -1184,8 +1184,8 @@ function SRJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -1307,8 +1307,8 @@ function LRJF_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -1432,8 +1432,8 @@ function PS_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_id.push(p.id)
             ALLL_.push(p)
@@ -1559,8 +1559,8 @@ function PD_init( list_processes, TIME_UNIT, SPEED, draw=false){
                                 -1,
                                 0,
                                 info[3],
-                                0)
-            if (0 == 0){p.move2fifo(pret)}
+                                info[1])
+            if (info[1] == 0){p.move2fifo(pret)}
             else{waiting_procs.push(p)}
             ALLL_.push(p)
             ALLL_id.push(p.id)

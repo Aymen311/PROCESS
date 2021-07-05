@@ -12,7 +12,7 @@ let STARTING_BLOCK_Y = 350;
 
 
 //PROCS COORDS
-let STARTING_PROC_X = 150;
+let STARTING_PROC_X = -50;
 let STARTING_PROC_Y = 150;
 let PROC_TEXT_SPACE = 20;
 
@@ -45,7 +45,7 @@ var SPEED = 500;
 var TIME_UNIT = 500;
 
 var QUANTUMS = [4,3,2,1];
-var ALLL = []
+var ALLL = []; var waiting_processes = []
                   /********************************************/
 
 
@@ -266,7 +266,8 @@ class Fifo {
 }
 
 class Process {
-    constructor(id, exe_time,ints,pere,deg,priority, color="-1") {
+    constructor(id, exe_time,ints,pere,deg,priority, color="-1", entrance=0) {
+        this.entrance = entrance
         this.level = priority;
         this.id = id
         this.exe_time = exe_time
@@ -513,8 +514,8 @@ function resume_process(elem) {
 
 function change_speed(x){
     SPEED = 500*x
-    
-    elem3 = document.getElementById("speed1")  
+
+    elem3 = document.getElementById("speed1")
     elem2 = document.getElementById("speed2")
     elem1 = document.getElementById("speed3")
 

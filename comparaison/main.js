@@ -2425,7 +2425,7 @@ function avrg_charge(){
 
 function get_bestresult(){
 	let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
-    let values = ["Cpu Usage","Temp de fin","Temps d'attente","temps perdu"]
+    let values = ["Taux d'utilisation du CPU","Temp de fin","Temps d'attente","temps perdu"]
 	let algos = get_algorithmes()
     let algo_list = []
     let html = ""
@@ -2515,7 +2515,7 @@ function ranking(algos,crit,elem,suffix=""){
 function main_ranking(){
 
     let keys = ["cpu_usage","finish_time","mean_waiting_time","unused_time"]
-    let values = ["Cpu Usage","Temp de fin","Temps d'attente","temps perdu"]
+    let values = ["Taux d'utilisation du CPU","Temp de fin","Temps d'attente","temps perdu"]
     let algos = get_algorithmes()
     let algo_list = []
     let html = ""

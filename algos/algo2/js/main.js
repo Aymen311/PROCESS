@@ -12,8 +12,8 @@ let STARTING_BLOCK_Y = 300;
 
 
 //PROCS COORDS
-let STARTING_PROC_X = 150;
-let STARTING_PROC_Y = 150;
+let STARTING_PROC_X = -50;
+let STARTING_PROC_Y = -50;
 let PROC_TEXT_SPACE = 20;
 
 let PROC_R = 10;
@@ -172,6 +172,7 @@ class Processor {
 }
 
 var ALLL = []
+var waiting_processes = []
 
 class Fifo {
     constructor(x, y, capacite, name=-1) {
@@ -298,7 +299,7 @@ class Process {
         this.x = 0;
         this.y = 0;
 
-        this.history = [[0, -1, "pret"]]
+        this.history = [[entrance, -1, "pret"]]
 
     }
     move2fifo(fifo) {
@@ -435,8 +436,8 @@ function resume_process(elem) {
 /****** SPEED  **********/
 function change_speed(x){
     SPEED = 500*x
-    
-    elem3 = document.getElementById("speed1")  
+
+    elem3 = document.getElementById("speed1")
     elem2 = document.getElementById("speed2")
     elem1 = document.getElementById("speed3")
 
@@ -476,12 +477,12 @@ function update_left_time(elem, t,end,sub){
 
 function push_history_inProcess_pret(proc, time){
     /*var a = proc.history[proc.history.length][1]
-    proc.history.push([ a, a + time, "In process"])*/
+    proc.history.push([ a, a + time, "Traité"])*/
 
     var l = proc.history.length
     var b = proc.history[l-1][0] + time
     proc.history[l-1][1] = b;
-    proc.history[l-1][2] = "In process"
+    proc.history[l-1][2] = "Traité"
     proc.history.push([b, -1, ""])
 
     for ( var i = 0; i < pret.processors.length; i++){
@@ -574,6 +575,7 @@ function find_the_shortest(){
 //////////////////
 
 function SJF(mode , proc){
+    console.log("xxx", pret.processors.length, pret.processors);
   if (pret.processors.length != 0 || blocked.processors.length != 0 || processor.inProcess.length != 0){
     if (processor.isready() && pret.processors.length != 0 ){
       let elem = treat_process(find_the_shortest());
