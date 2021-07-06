@@ -789,33 +789,29 @@ body {
 
 
 
-/*@media screen and (min-width:940px) and (max-width:1300px) {
+@media screen and (min-width:940px) and (max-width:1300px) {
     html {
         zoom: 80%;
-        -moz-transform: scale(.8);
     }
 }
 
 @media screen and (min-width:800px) and (max-width:940px) {
     html {
         zoom: 70%;
-        -moz-transform: scale(.7);
     }
 }
 
 @media screen and (min-width:600px) and (max-width:800px) {
     html {
         zoom: 60%;
-        -moz-transform: scale(.6);
     }
 }
 
 @media screen and (max-width:13000px) {
     html {
         zoom: 90%;
-        -moz-transform: scale(.6);
     }
-}*/
+}
 
 
 
