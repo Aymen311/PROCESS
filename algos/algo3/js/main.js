@@ -93,9 +93,10 @@ function rand_intrs(exec_time,deg, Config){ //function that chooses a random int
 }
 
 function add_process(pere,deg,entrance, Config){
+    console.log(Config)
   var exec_t = randint(Config["MIN_PROC_TIME"],Config["MAX_PROC_TIME"])
   id_proc++;
-  ints = rand_intrs(exec_t,deg)
+  ints = rand_intrs(exec_t,deg, Config)
   return [id_proc, entrance, exec_t, -1, ints.s, ints]
 }
 
