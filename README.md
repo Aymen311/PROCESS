@@ -1,2 +1,1 @@
-# App-2CP
-GitHub repository to manage our code for 2CP Project 
+Our Project : Building a tool for visual simulation of process scheduling algorithms by the operating system.
