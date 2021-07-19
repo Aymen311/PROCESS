@@ -12,7 +12,7 @@
   --primary-color: #4834d4;
   --success-color: #6ab04c;
   --warning-color: #f0932b;
-  --danger-color: #2383D8;
+  --danger-color: #2861ca;
 
   --light-color: #212529;
   --light-second-color: #727475;
@@ -43,7 +43,7 @@ h3 {
   font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
   font-size: 23px;
   line-height: 35px;
-  color: #1C1D1E; }
+  color: #5e92ce; }
 
 .nav-container h2 {
   font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
@@ -108,7 +108,7 @@ h3 {
   font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
   font-size: 23px;
   line-height: 35px;
-  color: #1C1D1E; }
+  color: #2861ca; }
 
 .nav-container h2 {
   font-family: "Neufile-Grotesk-Medium", Times, ‘Times New Roman’, serif;
@@ -192,7 +192,7 @@ body {
   .nav-inner-container .menu-link-container {
     display: flex;
     flex-direction: column;
-    margin-top: 4.722rem; }
+    margin-top: 2.722rem; }
     .nav-inner-container .menu-link-container a {
       margin-bottom: 0.722rem; }
 

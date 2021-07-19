@@ -1,1247 +1,1254 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>PROCESS | Priorité Statique</title>
-    <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-  <link rel="icon" type="image/png" href="../assets/PROCESS-LOGO.png"/>
-
-  <!-- Import lib -->
-  <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css!-->
-  <link rel="stylesheet" type="text/css" href="../fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" type="text/css" href="../button.css">
-  <link rel="stylesheet" type="text/css" href="../comp1.css">
-  <link rel="stylesheet" type="text/css" href="../style.css">
-  <link rel="stylesheet" type="text/css" href="../css/style2.css">
-
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <!-- End import lib -->
-
-
-</head>
-<body class="overlay-scrollbar">
-  <bodypopup id="bodypopup" style="display:none;">
-        <div class="container" id="container2" style="display:none;">
-            <div class="title">Génération des processus <div class="tooltip"><i class="far fa-question-circle"></i>
-              <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
-                  <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
-                  <ul>
-                      <li><strong>Méthode aléatoire:</strong>
-                          <ul>
+   <head>
+      <title>PROCESS | Priorité Statique</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+      <link rel="icon" type="image/png" href="../assets/PROCESS-LOGO.png"/>
+      <!-- Import lib -->
+      <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css!-->
+      <link rel="stylesheet" type="text/css" href="../fontawesome-free/css/all.min.css">
+      <link rel="stylesheet" type="text/css" href="../button.css">
+      <link rel="stylesheet" type="text/css" href="../comp1.css">
+      <link rel="stylesheet" type="text/css" href="../style.css">
+      <link rel="stylesheet" type="text/css" href="../css/style2.css">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+      <!-- End import lib -->
+   </head>
+   <body class="overlay-scrollbar">
+      <bodypopup id="bodypopup" style="display:none;">
+         <div class="container" id="container2" style="display:none;">
+            <div class="title">
+               Génération des processus
+               <div class="tooltip">
+                  <i class="far fa-question-circle"></i>
+                  <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">
+                     <strong>La génération du jeu d'entrée selon deux méthodes :</strong><br>
+                     <ul>
+                        <li>
+                           <strong>Méthode aléatoire:</strong>
+                           <ul>
                               <li>Cochez la case "Génération aléatoire selon la configuration".</li>
                               <li>Entrez le "Nombre de processus" voulu.</li>
                               <li> cliquez sur le bouton "Ajouter les processus", les processus seront générés de façon aléatoire selon la configuration</li>
-                          </ul>
-                      </li><br>
-                      <li><strong>Méthode personnalisée:</strong>
-                          <ul>
+                           </ul>
+                        </li>
+                        <br>
+                        <li>
+                           <strong>Méthode personnalisée:</strong>
+                           <ul>
                               <li>Ne cochez pas la case "Génération aléatoire selon la configuration".</li>
                               <li>Entrez le "Nombre de processus" voulu.</li>
                               <li>Un tableau sera généré, contenant tous les parametres/informations des processus pour les modifier selon votre besoins (Temps d'exécution, interruptions, priorité, ...)</li>
                               <li>Cliquez sur le bouton "Ajouter les processus" pour ajouter vos processus personnalisés </li>
-                          </ul>
-                      </li>
-                  </ul>
-              </span>
-          </div>
-      </div>
-      <div class="configuration">
-          <div class="input_box" style="width:100%">
-              <span>Nombre de processus</span>
-              <div class="button_">
-                  <div class="number_controller plus" id="8" onclick="add_nb(id); generate_processes_table('add')"> <span>+</span></div>
-                  <input id="number_8" type="text" name="" value="0" maxlength="2" onchange="generate_processes_table()">
-                  <div class="number_controller minus" id="8" onclick="sub_nb(id); generate_processes_table()"><span id="minus_caracter">_</span></div>
-              </div>
-          </div>
-      </div>
-      <hr>
-      <label class="container_checkbox">Génération aléatoire
-          <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
-          <span class="checkmark"></span>
-      </label>
-      <hr>
-      <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
-          <table id="table">
-              <tbody>
-              </tbody>
-          </table>
-      </div>
-      <button class="suivant_button" onclick="ajouter_processus()" style="vertical-align:middle"> <span>Ajouter </span> </button>
-  </div>
-  <div class="container" id="container1" style="display:none;">
-      <div class="title">Configuration <div class="tooltip"><i class="far fa-question-circle"></i>
-              <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
-                  C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
-                  <ul>
-                      <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li><br>
-                      <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li><br>
-                      <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
-                  </ul>
-              </span>
-          </div>
-      </div>
-      <hr>
-      <form class="">
-          <div class="configuration">
-              <div class="input_box">
-                  <span>Temps d'exécution minimal</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Temps d'exécution minimal</h4>C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
-                      </span>
-                  </div>
+                           </ul>
+                        </li>
+                     </ul>
+                  </span>
+               </div>
+            </div>
+            <div class="configuration">
+               <div class="input_box" style="width:100%">
+                  <span>Nombre de processus</span>
                   <div class="button_">
-                      <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
-                      <input id="number_0" type="text" name="" value="0" maxlength="2">
-                      <div class="number_controller minus" id="0" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     <div class="number_controller plus" id="8" onclick="add_nb(id); generate_processes_table('add')"> <span>+</span></div>
+                     <input id="number_8" type="text" name="" value="0" maxlength="2" onchange="generate_processes_table()">
+                     <div class="number_controller minus" id="8" onclick="sub_nb(id); generate_processes_table()"><span id="minus_caracter">_</span></div>
                   </div>
-              </div>
-              <div class="input_box">
-                  <span>Temps d'exécution maximal</span>
-                  <div class="tooltip"><i class="far fa-question-circle"></i>
-                      <span class="tooltiptext">
-                          <h4>Temps d'exécution maximal</h4>C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_1" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="1" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Priorité minimale</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Priorité minimale</h4>C'est la priorité minimale que peut avoir un processus ( allant de 0 a 99 tel que 99 est la plus petite priorité)</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="2" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_2" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="2" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Priorité maximale</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Priorité maximale</h4>C'est la priorité maximale que peut avoir un processus ( allant de 0 a 99 tel que 0 est la plus grande priorité)</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="3" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_3" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="3" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Nombre maximal d'interruption</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Nombre maximal d'interruptions</h4>C'est le nombre maximal d'interruptions (memoire, E/S) que peut avoir un processus</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_4" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="4" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Temps miximal d'interuption</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps maximal d'interruption</h4>C'est la durée maximale que peut prendre une interruption en unité de temps TU</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_5" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="5" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Temps minimal d'interruption</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Temps minimal d'interruption</h4>C'est la durée minimale que peut prendre une interruption en unité de temps TU</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
-                            <input id="number_6" type="text" name="" value="0" maxlength="2">
-                            <div class="number_controller minus" id="6" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                    <div class="input_box">
-                        <span>Unité de temps</span>
-                        <div class="tooltip"><i class="far fa-question-circle"></i>
-                          <span class="tooltiptext"><h4>Unité de temps</h4>C'est l'unité de temps de toute la simulation, mesurée en milli-secondes</span>
-                        </div>
-                        <div class="button_">
-                            <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
-                            <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
-                            <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
-                        </div>
-                    </div>
-                </div>
-                <button type="button" class="suivant_button config_suiv2" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
+               </div>
+            </div>
+            <hr>
+            <label class="container_checkbox">Génération aléatoire
+            <input type="checkbox" checked="checked" id="processes_checkbox" onchange="show_hide_processes_menu()">
+            <span class="checkmark"></span>
+            </label>
+            <hr>
+            <div class="configuration" style="padding-bottom: 50px; overflow-y: scroll; height: 240px; display: block;">
+               <table id="table">
+                  <tbody>
+                  </tbody>
+               </table>
+            </div>
+            <button class="suivant_button" onclick="ajouter_processus()" style="vertical-align:middle"> <span>Ajouter </span> </button>
+         </div>
+         <div class="container" id="container1" style="display:none;">
+            <div class="title">
+               Configuration
+               <div class="tooltip">
+                  <i class="far fa-question-circle"></i>
+                  <span class="tooltiptext" style="font-size:16px; width:526px; text-align:left">
+                     C'est la configuration du jeu d'entrée, ainsi que l'algorithme :
+                     <ul>
+                        <li>La génération aléatoire des processus va etre selon cette configuration (Temps d'exécution minimal, Temps d'exécution maximal ...)</li>
+                        <br>
+                        <li>La simulation est la meme selon cette configuration (Unité de temps en milli-secondes, ...)</li>
+                        <br>
+                        <li>Devant chaque paramètres vous trouvez le symbole <i class="far fa-question-circle"></i>, flottez le curseur en dessus pour trouvez l'explication de ce paramètre</li>
+                     </ul>
+                  </span>
+               </div>
+            </div>
+            <hr>
+            <form class="">
+               <div class="configuration">
+                  <div class="input_box">
+                     <span>Temps d'exécution minimal</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Temps d'exécution minimal</h4>
+                           C'est le temps d'exécution minimal estimé que peut avoir un processus en unité de temps
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="0" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_0" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="0" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Temps d'exécution maximal</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Temps d'exécution maximal</h4>
+                           C'est le temps d'exécution maximal estimé que peut avoir un processus en unité de temps
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="1" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_1" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="1" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Priorité minimale</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Priorité minimale</h4>
+                           C'est la priorité minimale que peut avoir un processus ( allant de 0 a 99 tel que 99 est la plus petite priorité)
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="2" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_2" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="2" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Priorité maximale</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Priorité maximale</h4>
+                           C'est la priorité maximale que peut avoir un processus ( allant de 0 a 99 tel que 0 est la plus grande priorité)
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="3" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_3" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="3" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Nombre maximal d'interruption</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Nombre maximal d'interruptions</h4>
+                           C'est le nombre maximal d'interruptions (memoire, E/S) que peut avoir un processus
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="4" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_4" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="4" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Temps miximal d'interuption</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Temps maximal d'interruption</h4>
+                           C'est la durée maximale que peut prendre une interruption en unité de temps TU
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="5" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_5" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="5" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Temps minimal d'interruption</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Temps minimal d'interruption</h4>
+                           C'est la durée minimale que peut prendre une interruption en unité de temps TU
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="6" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_6" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="6" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+                  <div class="input_box">
+                     <span>Unité de temps</span>
+                     <div class="tooltip">
+                        <i class="far fa-question-circle"></i>
+                        <span class="tooltiptext">
+                           <h4>Unité de temps</h4>
+                           C'est l'unité de temps de toute la simulation, mesurée en milli-secondes
+                        </span>
+                     </div>
+                     <div class="button_">
+                        <div class="number_controller plus" id="TU" onclick="add_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'> <span>+</span></div>
+                        <input id="number_TU" type="text" name="" value="0" maxlength="6" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'>
+                        <div class="number_controller minus" id="TU" onclick="sub_nb(id)" onchange='TIME_UNIT = parseInt(document.getElementById("number_TU").value)'><span id="minus_caracter">_</span></div>
+                     </div>
+                  </div>
+               </div>
+               <button type="button" class="suivant_button config_suiv2" onclick="slide2()" style="vertical-align:middle"><span>Terminer </span></button>
             </form>
-        </div>
-        <div name="interuptions_hidden_divs" id="stock"></div>
-        <div class="small_container_blur_background" id="blur_background"    style="display:none"  onclick="close_popup()"></div>
-        <div class="small_container_blur_background" id="blur_background_2"  style="display:none; z-index:2" onclick="close_popup_2()"></div>
-    </bodypopup>
-
- <div class="navbar" id="navbar_id">
-        <!-- nav left -->
-        <ul class="navbar-nav">
+         </div>
+         <div name="interuptions_hidden_divs" id="stock"></div>
+         <div class="small_container_blur_background" id="blur_background"    style="display:none"  onclick="close_popup()"></div>
+         <div class="small_container_blur_background" id="blur_background_2"  style="display:none; z-index:2" onclick="close_popup_2()"></div>
+      </bodypopup>
+      <div class="navbar" id="navbar_id">
+         <!-- nav left -->
+         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" onclick="collapseSidebar()">
-                    <i class="fas fa-bars"></i>
-                </a>
+               <a class="nav-link" onclick="collapseSidebar()">
+               <i class="fas fa-bars"></i>
+               </a>
             </li>
             <a href="../../index.html" class="logo_prefix">Pro<span id="logo_suffix">cess</span></a>
-        </ul>
-        <!-- end nav left -->
-        <!-- nav right -->
-        <ul class="navbar-nav nav-right">
+         </ul>
+         <!-- end nav left -->
+         <!-- nav right -->
+         <ul class="navbar-nav nav-right">
             <li class="nav-item config">
-              <button id="button_aide" onclick="initialization(0)">AIDE</button>
+               <button id="button_aide" onclick="initialization(0)">AIDE</button>
             </li>
-
             <li class="nav-item config">
-                <a class="nav-link" href="#" onclick="switchScreen()">
-                    <i class="fas fa-expand"></i>
-                </a>
+               <a class="nav-link" href="#" onclick="switchScreen()">
+               <i class="fas fa-expand"></i>
+               </a>
             </li>
             <li class="nav-item mode">
-                <a class="nav-link" href="#" onclick="switchTheme()">
-                    <i class="fas fa-moon dark-icon"></i>
-                    <i class="fas fa-sun light-icon"></i>
-                </a>
+               <a class="nav-link" href="#" onclick="switchTheme()">
+               <i class="fas fa-moon dark-icon"></i>
+               <i class="fas fa-sun light-icon"></i>
+               </a>
             </li>
-        </ul>
-        <!-- end nav right -->
-    </div>
-
-  <div class="sidebar" id="sidebar_id">
-    <ul class="sidebar-nav">
-
-      <li class="sidebar-nav-item">
-        <a href="../algo1/algo1.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-ellipsis-v"></i>
-          </div>
-          <span>FCFS</span>
-        </a>
-      </li>
-
-      <li class="sidebar-nav-item">
-        <a href="../algo2/algo2.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-sort-numeric-up-alt"></i>
-          </div>
-          <span>SJF</span>
-        </a>
-      </li>
-
-      <li class="sidebar-nav-item">
-        <a href="../algo8/algo8.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-sort-numeric-down"></i>
-          </div>
-          <span >SRJF</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../algo10/algo10.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-sort-numeric-down"></i>
-          </div>
-          <span>LJF</span>
-        </a>
-      </li>
-
-      <li class="sidebar-nav-item">
-        <a href="../algo11/algo11.html" class="sidebar-nav-link" >
-          <div>
-            <i class="fas fa-sort-numeric-down"></i>
-          </div>
-          <span>LRJF</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../algo3/algo3.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-registered"></i>
-          </div>
-          <span>Round Robin</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../algo4/algo4.html" class="sidebar-nav-link active" style="pointer-events: none;">
-          <div>
-            <i class="fas fa-icicles"></i>
-          </div>
-          <span>Priorité statique</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../algo5/algo5.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-exchange-alt"></i>
-          </div>
-          <span >Priorité dynamique</span>
-        </a>
-      </li>
-      <li  class="sidebar-nav-item">
-        <a href="../algo6/algo6.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-sync-alt"></i>
-          </div>
-          <span >MN avec recyclage</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../algo7/algo7.html" class="sidebar-nav-link">
-          <div>
-            <i class="fab fa-product-hunt"></i>
-          </div>
-          <span >MN avec priorité</span>
-        </a>
-      </li>
-
-      <li class="sidebar-nav-item">
-        <a href="../algo9/algo9.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-sitemap"></i>
-          </div>
-          <span >Multi-algorithmes</span>
-        </a>
-      </li>
-      -------
-      <li class="sidebar-nav-item">
-        <a href="../../comparaison/index.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-chart-pie"></i>
-          </div>
-          <span>Comparaison</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../../documentation/documentation.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-book-open"></i>
-          </div>
-          <span>Documentation</span>
-        </a>
-      </li>
-      <li class="sidebar-nav-item">
-        <a href="../../Quiz/game.html" class="sidebar-nav-link">
-          <div>
-            <i class="fas fa-question-circle"></i>
-          </div>
-          <span>Quizz</span>
-        </a>
-      </li>
-
-    </ul>
-  </div>
-
-
-  <div class="wrapper">
-            <div class="wrapper_sim" style="position: relative;">
+         </ul>
+         <!-- end nav right -->
+      </div>
+      <div class="sidebar" id="sidebar_id">
+         <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+               <a href="../algo1/algo1.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-ellipsis-v"></i>
+                  </div>
+                  <span>FCFS</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo2/algo2.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-sort-numeric-up-alt"></i>
+                  </div>
+                  <span>SJF</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo8/algo8.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-sort-numeric-down"></i>
+                  </div>
+                  <span >SRJF</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo10/algo10.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-sort-numeric-down"></i>
+                  </div>
+                  <span>LJF</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo11/algo11.html" class="sidebar-nav-link" >
+                  <div>
+                     <i class="fas fa-sort-numeric-down"></i>
+                  </div>
+                  <span>LRJF</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo3/algo3.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-registered"></i>
+                  </div>
+                  <span>Round Robin</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo4/algo4.html" class="sidebar-nav-link active" style="pointer-events: none;">
+                  <div>
+                     <i class="fas fa-icicles"></i>
+                  </div>
+                  <span>Priorité statique</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo5/algo5.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-exchange-alt"></i>
+                  </div>
+                  <span >Priorité dynamique</span>
+               </a>
+            </li>
+            <li  class="sidebar-nav-item">
+               <a href="../algo6/algo6.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-sync-alt"></i>
+                  </div>
+                  <span >MN avec recyclage</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo7/algo7.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fab fa-product-hunt"></i>
+                  </div>
+                  <span >MN avec priorité</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../algo9/algo9.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-sitemap"></i>
+                  </div>
+                  <span >Multi-algorithmes</span>
+               </a>
+            </li>
+            -------
+            <li class="sidebar-nav-item">
+               <a href="../../comparaison/index.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-chart-pie"></i>
+                  </div>
+                  <span>Comparaison</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../../documentation/documentation.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-book-open"></i>
+                  </div>
+                  <span>Documentation</span>
+               </a>
+            </li>
+            <li class="sidebar-nav-item">
+               <a href="../../Quiz/game.html" class="sidebar-nav-link">
+                  <div>
+                     <i class="fas fa-question-circle"></i>
+                  </div>
+                  <span>Quizz</span>
+               </a>
+            </li>
+         </ul>
+      </div>
+      <div class="wrapper">
+         <div class="wrapper_sim" style="position: relative;">
             <div class="button_sim" onclick="simuler()" id="button_simulation">
-                <div class="icon_sim"><i class="fas fa-play"></i></div>
-                <span>Simuler</span>
+               <div class="icon_sim"><i class="fas fa-play"></i></div>
+               <span>Simuler</span>
             </div>
             <div class="button_sim" onclick="ajouter()" id="button_ajouter">
-                <div class="icon_sim"><i class="fas fa-plus"></i></div>
-                <span>Add process</span>
+               <div class="icon_sim"><i class="fas fa-plus"></i></div>
+               <span>Add process</span>
             </div>
             <div class="button_sim" onclick="new_simulation()" id="button_new_simulation">
-                <div class="icon_sim"><i class="fas fa-broom"></i></div>
-                <span>Effacer</span>
+               <div class="icon_sim"><i class="fas fa-broom"></i></div>
+               <span>Effacer</span>
             </div>
             <div class="button_sim" onclick="configurer()" id="button_configurer">
-                <div class="icon_sim"><i class="fas fa-cogs"></i></div>
-                <span>Configurer</span>
+               <div class="icon_sim"><i class="fas fa-cogs"></i></div>
+               <span>Configurer</span>
             </div>
             <div style="display: inline-block;" id="button_speed">
-                <div class="button_sim_speed " onclick="change_speed(1)" >
-                    <div class="icon_sim " id="speed3"><i>x3</i></div>
-                </div>
-                <div class="button_sim_speed" onclick="change_speed(2)" >
-                    <div class="icon_sim" id="speed2"><i>x2</i></div>
-                </div>
-                <div class="button_sim_speed space" onclick="change_speed(3)" >
-                    <div class="icon_sim speed_select" id="speed1"><i>x1</i></div>
-                </div>
+               <div class="button_sim_speed " onclick="change_speed(1)" >
+                  <div class="icon_sim " id="speed3"><i>x3</i></div>
+               </div>
+               <div class="button_sim_speed" onclick="change_speed(2)" >
+                  <div class="icon_sim" id="speed2"><i>x2</i></div>
+               </div>
+               <div class="button_sim_speed space" onclick="change_speed(3)" >
+                  <div class="icon_sim speed_select" id="speed1"><i>x1</i></div>
+               </div>
             </div>
-
             <!--popup first button-->
-      <div id="popup1">
-                <div>
-                    <h3>Simuler</h3>
-                    <p>Cliquer pour commencer la simulation</p>
-                    <button class="button_st" onclick="continue_pop(2)">continuer</button>
-                    <button class="button_st" onclick="skip(1,'button_simulation')">passer</button>
-                </div>
+            <div id="popup1">
+               <div>
+                  <h3>Simuler</h3>
+                  <p>Cliquer pour commencer la simulation</p>
+                  <button class="button_st" onclick="continue_pop(2)">continuer</button>
+                  <button class="button_st" onclick="skip(1,'button_simulation')">passer</button>
+               </div>
             </div>
             <!--popup button2-->
             <div id="popup2">
-                <div>
-                    <h3>ajouter</h3>
-                    <p>ajouter un processus</p>
-                    <button class="button_st" onclick="continue_pop(3)">continuer</button>
-                    <button class="button_st" onclick="skip(2,'button_ajouter')">passer</button>
-                </div>
+               <div>
+                  <h3>ajouter</h3>
+                  <p>ajouter un processus</p>
+                  <button class="button_st" onclick="continue_pop(3)">continuer</button>
+                  <button class="button_st" onclick="skip(2,'button_ajouter')">passer</button>
+               </div>
             </div>
             <!--popup button3-->
             <div id="popup3">
-                <div>
-                    <h3>Effacer</h3>
-                    <p>cliquer pour réinitialiser</p>
-                    <button class="button_st" onclick="continue_pop(4)">continuer</button>
-                    <button class="button_st" onclick="skip(3,'button_new_simulation')">passer</button>
-                </div>
+               <div>
+                  <h3>Effacer</h3>
+                  <p>cliquer pour réinitialiser</p>
+                  <button class="button_st" onclick="continue_pop(4)">continuer</button>
+                  <button class="button_st" onclick="skip(3,'button_new_simulation')">passer</button>
+               </div>
             </div>
             <!--popup button4-->
             <div id="popup4">
-                <div>
-                    <h3>configuration</h3>
-                    <p>modiffier la configuration</p>
-                    <button class="button_st" onclick="continue_pop(5)">continuer</button>
-                    <button class="button_st" onclick="skip(4,'button_configurer')">passer</button>
-                </div>
+               <div>
+                  <h3>configuration</h3>
+                  <p>modiffier la configuration</p>
+                  <button class="button_st" onclick="continue_pop(5)">continuer</button>
+                  <button class="button_st" onclick="skip(4,'button_configurer')">passer</button>
+               </div>
             </div>
             <!--popup button5-->
             <div id="popup5">
-                <div>
-                    <h3>vitesse</h3>
-                    <p>changer la vitesse du simulation</p>
-                    <button class="button_st" onclick="continue_pop(6)">continuer</button>
-                    <button class="button_st" onclick="skip(5,null)">passer</button>
-                </div>
+               <div>
+                  <h3>vitesse</h3>
+                  <p>changer la vitesse du simulation</p>
+                  <button class="button_st" onclick="continue_pop(6)">continuer</button>
+                  <button class="button_st" onclick="skip(5,null)">passer</button>
+               </div>
             </div>
-        </div>
-
-		<div class="row">
-			<div class="col-m-12 col-sm-12" id="row_simulation">
-				<div class="card">
-					<div class="card-header">
-						<h3>
-							Priorité statique<div class="tooltip"><i class="far fa-question-circle" style="left: 10px;top: -7px;"></i>
-                              <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">TEXT</span>
-                            </div>
-						</h3>
-            <div  class="proc_info_menu">
-              <h3> Simulation Logs : </h3>
-              <ol id="logs" class="logs_class" reversed>
-
-              </ol>
-              <!-- Les informations des processus, et leurs interuptions !-->
-          </div>
-					</div>
-					<div class="card-content" style="text-align:center">
-						<div class="main_svg"> <main_svg > </main_svg> </div>
-					</div>
-				</div>
-        <!--popup button6-->
-                <div id="popup6">
-                    <div>
-                        <h3>Simulation</h3>
-                        <p></p>
-                        <button class="button_st" onclick="continue_pop(7)">continuer</button>
-                        <button class="button_st" onclick="skip(6,'row_simulation')">passer</button>
-                    </div>
-                </div>
+         </div>
+         <div class="row">
+            <div class="col-m-12 col-sm-12" id="row_simulation">
+               <div class="card">
+                  <div class="card-header">
+                     <h3>
+                        Priorité statique
+                        <div class="tooltip"><i class="far fa-question-circle" style="left: 10px;top: -7px;"></i>
+                           <span class="tooltiptext" style="font-size:16px; width:550px; text-align:left">TEXT</span>
+                        </div>
+                     </h3>
+                     <div  class="proc_info_menu">
+                        <h3> Simulation Logs : </h3>
+                        <ol id="logs" class="logs_class" reversed>
+                        </ol>
+                        <!-- Les informations des processus, et leurs interuptions !-->
+                     </div>
+                  </div>
+                  <div class="card-content" style="text-align:center">
+                     <div class="main_svg">
+                        <main_svg > </main_svg>
+                     </div>
+                  </div>
+               </div>
+               <!--popup button6-->
+               <div id="popup6">
+                  <div>
+                     <h3>Simulation</h3>
+                     <p></p>
+                     <button class="button_st" onclick="continue_pop(7)">continuer</button>
+                     <button class="button_st" onclick="skip(6,'row_simulation')">passer</button>
+                  </div>
+               </div>
             </div>
-
-
-
-      <div class="col-m-12 col-sm-12" id="detail">
-				<div class="card">
-					<div class="card-header">
-						<h3>
-							Détails des processus
-						</h3>
-					</div>
-					<div class="card-content">
-            <div  class="proc_info_menu2">
-              <div id="proc_info_menu" ></div>
-              <!-- Les informations des processus, et leurs interuptions !-->
+            <div class="col-m-12 col-sm-12" id="detail">
+               <div class="card">
+                  <div class="card-header">
+                     <h3>
+                        Détails des processus
+                     </h3>
+                  </div>
+                  <div class="card-content">
+                     <div  class="proc_info_menu2">
+                        <div id="proc_info_menu" ></div>
+                        <!-- Les informations des processus, et leurs interuptions !-->
+                     </div>
+                  </div>
+               </div>
+               <div id="popup7">
+                  <div>
+                     <p>Details sur les processus</p>
+                     <button class="button_st" onclick="continue_pop(8)">continuer</button>
+                     <button class="button_st" onclick="skip(7)">passer</button>
+                  </div>
+               </div>
             </div>
-					</div>
-				</div>
-                <div id="popup7">
-                    <div>
-                        <p>Details sur les processus</p>
-                        <button class="button_st" onclick="continue_pop(8)">continuer</button>
-                        <button class="button_st" onclick="skip(7)">passer</button>
-                    </div>
-                </div>
+            <div class="col-m-12 col-sm-12">
+               <div class="card"  style="display: none;" id="gantt_div">
+                  <div class="card-header">
+                     <h3>
+                        Gantt
+                     </h3>
+                  </div>
+                  <div class="card-content">
+                     <div class="" id="FCFS_" style="top: 415px; left: 10px; display:block;"></div>
+                  </div>
+               </div>
             </div>
-
-
-			<div class="col-m-12 col-sm-12">
-				<div class="card"  style="display: none;" id="gantt_div">
-					<div class="card-header">
-						<h3>
-							Gantt
-						</h3>
-					</div>
-					<div class="card-content">
-						<div class="" id="FCFS_" style="top: 415px; left: 10px; display:block;"></div>
-					</div>
-				</div>
-			</div>
-       <div class="col-m-12 col-sm-12">
-				<div class="card" style="display: none;" id="tab_div">
-					<div class="card-header">
-						<h3>
-							Tableau
-						</h3>
-					</div>
-					<div class="card-content plot_time">
-                        <table id="plot_time">
-							<thead>
-								<tr>
-									<th>Processus</th>
-									<th>Temps estimé</th>
-									<th>Temps de résidence</th>
-									<th>Temps de bloquage</th>
-									<th>Temps d'attente</th>
-								</tr>
-							</thead>
-
-						</table>
-					</div>
-				</div>
-			</div>
-        </div>
-	</div>
-        <div id="popup0">
-            <div>
-                <h3>GUIDE</h3>
-                <button class="button_st" onclick="continue_pop(1)">continuer</button>
-                <button class="button_st" onclick="skip(0,null)">passer</button>
+            <div class="col-m-12 col-sm-12">
+               <div class="card" style="display: none;" id="tab_div">
+                  <div class="card-header">
+                     <h3>
+                        Tableau
+                     </h3>
+                  </div>
+                  <div class="card-content plot_time">
+                     <table id="plot_time">
+                        <thead>
+                           <tr>
+                              <th>Processus</th>
+                              <th>Temps estimé</th>
+                              <th>Temps de résidence</th>
+                              <th>Temps de bloquage</th>
+                              <th>Temps d'attente</th>
+                           </tr>
+                        </thead>
+                     </table>
+                  </div>
+               </div>
             </div>
-        </div>
-        <div id="popup8">
-            <div>
-                <h3>barre latérale</h3>
-                <p>choisir l'algorithme ou une page</p>
-                <button class="button_st" onclick="finish(8)">terminer</button>
-            </div>
-        </div>
-    </div>
-
-</body>
-<!-- SCRIPT FOR PROCESSES CONTROLS !-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-       inblur_background();
-});
-
-
-/*script for popups*/
-//use jquery to popup when reload
-function blur_elem(id) {
-    document.getElementById(id).style.filter = "blur(7px)";
-}
-
-function inblur_elem(id) {
-    document.getElementById(id).style.filter = "blur(0px)";
-}
-
-function blur_background() {
-  var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
-  for (var i in table) {
-   blur_elem(table[i]);
-  }
-}
-
-function inblur_background() {
-  var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
-  for (var i in table) {
-    inblur_elem(table[i]);
-  }
-}
-//function to make the blur ad show the popup
-function initialization(p) {
-  window.scroll({
-    top: 0,
-    left: 0,
-    behavior: 'smooth'
-  });
-    blur_background();
-    document.getElementById("popup" + String(p)).classList.toggle('active');
-}
-
-function skip(p, id) {
-    document.getElementById("popup" + String(p)).classList.toggle('active');
-    inblur_background();
-    if (id != null) {
-        if (id == 'row_simulation') document.getElementById("row_simulation").style.zIndex = "";
-        else document.getElementById(id).style.width = "";
-    }
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-}
-
-function finish(p) {
-    document.getElementById("popup" + String(p)).classList.toggle('active');
-    inblur_background();
-    document.getElementById("sidebar_id").style.width = "";
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
-}
-
-var r = document.querySelector(':root');
-
-function set_top_left(top,left,top_after,left_after,top_after_color,bottm_after_color,left_after_color,right_after_color){
-  r.style.setProperty('--my_top',top);
-  r.style.setProperty('--my_left',left);
-  r.style.setProperty('--top_after',top_after);
-  r.style.setProperty('--left_after',left_after);
-  r.style.setProperty('--top_after_color',top_after_color);
-  r.style.setProperty('--bottm_after_color',bottm_after_color);
-  r.style.setProperty('--left_after_color',left_after_color);
-  r.style.setProperty('--right_after_color',right_after_color);
-}
-
-function continue_pop(p) {
-    document.getElementById("popup" + String(p - 1)).classList.toggle('active');
-    if (p != 9) document.getElementById("popup" + String(p)).classList.toggle('active');
-    switch (p) {
-        case 1:
-            set_top_left('20%','-27.5%','1%','99%','transparent','transparent','white','transparent');
-            inblur_elem("button_simulation");
-            document.getElementById("button_simulation").style.width = "170px";
-            break;
-        case 2:
-          set_top_left('125%','7%','-19%','38%','transparent','white','transparent','transparent');
-            document.getElementById("button_simulation").style.width = "";
-            blur_elem("button_simulation");
-            inblur_elem("button_ajouter");
-            document.getElementById("button_ajouter").style.width = "170px";
-            break;
-        case 3:
-          set_top_left('125%','17%','-19%','38%','transparent','white','transparent','transparent');
-            document.getElementById("button_ajouter").style.width = "";
-            blur_elem("button_ajouter");
-            inblur_elem("button_new_simulation");
-            document.getElementById("button_new_simulation").style.width = "170px";
-            break;
-        case 4:
-          set_top_left('125%','27%','-19%','38%','transparent','white','transparent','transparent');
-            document.getElementById("button_new_simulation").style.width = "";
-            blur_elem("button_new_simulation");
-            inblur_elem("button_configurer");
-            document.getElementById("button_configurer").style.width = "170px";
-            break;
-        case 5:
-        set_top_left('125%','70.5%','-19%','38%','transparent','white','transparent','transparent');
-            document.getElementById("button_configurer").style.width = "";
-            blur_elem("button_configurer");
-            inblur_elem("button_speed");
-            break;
-        case 6:
-        set_top_left('-20%','82%','99%','38%','white','transparent','transparent','transparent');
-            blur_elem("button_speed");
-            document.getElementById("row_simulation").style.zIndex = "101";
-            inblur_elem("row_simulation");
-            break;
-        case 7:
-        set_top_left('-138%','82%','99%','38%','white','transparent','transparent','transparent');
-            document.getElementById("row_simulation").style.zIndex = "";
-            blur_elem("row_simulation");
-            document.getElementById("detail").scrollIntoView();
-            inblur_elem("detail");
-            break;
-        case 8:
-        set_top_left('300px','270px','38%','-18%','transparent','transparent','transparent','white');
-            blur_elem("detail");
-            inblur_elem("sidebar_id");
-            document.getElementById("sidebar_id").style.width = "250px";
-            break;
-
-        default:
-            break;
-    }
-}
-</script>
-
-<script src="../../bib/d3.js"></script>
-<script src="js/main.js"></script>
-<script type="text/javascript"> //onclick for buttons
-
-  document.getElementById("number_0").value = 5
-  document.getElementById("number_1").value = 15
-  document.getElementById("number_3").value = 0
-  document.getElementById("number_2").value = 3
-  document.getElementById("number_4").value = 3
-  document.getElementById("number_5").value = 7
-  document.getElementById("number_6").value = 3
-  document.getElementById("number_TU").value = 1000
-
-  if (document.getElementById("processes_checkbox").checked){
-      document.getElementById("table").style.display = "none"
-  }
-  else{
-      document.getElementById("table").style.display = "block"
-  }
+         </div>
+      </div>
+      <div id="popup0">
+         <div>
+            <h3>GUIDE</h3>
+            <button class="button_st" onclick="continue_pop(1)">continuer</button>
+            <button class="button_st" onclick="skip(0,null)">passer</button>
+         </div>
+      </div>
+      <div id="popup8">
+         <div>
+            <h3>barre latérale</h3>
+            <p>choisir l'algorithme ou une page</p>
+            <button class="button_st" onclick="finish(8)">terminer</button>
+         </div>
+      </div>
+      </div>
+   </body>
+   <!-- SCRIPT FOR PROCESSES CONTROLS !-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script type="text/javascript">
+      $(document).ready(function() {
+             inblur_background();
+      });
 
 
-  var end_of_simulation = false;
-
-  function simuler(){
-      Config_ = get_config()
-      PS_init(all_processes_list, 50, 0, true)
-      for (let i = 0; i < waiting_processes.length; i++){
-          sleep(waiting_processes[i].entrance * TIME_UNIT).then(() => {
-              waiting_processes[i].move2fifo(pret)
-              Priority_statique()
-          })
+      /*script for popups*/
+      //use jquery to popup when reload
+      function blur_elem(id) {
+          document.getElementById(id).style.filter = "blur(7px)";
       }
-      Priority_statique()
-  }
 
-  function ajouter(){
-    document.getElementById('blur_background').style.display = "block";
-    document.getElementById('bodypopup'      ).style.display = "flex"
-    document.getElementById('container2'     ).style.display = "block"
-    if (end_of_simulation){
-        ALL_PROCS = []; ALLL = []; data = [];all_processes_list = [];
-        document.getElementById("FCFS_").innerHTML = "";
-    }
-  }
-
-  function new_simulation(){
-    location.reload() ;
-   }
-
-  function configurer(){
-      document.getElementById('blur_background').style.display = "block";
-      document.getElementById('bodypopup').style.display = "flex"
-      document.getElementById('container1').style.display = "block"
-  }
-
-  function close_popup(){
-      if      (document.getElementById('container2').style.display == "block"){
-          document.getElementById('blur_background').style.display = "none"
-          document.getElementById('bodypopup').style.display = "none"
-          document.getElementById('container2').style.display = "none"
+      function inblur_elem(id) {
+          document.getElementById(id).style.filter = "blur(0px)";
       }
-      else if (document.getElementById('container1').style.display == "block") {
-          document.getElementById('blur_background').style.display = "none"
-          document.getElementById('bodypopup').style.display = "none"
-          document.getElementById('container1').style.display = "none"
-      }
-  }
 
-  function close_popup_2(){
-      try {
-          if (document.getElementById(last_openned_int_id).style.display == "block"){
-              document.getElementById(last_openned_int_id).style.display = "none";
+      function blur_background() {
+        var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
+        for (var i in table) {
+         blur_elem(table[i]);
+        }
+      }
+
+      function inblur_background() {
+        var table=["row_simulation","navbar_id","sidebar_id","button_simulation","button_ajouter","button_new_simulation","button_configurer","button_speed","detail"] ;
+        for (var i in table) {
+          inblur_elem(table[i]);
+        }
+      }
+      //function to make the blur ad show the popup
+      function initialization(p) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+          blur_background();
+          document.getElementById("popup" + String(p)).classList.toggle('active');
+      }
+
+      function skip(p, id) {
+          document.getElementById("popup" + String(p)).classList.toggle('active');
+          inblur_background();
+          if (id != null) {
+              if (id == 'row_simulation') document.getElementById("row_simulation").style.zIndex = "";
+              else document.getElementById(id).style.width = "";
           }
-      } catch { }
-      try {
-          if (document.getElementById(last_openned_algo_id).style.display == "block"){
-              document.getElementById(last_openned_algo_id).style.display = "none"
-          }
-      } catch { }
-      document.getElementById("blur_background_2").style.display = "none";
-  }
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
+      }
 
-  function show_hide_processes_menu(){
+      function finish(p) {
+          document.getElementById("popup" + String(p)).classList.toggle('active');
+          inblur_background();
+          document.getElementById("sidebar_id").style.width = "";
+          window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+          });
+      }
+
+      var r = document.querySelector(':root');
+
+      function set_top_left(top,left,top_after,left_after,top_after_color,bottm_after_color,left_after_color,right_after_color){
+        r.style.setProperty('--my_top',top);
+        r.style.setProperty('--my_left',left);
+        r.style.setProperty('--top_after',top_after);
+        r.style.setProperty('--left_after',left_after);
+        r.style.setProperty('--top_after_color',top_after_color);
+        r.style.setProperty('--bottm_after_color',bottm_after_color);
+        r.style.setProperty('--left_after_color',left_after_color);
+        r.style.setProperty('--right_after_color',right_after_color);
+      }
+
+      function continue_pop(p) {
+          document.getElementById("popup" + String(p - 1)).classList.toggle('active');
+          if (p != 9) document.getElementById("popup" + String(p)).classList.toggle('active');
+          switch (p) {
+              case 1:
+                  set_top_left('20%','-27.5%','1%','99%','transparent','transparent','white','transparent');
+                  inblur_elem("button_simulation");
+                  document.getElementById("button_simulation").style.width = "170px";
+                  break;
+              case 2:
+                set_top_left('125%','7%','-19%','38%','transparent','white','transparent','transparent');
+                  document.getElementById("button_simulation").style.width = "";
+                  blur_elem("button_simulation");
+                  inblur_elem("button_ajouter");
+                  document.getElementById("button_ajouter").style.width = "170px";
+                  break;
+              case 3:
+                set_top_left('125%','17%','-19%','38%','transparent','white','transparent','transparent');
+                  document.getElementById("button_ajouter").style.width = "";
+                  blur_elem("button_ajouter");
+                  inblur_elem("button_new_simulation");
+                  document.getElementById("button_new_simulation").style.width = "170px";
+                  break;
+              case 4:
+                set_top_left('125%','27%','-19%','38%','transparent','white','transparent','transparent');
+                  document.getElementById("button_new_simulation").style.width = "";
+                  blur_elem("button_new_simulation");
+                  inblur_elem("button_configurer");
+                  document.getElementById("button_configurer").style.width = "170px";
+                  break;
+              case 5:
+              set_top_left('125%','70.5%','-19%','38%','transparent','white','transparent','transparent');
+                  document.getElementById("button_configurer").style.width = "";
+                  blur_elem("button_configurer");
+                  inblur_elem("button_speed");
+                  break;
+              case 6:
+              set_top_left('-20%','82%','99%','38%','white','transparent','transparent','transparent');
+                  blur_elem("button_speed");
+                  document.getElementById("row_simulation").style.zIndex = "101";
+                  inblur_elem("row_simulation");
+                  break;
+              case 7:
+              set_top_left('-138%','82%','99%','38%','white','transparent','transparent','transparent');
+                  document.getElementById("row_simulation").style.zIndex = "";
+                  blur_elem("row_simulation");
+                  document.getElementById("detail").scrollIntoView();
+                  inblur_elem("detail");
+                  break;
+              case 8:
+              set_top_left('300px','270px','38%','-18%','transparent','transparent','transparent','white');
+                  blur_elem("detail");
+                  inblur_elem("sidebar_id");
+                  document.getElementById("sidebar_id").style.width = "250px";
+                  break;
+
+              default:
+                  break;
+          }
+      }
+   </script>
+   <script src="../../bib/d3.js"></script>
+   <script src="js/main.js"></script>
+   <script type="text/javascript"> //onclick for buttons
+      document.getElementById("number_0").value = 5
+      document.getElementById("number_1").value = 15
+      document.getElementById("number_3").value = 0
+      document.getElementById("number_2").value = 3
+      document.getElementById("number_4").value = 3
+      document.getElementById("number_5").value = 7
+      document.getElementById("number_6").value = 3
+      document.getElementById("number_TU").value = 1000
+
       if (document.getElementById("processes_checkbox").checked){
           document.getElementById("table").style.display = "none"
       }
       else{
           document.getElementById("table").style.display = "block"
       }
-  }
-</script>
-<script type="text/javascript">
-
-  //INITS:
-  var processes_index = 1;
-  document.getElementById("table").innerHTML = `<tr>
-                          <th>Processus</th>
-                          <th style='width:130px'>Temps d'entrée</th>
-                          <th>Temps estimé d'exécution</th>
-                          <th>Nombre d'interruptions</th>
-                          <th>Supprimer</th>
-                          <th>Modifier</th>
-                          <th>Déplacer</th></tr>`;
-  document.getElementById("number_8").value = 0;
 
 
-  //FUNCTIONS:
-  function upNdown(direction, id){
-    var rows = document.getElementById("table").rows;
-    var index = document.getElementById(id).parentElement.parentElement.parentElement.rowIndex;
-    var index_int = parseInt(index);
-    var parent = rows[index_int].parentNode;
-     if(direction === "up"){if(index_int > 1){parent.insertBefore(rows[index_int],rows[index_int - 1]);}}
-     if(direction === "down"){if(index_int < rows.length -1){parent.insertBefore(rows[index_int + 1],rows[index_int]);}}
-  }
+      var end_of_simulation = false;
 
-  function modify_interuptions(id){
-    if (id.includes("number")){
-      nb = parseInt(document.getElementById(id).value);
-      id_ = parseInt(id.slice(18));
-    }
-    else{
-      nb = parseInt(document.getElementById("number_"+id).value);
-      id_ = parseInt(id.slice(11))
-    }
-    int_table = document.getElementById("interuption_table_"+id_);
-    int_table_innerHtml = `<div class="input_box">
-                  <span>Priorite</span>
-                  <div class="button_">
-                    <div class="number_controller plus" id="prio${id_}" onclick="add_nb(id)"> <span>+</span></div>
-                    <input id="number_prio${id_}" type="text" name="" value="0" maxlength="2">
-                    <div class="number_controller minus" id="prio${id_}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                  </div>
-                </div>
-                <table id="table">
-                <tr>
-                  <th style="width:100px">Interruption</th>
-                  <th>Début</th>
-                  <th>Durée</th>
-                  <th style="width:150px">Type</th>
-                </tr>`
-    for (var i = 0; i < nb; i++){
-      int_table_innerHtml = int_table_innerHtml + `<tr>
-                              <td>Int ${i}</td>
-                              <td>
-                                <div class="button_">
-                                  <div class="number_controller plus" id="start_time_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
-                                  <input id="number_start_time_${id_}_${i}" type="text" name="" value="0" maxlength="2">
-                                  <div class="number_controller minus" id="start_time_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                                </div>
-                              </td>
-                              <td>
-                                <div class="button_">
-                                  <div class="number_controller plus" id="duration_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
-                                  <input id="number_duration_${id_}_${i}" type="text" name="" value="0" maxlength="2">
-                                  <div class="number_controller minus" id="duration_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                                </div>
-                              </td>
-                              <td>
-                                <select class="select" id="int_type_${id_}_${i}">
-                                  <option value="input"> I/O </option>
-                                  <option value="memory"> Memoire </option>
-                                </select>
-                              </td>
-
-                            </tr>`
-    }
-
-    int_table.innerHTML = int_table_innerHtml;
-
-  }
-
-
-
-  function delete_row(id){
-    var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
-    document.getElementById("table").deleteRow(index);
-    document.getElementById("number_8").value --;
-    document.getElementById("interuption_table_"+id.slice(8)).remove()
-  }
-
-  var last_openned_int_id;
-  var last_openned_algo_id;
-  function modify_row(id){
-    last_openned_int_id = "interuption_table_"+id.slice(8)
-    document.getElementById(last_openned_int_id).style.display = "block";
-    document.getElementById("blur_background_2").style.display = "block";
-  }
-
-</script>
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>!-->
-<script type="text/javascript"> //SCRIPT FOR CONTAINERS CONTROLS
-
-  function slide2(){
-    document.getElementById("container1").style.display = "none";
-    document.getElementById("container2").style.display = "block";
-  }
-
-  function add_nb(id){
-    x = document.getElementById("number_"+id)
-    if (x.value == ""){x.value = 0}
-    x.value = parseInt(x.value) + 1
-  }
-  function sub_nb(id){
-    x = document.getElementById("number_"+id)
-    if (x.value == ""){x.value = 0}
-    if (x.value > 0){x.value = parseInt(x.value) - 1}
-  }
-</script>
-<script type="text/javascript"> //SCRIPT FOR ALGORITHMES CONTROLS
-  function delete_row2(id){
-    var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
-    document.getElementById("table_2").deleteRow(index);
-    //document.getElementById("interuption_table_"+id.slice(8)).remove()
-  }
-
-  var nb_algos = 0;
-  function add_algorithme(){
-    nb_algos++;
-    algo_table = document.getElementById("table_2");
-
-    new_row = document.createElement("TR");
-    new_row.innerHTML = `<tr id="algo_${nb_algos}">
-                <td>Algorithme ${nb_algos}</td>
-                <td>
-                  <select class="select" id="algo${nb_algos}" onchange="create_algo_info_div(id)">
-                    <option value="FCFS"> FCFS </option>
-                    <option value="SJF"> Shortest Job First </option>
-                    <option value="SRJF"> Shortest Remaining Job First</option>
-                    <option value="RR">Round Robint</option>
-                    <option value="PS">Static Priority</option>
-                    <option value="PD">Dynamic Priority</option>
-                    <option value="MULTI+REC">Multi-level + Recycle</option>
-                    <option value="MULTI+PRIO">Multi-level + Priority</option>
-                    <option value="MULTI">Multi-level (The Beast)</option>
-                  </select>
-                </td>
-                <td>
-                  <button class="button_modifier" id="modifier${nb_algos}" onclick="modify_row2(id)">Modifier</button>
-                </td>
-                <td>
-                   <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Supprimer</button>
-                </td>
-
-              </tr>`
-    algo_table.appendChild(new_row)
-  }
-
-  function modify_row2(id){
-    last_openned_algo_id = "algo_info_"+id.slice(8)
-    try {
-      document.getElementById(last_openned_algo_id).style.display = "block";
-      document.getElementById("blur_background").style.display = "block";
-    } catch (e) {
-      alert("NO MODIFICATION")
-    }
-
-  }
-
-  function create_algo_info_div(id){
-    algo = document.getElementById(id).parentElement.parentElement.children[1].children[0].value
-    algo_id = document.getElementById(id).parentElement.parentElement.children[0].innerHTML.slice(11)
-    if (document.getElementById("algo_info_"+algo_id)){document.getElementById("algo_info_"+algo_id).remove()}
-    new_div = document.createElement("DIV")
-    new_div.className = "small_container"
-    new_div.id = "algo_info_"+algo_id;
-    new_div.style.display = "none";
-    var innerHTML;
-    var valide = false;
-    if (algo == "RR"){
-      valide = true
-      new_div.style.height = "240px"
-      new_div.style.top    = "calc(50% - 120px)"
-      innerHTML = `<h2>Configuration de l'Algorithme Round Robin</h2>
-              <hr><br><br>
-              <div class="input_box">
-                <span>Quantum:</span>
-                <div class="button_">
-                  <div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
-                  <input id="number_quantum_${id}" type="text" name="" value="2" maxlength="2">
-                  <div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                </div>
-              </div>`
-    }
-    else if (algo == "MULTI+REC") {
-      valide = true
-      new_div.style.height = "350px"
-      new_div.style.top    = "calc(50% - 175px)"
-      innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec recyclage</h2>
-              <hr><br><br>
-              <div class="input_box">
-                <span>Nombre de niveaux:</span>
-                <div class="button_">
-                  <div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
-                  <input id="number_quantum_${id}" type="text" name="" value="4" maxlength="2">
-                  <div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
-                </div>
-              </div>
-              <br>
-              <div class="input_box">
-                <span>Liste de Quantums par niveaux:</span>
-                <span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
-                <div class="button_">
-                  <input id="quantums_list_${id}" type="text" name="" value="1,2,3,4">
-                </div>
-              </div>`
-
-    }
-    else if (algo == "MULTI+PRIO") {
-      valide = true
-      new_div.style.height = "350px"
-      new_div.style.top    = "calc(50% - 175px)"
-      innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec priorité</h2>
-              <hr><br><br>
-              <h3>Remarque: Le nombre de niveaux est le meme nombre de priorité donné dans la configuration !</h3>
-              <div class="input_box">
-                <span>Liste de Quantums par priorité (Par niveaux):</span>
-                <span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
-                <div class="button_">
-                  <input id="number_quantum_${id}" type="text" name="" value="1,2,3,4">
-                </div>
-              </div>`
-
-    }
-    else if (algo == "MULTI"){
-      valide = true
-
-    }
-    new_div.innerHTML = innerHTML;
-    if ( valide ){document.getElementById("stock_algo").appendChild(new_div);}
-
-
-  }
-
-</script>
-<script type="text/javascript"> //SCRIPT FOR DATA GATHERING
-  var nb_finished_algo = 0;
-  var nb_alogs_comparaison = 0;
-  var all_processes_list = [];
-
-  function get_config(){
-      TIME_UNIT = parseInt(document.getElementById("number_TU").value)
-      Config = {
-        "MIN_PROC_TIME":parseInt(document.getElementById("number_0").value),
-        "MAX_PROC_TIME":parseInt(document.getElementById("number_1").value), /**/
-        "MAX_PROC_PRIORITY":parseInt(document.getElementById("number_3").value), /**/
-        "MIN_PROC_PRIORITY":parseInt(document.getElementById("number_2").value), /**/
-        "MAX_PROC_INTRS":parseInt(document.getElementById("number_4").value), /**/
-        "MAX_PROC_DEGREE":3, /**/
-        "MAX_INTR_DURATION":parseInt(document.getElementById("number_5").value), /**/
-        "MIN_INTR_DURATION":parseInt(document.getElementById("number_6").value),
-        "allow_function_int": 0,
-        "UPDATE_TIME":-1,
-        "MAX_ENTRANCE":0,
-        "MIN_ENTRANCE":0,
+      function simuler(){
+          Config_ = get_config()
+          PS_init(all_processes_list, 50, 0, true)
+          for (let i = 0; i < waiting_processes.length; i++){
+              sleep(waiting_processes[i].entrance * TIME_UNIT).then(() => {
+                  waiting_processes[i].move2fifo(pret)
+                  Priority_statique()
+              })
+          }
+          Priority_statique()
       }
-    return Config
-  }
 
-  function get_processes_interuptions(){
-    nb_processes = parseInt(document.getElementById("number_8").value);
-    if ( !document.getElementById("processes_checkbox").checked ){
-      rows = document.getElementById("table").rows
-      L = []
-      for ( var i = 1; i <= nb_processes; i++){
-        r = rows[i];
-        id_ = parseInt(r.children[0].innerText.slice(5))
-        nb_ints = parseInt(r.children[3].children[0].children[1].value)
-        L_ = [
-          id_,
-          parseInt(r.children[1].children[0].children[1].value),
-          parseInt(r.children[2].children[0].children[1].value),
-          parseInt(document.getElementById("number_prio"+id_).value),
-          nb_ints,
-        ]
-        ints = [];
-
-        for ( var j = 0; j < nb_ints; j++){
-          ints.push([
-            parseInt(document.getElementById(`number_start_time_${id_}_${j}`).value),
-            parseInt(document.getElementById(`number_duration_${id_}_${j}`).value),
-            document.getElementById(`int_type_${id_}_${j}`).value,
-          ])
+      function ajouter(){
+        document.getElementById('blur_background').style.display = "block";
+        document.getElementById('bodypopup'      ).style.display = "flex"
+        document.getElementById('container2'     ).style.display = "block"
+        if (end_of_simulation){
+            ALL_PROCS = []; ALLL = []; data = [];all_processes_list = [];
+            document.getElementById("FCFS_").innerHTML = "";
         }
-        L_.push(ints)
-
-        L.push(L_)
       }
-      return L}
-    else{
-      return create_processes(nb_processes, get_config())
-    }
-  }
 
-  function get_algorithmes(){
-    var table = document.getElementById("table_2");
-    var rows = table.rows;
-    var nb_algorithmes = rows.length-1;
-    L = [] //[id, algo_name]
-    for ( var i = 1 ; i <= nb_algorithmes; i++){
-      algo_name = rows[i].children[1].children[0].value
-      algo_id   = parseInt(rows[i].children[0].innerText.slice(11))
-      L_ = [
-        algo_id,
-        algo_name
-      ]
-      if (algo_name == "RR"){
-        L_.push(parseInt(document.getElementById("number_quantum_algo"+algo_id).value))
+      function new_simulation(){
+        location.reload() ;
+       }
+
+      function configurer(){
+          document.getElementById('blur_background').style.display = "block";
+          document.getElementById('bodypopup').style.display = "flex"
+          document.getElementById('container1').style.display = "block"
       }
-      else if (algo_name == "MULTI+REC") {
-        q_l = document.getElementById("quantums_list_algo"+algo_id).value.split(",");
-        q_l_ = []
-        for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
-        L_.push(q_l_)
+
+      function close_popup(){
+          if      (document.getElementById('container2').style.display == "block"){
+              document.getElementById('blur_background').style.display = "none"
+              document.getElementById('bodypopup').style.display = "none"
+              document.getElementById('container2').style.display = "none"
+          }
+          else if (document.getElementById('container1').style.display == "block") {
+              document.getElementById('blur_background').style.display = "none"
+              document.getElementById('bodypopup').style.display = "none"
+              document.getElementById('container1').style.display = "none"
+          }
       }
-      else if (algo_name == "MULTI+PRIO") {
-        q_l = document.getElementById("number_quantum_algo"+algo_id).value.split(",");
-        q_l_ = []
-        for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
-        L_.push(q_l_)
+
+      function close_popup_2(){
+          try {
+              if (document.getElementById(last_openned_int_id).style.display == "block"){
+                  document.getElementById(last_openned_int_id).style.display = "none";
+              }
+          } catch { }
+          try {
+              if (document.getElementById(last_openned_algo_id).style.display == "block"){
+                  document.getElementById(last_openned_algo_id).style.display = "none"
+              }
+          } catch { }
+          document.getElementById("blur_background_2").style.display = "none";
       }
-      L.push(L_)
-    }
-    return L
-  }
 
-
-
-
-  function ajouter_processus(){
-      max_index = processes_index
-      if (document.getElementById("processes_checkbox").checked){
-          processes_index = processes_index - parseInt(document.getElementById("number_8").value) - 1;
-      }
-      var processes_list = get_processes_interuptions();
-      for ( var i = 0; i < processes_list.length; i++){
-          p = processes_list[i];
-          all_processes_list.push(p)
-          var process = new Process(p[0], p[2], p[5], -1, 0, p[3], -1, p[1])
-          id_proc += 1
-          ALLL.push(process)
-          add_to_proc_info_menu(process, "proc_info_menu")
-          if (p[1] == 0){//entrance_time == 0
-              process.move2fifo(pret)
+      function show_hide_processes_menu(){
+          if (document.getElementById("processes_checkbox").checked){
+              document.getElementById("table").style.display = "none"
           }
           else{
-              waiting_processes.push(process)
+              document.getElementById("table").style.display = "block"
           }
       }
-      close_popup()
+   </script>
+   <script type="text/javascript">
+      //INITS:
+      var processes_index = 1;
       document.getElementById("table").innerHTML = `<tr>
                               <th>Processus</th>
                               <th style='width:130px'>Temps d'entrée</th>
-                              <th>Temps éstimé d'exécution</th>
+                              <th>Temps estimé d'exécution</th>
                               <th>Nombre d'interruptions</th>
                               <th>Supprimer</th>
                               <th>Modifier</th>
                               <th>Déplacer</th></tr>`;
       document.getElementById("number_8").value = 0;
 
-      if (document.getElementById("processes_checkbox").checked){
-          processes_index++;
+
+      //FUNCTIONS:
+      function upNdown(direction, id){
+        var rows = document.getElementById("table").rows;
+        var index = document.getElementById(id).parentElement.parentElement.parentElement.rowIndex;
+        var index_int = parseInt(index);
+        var parent = rows[index_int].parentNode;
+         if(direction === "up"){if(index_int > 1){parent.insertBefore(rows[index_int],rows[index_int - 1]);}}
+         if(direction === "down"){if(index_int < rows.length -1){parent.insertBefore(rows[index_int + 1],rows[index_int]);}}
       }
-  }
 
-  function create_processes(nb_procs, Config) {
-    list_processes = []
-    for (let i = 0; i < nb_procs; i++) {
-      var entrance = randint(Config["MIN_ENTRANCE"], Config["MAX_ENTRANCE"])*randint(0, 2)*(i != 0)
-      //var entrance = 0;
-      if (Config["allow_function_int"]) {
-        list_processes.push(add_process(-1, 0, entrance, Config))
-      } else {
-        list_processes.push(add_process(-1, Config["MAX_PROC_DEGREE"], entrance, Config))
+      function modify_interuptions(id){
+        if (id.includes("number")){
+          nb = parseInt(document.getElementById(id).value);
+          id_ = parseInt(id.slice(18));
+        }
+        else{
+          nb = parseInt(document.getElementById("number_"+id).value);
+          id_ = parseInt(id.slice(11))
+        }
+        int_table = document.getElementById("interuption_table_"+id_);
+        int_table_innerHtml = `<div class="input_box">
+                      <span>Priorite</span>
+                      <div class="button_">
+                        <div class="number_controller plus" id="prio${id_}" onclick="add_nb(id)"> <span>+</span></div>
+                        <input id="number_prio${id_}" type="text" name="" value="0" maxlength="2">
+                        <div class="number_controller minus" id="prio${id_}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                      </div>
+                    </div>
+                    <table id="table">
+                    <tr>
+                      <th style="width:100px">Interruption</th>
+                      <th>Début</th>
+                      <th>Durée</th>
+                      <th style="width:150px">Type</th>
+                    </tr>`
+        for (var i = 0; i < nb; i++){
+          int_table_innerHtml = int_table_innerHtml + `<tr>
+                                  <td>Int ${i}</td>
+                                  <td>
+                                    <div class="button_">
+                                      <div class="number_controller plus" id="start_time_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                      <input id="number_start_time_${id_}_${i}" type="text" name="" value="0" maxlength="2">
+                                      <div class="number_controller minus" id="start_time_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <div class="button_">
+                                      <div class="number_controller plus" id="duration_${id_}_${i}" onclick="add_nb(id)"> <span>+</span></div>
+                                      <input id="number_duration_${id_}_${i}" type="text" name="" value="0" maxlength="2">
+                                      <div class="number_controller minus" id="duration_${id_}_${i}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <select class="select" id="int_type_${id_}_${i}">
+                                      <option value="input"> I/O </option>
+                                      <option value="memory"> Memoire </option>
+                                    </select>
+                                  </td>
+
+                                </tr>`
+        }
+
+        int_table.innerHTML = int_table_innerHtml;
+
       }
-    }
-    return list_processes
-  }
 
-</script>
-<script type="text/javascript"> //Scripts for gantt drawings
-    var data = []
-    var colors = []
 
-    function clean_data(ALLL){
 
-      for(let i = 0 ; i < ALLL.length ; i++){
-        let arr = ALLL[i].history
-        arr.splice(arr.length,1)
-        let passed = false
-        while (!passed){
-          passed = true
-          for (let i = 0 ; i < arr.length -1 ; i++){
-            let sub_arr1 = arr[i]
-            let sub_arr2 = arr[i+1]
-              passed = true
-              if (sub_arr1[2]==sub_arr2[2]){
-                  sub_arr1[1] = sub_arr2[1]
-                  arr.splice(i+1,1)
-                  passed = false
-                  break
-                }
+      function delete_row(id){
+        var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
+        document.getElementById("table").deleteRow(index);
+        document.getElementById("number_8").value --;
+        document.getElementById("interuption_table_"+id.slice(8)).remove()
+      }
+
+      var last_openned_int_id;
+      var last_openned_algo_id;
+      function modify_row(id){
+        last_openned_int_id = "interuption_table_"+id.slice(8)
+        document.getElementById(last_openned_int_id).style.display = "block";
+        document.getElementById("blur_background_2").style.display = "block";
+      }
+
+   </script>
+   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>!-->
+   <script type="text/javascript"> //SCRIPT FOR CONTAINERS CONTROLS
+      function slide2(){
+        document.getElementById("container1").style.display = "none";
+        document.getElementById("container2").style.display = "block";
+      }
+
+      function add_nb(id){
+        x = document.getElementById("number_"+id)
+        if (x.value == ""){x.value = 0}
+        x.value = parseInt(x.value) + 1
+      }
+      function sub_nb(id){
+        x = document.getElementById("number_"+id)
+        if (x.value == ""){x.value = 0}
+        if (x.value > 0){x.value = parseInt(x.value) - 1}
+      }
+   </script>
+   <script type="text/javascript"> //SCRIPT FOR ALGORITHMES CONTROLS
+      function delete_row2(id){
+        var index = parseInt(document.getElementById(id).parentElement.parentElement.rowIndex);
+        document.getElementById("table_2").deleteRow(index);
+        //document.getElementById("interuption_table_"+id.slice(8)).remove()
+      }
+
+      var nb_algos = 0;
+      function add_algorithme(){
+        nb_algos++;
+        algo_table = document.getElementById("table_2");
+
+        new_row = document.createElement("TR");
+        new_row.innerHTML = `<tr id="algo_${nb_algos}">
+                    <td>Algorithme ${nb_algos}</td>
+                    <td>
+                      <select class="select" id="algo${nb_algos}" onchange="create_algo_info_div(id)">
+                        <option value="FCFS"> FCFS </option>
+                        <option value="SJF"> Shortest Job First </option>
+                        <option value="SRJF"> Shortest Remaining Job First</option>
+                        <option value="RR">Round Robint</option>
+                        <option value="PS">Static Priority</option>
+                        <option value="PD">Dynamic Priority</option>
+                        <option value="MULTI+REC">Multi-level + Recycle</option>
+                        <option value="MULTI+PRIO">Multi-level + Priority</option>
+                        <option value="MULTI">Multi-level (The Beast)</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button class="button_modifier" id="modifier${nb_algos}" onclick="modify_row2(id)">Modifier</button>
+                    </td>
+                    <td>
+                       <button class="button_suprimer" id="suprimer${nb_algos}" onclick="delete_row2(id)">Supprimer</button>
+                    </td>
+
+                  </tr>`
+        algo_table.appendChild(new_row)
+      }
+
+      function modify_row2(id){
+        last_openned_algo_id = "algo_info_"+id.slice(8)
+        try {
+          document.getElementById(last_openned_algo_id).style.display = "block";
+          document.getElementById("blur_background").style.display = "block";
+        } catch (e) {
+          alert("NO MODIFICATION")
+        }
+
+      }
+
+      function create_algo_info_div(id){
+        algo = document.getElementById(id).parentElement.parentElement.children[1].children[0].value
+        algo_id = document.getElementById(id).parentElement.parentElement.children[0].innerHTML.slice(11)
+        if (document.getElementById("algo_info_"+algo_id)){document.getElementById("algo_info_"+algo_id).remove()}
+        new_div = document.createElement("DIV")
+        new_div.className = "small_container"
+        new_div.id = "algo_info_"+algo_id;
+        new_div.style.display = "none";
+        var innerHTML;
+        var valide = false;
+        if (algo == "RR"){
+          valide = true
+          new_div.style.height = "240px"
+          new_div.style.top    = "calc(50% - 120px)"
+          innerHTML = `<h2>Configuration de l'Algorithme Round Robin</h2>
+                  <hr><br><br>
+                  <div class="input_box">
+                    <span>Quantum:</span>
+                    <div class="button_">
+                      <div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
+                      <input id="number_quantum_${id}" type="text" name="" value="2" maxlength="2">
+                      <div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                  </div>`
+        }
+        else if (algo == "MULTI+REC") {
+          valide = true
+          new_div.style.height = "350px"
+          new_div.style.top    = "calc(50% - 175px)"
+          innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec recyclage</h2>
+                  <hr><br><br>
+                  <div class="input_box">
+                    <span>Nombre de niveaux:</span>
+                    <div class="button_">
+                      <div class="number_controller plus" id="quantum_${id}" onclick="add_nb(id)"> <span>+</span></div>
+                      <input id="number_quantum_${id}" type="text" name="" value="4" maxlength="2">
+                      <div class="number_controller minus" id="quantum_${id}" onclick="sub_nb(id)"><span id="minus_caracter">_</span></div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="input_box">
+                    <span>Liste de Quantums par niveaux:</span>
+                    <span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
+                    <div class="button_">
+                      <input id="quantums_list_${id}" type="text" name="" value="1,2,3,4">
+                    </div>
+                  </div>`
+
+        }
+        else if (algo == "MULTI+PRIO") {
+          valide = true
+          new_div.style.height = "350px"
+          new_div.style.top    = "calc(50% - 175px)"
+          innerHTML = `<h2>Configuration de l'Algorithme Multi-niveaux avec priorité</h2>
+                  <hr><br><br>
+                  <h3>Remarque: Le nombre de niveaux est le meme nombre de priorité donné dans la configuration !</h3>
+                  <div class="input_box">
+                    <span>Liste de Quantums par priorité (Par niveaux):</span>
+                    <span style="font-size:12px; color:grey">( Exemple: 1,4,3,7 )</span>
+                    <div class="button_">
+                      <input id="number_quantum_${id}" type="text" name="" value="1,2,3,4">
+                    </div>
+                  </div>`
+
+        }
+        else if (algo == "MULTI"){
+          valide = true
+
+        }
+        new_div.innerHTML = innerHTML;
+        if ( valide ){document.getElementById("stock_algo").appendChild(new_div);}
+
+
+      }
+
+   </script>
+   <script type="text/javascript"> //SCRIPT FOR DATA GATHERING
+      var nb_finished_algo = 0;
+      var nb_alogs_comparaison = 0;
+      var all_processes_list = [];
+
+      function get_config(){
+          TIME_UNIT = parseInt(document.getElementById("number_TU").value)
+          Config = {
+            "MIN_PROC_TIME":parseInt(document.getElementById("number_0").value),
+            "MAX_PROC_TIME":parseInt(document.getElementById("number_1").value), /**/
+            "MAX_PROC_PRIORITY":parseInt(document.getElementById("number_3").value), /**/
+            "MIN_PROC_PRIORITY":parseInt(document.getElementById("number_2").value), /**/
+            "MAX_PROC_INTRS":parseInt(document.getElementById("number_4").value), /**/
+            "MAX_PROC_DEGREE":3, /**/
+            "MAX_INTR_DURATION":parseInt(document.getElementById("number_5").value), /**/
+            "MIN_INTR_DURATION":parseInt(document.getElementById("number_6").value),
+            "allow_function_int": 0,
+            "UPDATE_TIME":-1,
+            "MAX_ENTRANCE":0,
+            "MIN_ENTRANCE":0,
+          }
+        return Config
+      }
+
+      function get_processes_interuptions(){
+        nb_processes = parseInt(document.getElementById("number_8").value);
+        if ( !document.getElementById("processes_checkbox").checked ){
+          rows = document.getElementById("table").rows
+          L = []
+          for ( var i = 1; i <= nb_processes; i++){
+            r = rows[i];
+            id_ = parseInt(r.children[0].innerText.slice(5))
+            nb_ints = parseInt(r.children[3].children[0].children[1].value)
+            L_ = [
+              id_,
+              parseInt(r.children[1].children[0].children[1].value),
+              parseInt(r.children[2].children[0].children[1].value),
+              parseInt(document.getElementById("number_prio"+id_).value),
+              nb_ints,
+            ]
+            ints = [];
+
+            for ( var j = 0; j < nb_ints; j++){
+              ints.push([
+                parseInt(document.getElementById(`number_start_time_${id_}_${j}`).value),
+                parseInt(document.getElementById(`number_duration_${id_}_${j}`).value),
+                document.getElementById(`int_type_${id_}_${j}`).value,
+              ])
             }
+            L_.push(ints)
+
+            L.push(L_)
+          }
+          return L}
+        else{
+          return create_processes(nb_processes, get_config())
         }
       }
-    }
 
-    function history2ganttdata(){
-        var data = []
-        for ( var i = 0; i < ALLL.length; i++){
-            for ( var j = 0; j < ALLL[i].history.length; j++){
-                var state = ALLL[i].history[j][2];
-
-
-                if (state == "In process"){c = "green"}
-                else if (state == "Blocked") {c = "red"}
-                else if (state == "Pret") {c = "blue"}
-                else {c = "black"}
-
-                if ( ALLL[i].history[j][1] == -1 ){
-                    data.push(["id"+i, createCustomHTMLContent(i, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]), state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
-                }
-                else {
-                    data.push(["id"+i, createCustomHTMLContent(i, ALLL[i].history[j][0], ALLL[i].history[j][1]), state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
-                }
-            }
+      function get_algorithmes(){
+        var table = document.getElementById("table_2");
+        var rows = table.rows;
+        var nb_algorithmes = rows.length-1;
+        L = [] //[id, algo_name]
+        for ( var i = 1 ; i <= nb_algorithmes; i++){
+          algo_name = rows[i].children[1].children[0].value
+          algo_id   = parseInt(rows[i].children[0].innerText.slice(11))
+          L_ = [
+            algo_id,
+            algo_name
+          ]
+          if (algo_name == "RR"){
+            L_.push(parseInt(document.getElementById("number_quantum_algo"+algo_id).value))
+          }
+          else if (algo_name == "MULTI+REC") {
+            q_l = document.getElementById("quantums_list_algo"+algo_id).value.split(",");
+            q_l_ = []
+            for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
+            L_.push(q_l_)
+          }
+          else if (algo_name == "MULTI+PRIO") {
+            q_l = document.getElementById("number_quantum_algo"+algo_id).value.split(",");
+            q_l_ = []
+            for ( var j = 0; j < q_l.length; j++){q_l_.push(parseInt(q_l[j]))}
+            L_.push(q_l_)
+          }
+          L.push(L_)
         }
-        return data
-    }
+        return L
+      }
 
-    function draw_gantt(data, div){
-        google.charts.load("current", {packages:["timeline"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
 
-          var container = document.getElementById(div);
-            var chart = new google.visualization.Timeline(container);
-            var dataTable = new google.visualization.DataTable();
-            dataTable.addColumn({ type: 'string', id: 'Role' });
-            dataTable.addColumn({ type: 'string', role: 'tooltip', p: {html: true}});
-            dataTable.addColumn({ type: 'string', id: 'Name' });
-            dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
-            dataTable.addColumn({ type: 'number', id: 'Start' });
-            dataTable.addColumn({ type: 'number', id: 'End' });
-          dataTable.addRows(data);
-          var options = {
-              colors: ['#cbb69d', '#603913'],
-            };
-          chart.draw(dataTable);
+
+
+      function ajouter_processus(){
+          max_index = processes_index
+          if (document.getElementById("processes_checkbox").checked){
+              processes_index = processes_index - parseInt(document.getElementById("number_8").value) - 1;
+          }
+          var processes_list = get_processes_interuptions();
+          for ( var i = 0; i < processes_list.length; i++){
+              p = processes_list[i];
+              all_processes_list.push(p)
+              var process = new Process(p[0], p[2], p[5], -1, 0, p[3], -1, p[1])
+              id_proc += 1
+              ALLL.push(process)
+              add_to_proc_info_menu(process, "proc_info_menu")
+              if (p[1] == 0){//entrance_time == 0
+                  process.move2fifo(pret)
+              }
+              else{
+                  waiting_processes.push(process)
+              }
+          }
+          close_popup()
+          document.getElementById("table").innerHTML = `<tr>
+                                  <th>Processus</th>
+                                  <th style='width:130px'>Temps d'entrée</th>
+                                  <th>Temps éstimé d'exécution</th>
+                                  <th>Nombre d'interruptions</th>
+                                  <th>Supprimer</th>
+                                  <th>Modifier</th>
+                                  <th>Déplacer</th></tr>`;
+          document.getElementById("number_8").value = 0;
+
+          if (document.getElementById("processes_checkbox").checked){
+              processes_index++;
+          }
+      }
+
+      function create_processes(nb_procs, Config) {
+        list_processes = []
+        for (let i = 0; i < nb_procs; i++) {
+          var entrance = randint(Config["MIN_ENTRANCE"], Config["MAX_ENTRANCE"])*randint(0, 2)*(i != 0)
+          //var entrance = 0;
+          if (Config["allow_function_int"]) {
+            list_processes.push(add_process(-1, 0, entrance, Config))
+          } else {
+            list_processes.push(add_process(-1, Config["MAX_PROC_DEGREE"], entrance, Config))
+          }
         }
-    }
+        return list_processes
+      }
 
-    function createCustomHTMLContent(id, a, b) {
-        return `
-          <div class="c">
-            <b> Id${id}: </b> ${a}TU - ${b}TU
-            <br>
-            <b> Duration: </b> ${b-a}TU
-          </div>
-        `
-	}
-</script>
+   </script>
+   <script type="text/javascript"> //Scripts for gantt drawings
+      var data = []
+      var colors = []
+
+      function clean_data(ALLL){
+
+        for(let i = 0 ; i < ALLL.length ; i++){
+          let arr = ALLL[i].history
+          arr.splice(arr.length,1)
+          let passed = false
+          while (!passed){
+            passed = true
+            for (let i = 0 ; i < arr.length -1 ; i++){
+              let sub_arr1 = arr[i]
+              let sub_arr2 = arr[i+1]
+                passed = true
+                if (sub_arr1[2]==sub_arr2[2]){
+                    sub_arr1[1] = sub_arr2[1]
+                    arr.splice(i+1,1)
+                    passed = false
+                    break
+                  }
+              }
+          }
+        }
+      }
+
+      function history2ganttdata(){
+          var data = []
+          for ( var i = 0; i < ALLL.length; i++){
+              for ( var j = 0; j < ALLL[i].history.length; j++){
+                  var state = ALLL[i].history[j][2];
 
 
-<script src="../main.js"></script>
-<script src="../index.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- GOOGLE Gant bibs !-->
+                  if (state == "In process"){c = "green"}
+                  else if (state == "Blocked") {c = "red"}
+                  else if (state == "Pret") {c = "blue"}
+                  else {c = "black"}
 
+                  if ( ALLL[i].history[j][1] == -1 ){
+                      data.push(["id"+i, createCustomHTMLContent(i, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]), state, c, ALLL[i].history[j][0], 1+ALLL[i].history[j][0]]);
+                  }
+                  else {
+                      data.push(["id"+i, createCustomHTMLContent(i, ALLL[i].history[j][0], ALLL[i].history[j][1]), state, c, ALLL[i].history[j][0], ALLL[i].history[j][1]]);
+                  }
+              }
+          }
+          return data
+      }
 
+      function draw_gantt(data, div){
+          google.charts.load("current", {packages:["timeline"]});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
 
+            var container = document.getElementById(div);
+              var chart = new google.visualization.Timeline(container);
+              var dataTable = new google.visualization.DataTable();
+              dataTable.addColumn({ type: 'string', id: 'Role' });
+              dataTable.addColumn({ type: 'string', role: 'tooltip', p: {html: true}});
+              dataTable.addColumn({ type: 'string', id: 'Name' });
+              dataTable.addColumn({ type: 'string', id: 'style', role: 'style' });
+              dataTable.addColumn({ type: 'number', id: 'Start' });
+              dataTable.addColumn({ type: 'number', id: 'End' });
+            dataTable.addRows(data);
+            var options = {
+                colors: ['#cbb69d', '#603913'],
+              };
+            chart.draw(dataTable);
+          }
+      }
+
+      function createCustomHTMLContent(id, a, b) {
+          return `
+            <div class="c">
+              <b> Id${id}: </b> ${a}TU - ${b}TU
+              <br>
+              <b> Duration: </b> ${b-a}TU
+            </div>
+          `
+      }
+   </script>
+   <script src="../main.js"></script>
+   <script src="../index.js"></script>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- GOOGLE Gant bibs !-->
 </html>
